@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Design reference only — the original single-file mockup, kept for provenance
+    // and imported by nothing. Not part of the app's source.
+    "ReKainMockup.jsx",
   ]),
 ]);
 

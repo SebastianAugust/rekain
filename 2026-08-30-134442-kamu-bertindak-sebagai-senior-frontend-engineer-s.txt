@@ -1,0 +1,406 @@
+ ▐▛███▜▌   Claude Code v2.1.229
+▝▜█████▛▘  Opus 5 · Claude Pro
+  ▘▘ ▝▝    C:\pulang medan\rekain-app
+
+
+❯ Kamu bertindak sebagai senior frontend engineer sekaligus UI/UX designer di   
+  studio desain                                                                 
+  kelas atas yang dikenal karena eksekusi visual yang sangat detail dan tidak   
+  pernah terasa                                                                 
+  templated. Brief ini untuk client yang sudah menolak draf pertama karena      
+  "terasa kurang                                                                
+  otentik" — jadi standar yang dipakai di sini tinggi, dan kamu diberi          
+  keleluasaan penuh                                                             
+  untuk mengambil keputusan desain sendiri, bukan mengikuti spesifikasi visual  
+  yang kaku.                                                                    
+                                                                                
+  KONTEKS BISNIS:                                                               
+  ReKain adalah platform B2B yang menghubungkan pabrik garmen/tekstil dengan    
+  buyer (recycler,                                                              
+  upcycler, brand berkelanjutan) untuk memperjualbelikan limbah tekstil —       
+  cutting scraps,                                                               
+  deadstock, roll ends, reject material — secara transparan dan terverifikasi   
+  kualitasnya.                                                                  
+  Read ini sebagai infrastruktur perdagangan B2B, bukan aplikasi konsumen. Alur 
+  intinya:                                                                      
+  pabrik unggah limbah → grading & estimasi harga → dicocokkan ke buyer yang    
+  sesuai →                                                                      
+  logistik & escrow → sampai ke buyer.                                          
+                                                                                
+  KRITIK PENTING — baca sebelum mulai:                                          
+  Sudah ada draf desain sebelumnya (indigo denim + amber kraft-tag, kartu       
+  listing dengan                                                                
+  motif "hang tag" bertekstur garis diagonal, badge grade meniru cap stempel).  
+  Secara konsep                                                                 
+  arahnya sudah benar — tapi eksekusinya masih terasa DANGKAL: tekstur kainnya  
+  dibuat dari                                                                   
+  `repeating-linear-gradient` garis diagonal sederhana, jadi kelihatan seperti  
+  pola vektor                                                                   
+  generik yang "dikasih nama tekstil", bukan benar-benar terasa seperti kain    
+  fisik yang                                                                    
+  punya berat, serat, dan kedalaman. Jangan ulangi pendekatan itu.              
+                                                                                
+  Yang perlu kamu capai kali ini adalah TEKSTUR YANG BENERAN TERASA FISIK,      
+  bukan dekorasi                                                                
+  tempelan. Beberapa arah teknis yang bisa dieksplorasi (bukan resep wajib,     
+  pilih yang paling                                                             
+  pas dan eksekusi dengan matang, jangan tanggung):                             
+  - SVG filter `feTurbulence` + `feDisplacementMap` untuk grain/noise organik   
+  yang autentik                                                                 
+    (kain, kertas kraft, kanvas) — jauh lebih meyakinkan daripada gradient      
+  garis lurus                                                                   
+    berulang yang terlihat "komputer banget"                                    
+  - Layered box-shadow terarah untuk memberi kesan ketebalan fisik dan tumpukan 
+  kain                                                                          
+    (bukan shadow generik satu lapis ala Material Design)                       
+  - Jahitan/stitching yang sedikit tidak sempurna — path SVG dengan jitter      
+  kecil, bukan                                                                  
+    border-dashed CSS yang terlalu rapi dan seragam                             
+    ada satu manuver visual yang jadi "penantang klise AI-generated" — dan itu  
+  ada di                                                                        
+    frontend-design skill kamu (baca dan ikuti proses brainstorm → kritik diri  
+  sendiri                                                                       
+    terhadap default klise → baru eksekusi)                                     
+  - Grid/struktur layout yang mengambil logika warp & weft (susunan benang      
+  lungsin-pakan)                                                                
+    sebagai sistem spacing, bukan cuma grid 12-kolom biasa yang dihias tekstil  
+  - Interaksi/motion yang terasa fisik — hover pada kartu material terasa       
+  seperti "mengangkat"                                                          
+    kain, bukan sekadar translate-y generik                                     
+                                                                                
+  Kamu punya OTORITAS PENUH atas palet warna, tipografi, layout, dan motif.     
+  Warna kerja                                                                   
+  sebelumnya (indigo denim ~#1F2A44, kraft amber ~#B9791F, canvas ~#F4EFE3)     
+  boleh jadi titik                                                              
+  tolak kalau menurutmu itu tepat, tapi jangan terikat kalau ada arah lain yang 
+  lebih kuat                                                                    
+  untuk membangun rasa "ini beneran tentang tekstil" secara fisik. Ukuran       
+  keberhasilannya:                                                              
+  kalau orang yang baru pertama kali lihat langsung merasakan materialitas kain 
+  — berat,                                                                      
+  serat, tekstur — bukan cuma warna dan ikon bertema tekstil.                   
+                                                                                
+  WAJIB IKUTI PROSES INI (jangan langsung ngoding):                             
+  1. Brainstorm dulu secara tertulis: token system (warna 4-6 hex bernama,      
+  tipografi 2+ role,                                                            
+     konsep layout dengan ASCII wireframe singkat), dan SATU signature element  
+  yang paling                                                                   
+     berani dan paling diingat dari desain ini.                                 
+  2. Kritik rencana itu sendiri: apakah ini jatuh ke default klise AI           
+  (krem+serif+terracotta;                                                       
+     near-black+aksen hijau/vermillion terang; broadsheet hairline-rules)?      
+  Kalau iya, revisi                                                             
+     dan jelaskan apa yang diubah dan kenapa.                                   
+  3. Baru mulai coding, ikuti rencana yang sudah direvisi.                      
+  4. Setelah build, kalau di environment kamu tersedia Playwright atau alat     
+  screenshot,                                                                   
+     render dan screenshot hasilnya sendiri untuk quality-check sebelum         
+  menyatakan selesai —                                                          
+     terutama untuk memverifikasi tekstur/filter SVG benar-benar tampil, bukan  
+  cuma "terlihat                                                                
+     benar di kode" tapi nyatanya kosong/gagal render di browser.               
+                                                                                
+  TECH STACK (sudah diputuskan, wajib dipakai — ini bagian yang TIDAK           
+  fleksibel):                                                                   
+  - Next.js App Router, TypeScript, struktur `src/`                             
+  - Tailwind CSS — HANYA gunakan utility class standar/predefined, HINDARI      
+  notasi arbitrary                                                              
+    value seperti `text-[11px]` atau `grid-cols-[1fr_320px]` untuk hal yang     
+  krusial; kalau                                                                
+    butuh nilai presisi custom, pakai inline style atau extend di config,       
+  supaya tidak                                                                  
+    tergantung JIT compiler yang mungkin tidak tersedia di semua environment    
+  render                                                                        
+  - shadcn/ui untuk primitives (button, card, input, select, dialog, tabs,      
+  badge, textarea,                                                              
+    sonner untuk toast)                                                         
+  - React Hook Form + Zod untuk semua form                                      
+  - TanStack Query — bungkus semua akses data (termasuk yang masih mock) lewat  
+  custom hooks                                                                  
+    (`useListings()`, `useTransactions()`, dst.) supaya nanti gampang           
+  disambungkan ke backend                                                       
+    sungguhan tanpa ubah komponen UI                                            
+  - lucide-react untuk ikon                                                     
+                                                                                
+  STRUKTUR ROUTE (Next.js App Router, real routing bukan client-state           
+  switching):                                                                   
+  - `/` — landing page                                                          
+  - `/pabrik` — dashboard ringkasan pabrik (stat + listing terbaru)             
+  - `/pabrik/upload` — form upload limbah baru                                  
+  - `/pabrik/listing` — semua listing milik pabrik                              
+  - `/pabrik/transaksi` — riwayat transaksi                                     
+  - `/pabrik/profil`                                                            
+  - `/buyer` — pencarian & browse material                                      
+  - `/buyer/material/[id]` — detail material + form ajukan penawaran            
+  - `/buyer/favorit`                                                            
+  - `/buyer/transaksi`                                                          
+  - `/buyer/profil`                                                             
+                                                                                
+  Pabrik dan buyer masing-masing punya layout sendiri dengan sidebar navigation 
+  di desktop                                                                    
+  dan bottom tab navigation di mobile, memakai breakpoint Tailwind standar (ini 
+  website                                                                       
+  sungguhan dengan viewport asli, bukan simulasi device-frame).                 
+                                                                                
+  DATA CONTOH (untuk mock data, boleh dikembangkan/ditambah sendiri):           
+  Listing material tekstil punya field: kode grading (format mis. COT-B-014),   
+  jenis material                                                                
+  (cotton cutting scraps / denim deadstock / katun campuran / reject roll       
+  ends), grade (A/B/C),                                                         
+  berat dalam kg, harga per kg (Rp2.800–Rp7.200), lokasi (klaster Bandung:      
+  Cimahi, Rancaekek,                                                            
+  Majalaya), nama pabrik penjual, status (Tersedia/Dalam Negosiasi), umur       
+  listing.                                                                      
+                                                                                
+  FORM:                                                                         
+  - Upload limbah: validasi jenis material (required), berat kg (required,      
+  angka positif),                                                               
+    lokasi (required), catatan (opsional). Zod schema + React Hook Form +       
+  shadcn form                                                                   
+    components. State sukses yang jelas di halaman setelah submit, bukan cuma   
+  toast.                                                                        
+  - Ajukan penawaran: validasi jumlah yang ditawar tidak melebihi stok          
+  tersedia.                                                                     
+                                                                                
+  KUALITAS YANG DIHARAPKAN:                                                     
+  - Aksesibilitas: focus state jelas, label terhubung ke input dengan benar,    
+  kontras warna                                                                 
+    cukup terutama teks di atas warna gelap                                     
+  - Loading state & empty state yang jelas untuk setiap daftar data             
+  - Jalankan `npm run build` sendiri di akhir, pastikan tidak ada error         
+  TypeScript/build                                                              
+  - Komponen kecil dan reusable, jangan taruh ratusan baris JSX langsung di     
+  page.tsx                                                                      
+                                                                                
+  DI LUAR SCOPE untuk sekarang: autentikasi/Supabase asli, native mobile app,   
+  backend API                                                                   
+  yang benar-benar menyimpan data permanen.                                     
+                                                                                
+  Mulai dari brainstorm desain tertulis (langkah 1-2 di atas), tunjukkan itu    
+  dulu ke saya                                                                  
+  secara ringkas sebelum lanjut coding, baru eksekusi setelah saya oke-kan      
+  arahnya.                                                                      
+
+● Saya mulai dengan mengecek state repo dan mencari skill design yang disebut di
+  brief.
+
+  Searched for 1 pattern, read 1 file, listed 1 directory, ran 6 shell commands (ctrl+o to expand)
+
+● Saya sudah baca skill frontend-design, seluruh draf sebelumnya (globals.css,
+  SwatchCard, Hero, SelvageRule), dan layer data yang sudah ada. Kabar bagus:
+  infrastruktur sudah benar — TanStack Query lewat
+  useListings()/useTransaksiPabrik(), Zod + RHF, routing App Router lengkap,
+  shadcn primitives. Yang perlu dibongkar itu layer visual, bukan arsitekturnya.
+
+  Berikut brainstorm + kritik-diri sebelum ngoding.
+
+  ---
+  1. Brainstorm
+
+  Temuan akar masalah (bukan cuma soal tekstur)
+
+  Draf lama pakai hang tag sebagai metafora kartu listing. Itu bukan cuma
+  eksekusi dangkal — itu salah kategori. Hang tag adalah artefak ritel: benda
+  kecil yang digantung di kemeja di toko. Yang kita jual di sini adalah 820 kg 
+  cutting scraps yang bergerak dalam bal terkompresi, ditimbang di timbangan
+  lantai gudang, ditandai kode stensil. Materialitasnya nggak akan pernah terasa
+  selama metaforanya diambil dari dunia ritel. Itu sebabnya
+  repeating-linear-gradient terasa tempelan: teksturnya menambal metafora yang
+  memang sudah keliru.
+
+  Jadi saya ganti metafora intinya dulu, baru bicara tekstur.
+
+  Signature element — Penampang Bal (bale cross-section)
+
+  Satu elemen yang paling diingat dari desain ini.
+
+  Kalau kain sisa dipres jadi bal lalu dipotong, penampangnya adalah strata 
+  warna terkompresi — seperti core sample geologi atau fore-edge buku. Ini:
+
+  - benar-benar fisik: menyatakan berat, kompresi, dan lapisan sekaligus
+  - membawa informasi, bukan hiasan: jumlah & rapatnya strata = berat, campuran
+  warna strata = komposisi material, ketebalan band = grade
+  - adalah janji produknya secara harfiah — transparansi: kamu bisa lihat isi
+  dalam balnya
+
+  Kartu listing = penampang bal dilihat dari samping. Bukan kartu konten generik
+  yang dikasih tekstur.
+
+  ┌──────────────────────────────────────────────┐
+  │▓▒▓▓▒░▓▒▓│ COT-B-014          [ GRADE B ]     │  ← strata: SVG, tepi
+  │▒▓░▒▓▓▒▓▒│ Cotton Cutting Scraps              │    serat tidak lurus
+  │▓▓▒▓░▒▓▓▓│ 820 kg · Cimahi                    │    (feDisplacementMap)
+  │▒░▓▒▓▒░▓▒│ Rp4.500/kg              Tersedia   │
+  └──────────────────────────────────────────────┘
+   └ 4 shadow berlapis ke bawah-kanan = tumpukan
+
+  Hover = dekompresi. Strata merenggang ~1px, bayangan berlapis memanjang dan
+  melunak (beban terangkat dari tumpukan), kartu naik 2px. Bukan translate-y
+  generik — ini gerak melepas tekanan pres.
+
+  Tekstur — cara eksekusi yang tidak gagal render
+
+  Ini bagian yang kamu khawatirkan, jadi saya spesifik soal mekanismenya:
+
+  filter: url(#...) langsung ke elemen DOM hidup itu jebakan — mahal, dan
+  merusak anti-aliasing teks (teks jadi buram/ngefringe). Yang benar: SVG filter
+  dipakai untuk menghasilkan lapisan tekstur, bukan memfilter konten.
+
+  1. <svg> sprite berisi <defs> di root layout (width=0 height=0 absolute),
+  berisi 3 filter.
+  2. #serat-kanvas — feTurbulence type="fractalNoise" baseFrequency="0.78" 
+  numOctaves="4" → feColorMatrix ke alpha → dipakai sebagai layer terpisah
+  <rect> di atas permukaan dengan mix-blend-mode: multiply + opacity rendah.
+  Teks di atasnya tidak tersentuh filter.
+  3. #serat-tepi — feTurbulence + feDisplacementMap scale="3" khusus untuk tepi 
+  strata penampang, supaya batas antar lapisan bergerigi seperti serat, bukan
+  garis vektor.
+  4. #benang-jahit — displacement halus pada path jahitan.
+
+  Grain global body: satu feTurbulence di-inline sebagai data-URI SVG background
+  — selalu render, nol biaya runtime.
+
+  Jahitan pakai path SVG dengan jitter deterministik (PRNG ber-seed, bukan
+  Math.random() — kalau random, SSR dan client beda dan Next 16 akan lempar
+  hydration mismatch). Dipakai hanya di dua tempat: seam sidebar↔konten, dan
+  state sukses upload.
+
+  Token — warna (6 bernama)
+
+  ┌────────────┬──────────────────────┬──────────────────────────────────────┐
+  │   token    │         hex          │                 asal                 │
+  ├────────────┼──────────────────────┼──────────────────────────────────────┤
+  │ greige     │ #CBC4B4              │ kain greige — kain mentah belum      │
+  │            │                      │ dicelup. Ground halaman.             │
+  ├────────────┼──────────────────────┼──────────────────────────────────────┤
+  │ kapas      │ #EFEBE2              │ kapas dikelantang. Permukaan kartu.  │
+  ├────────────┼──────────────────────┼──────────────────────────────────────┤
+  │ nila       │ #16252F              │ bak celup indigo teroksidasi.        │
+  │            │                      │ Sidebar, hero.                       │
+  ├────────────┼──────────────────────┼──────────────────────────────────────┤
+  │ nila-encer │ #2E4A5A              │ celupan kedua, encer. Permukaan      │
+  │            │                      │ gelap sekunder.                      │
+  ├────────────┼──────────────────────┼──────────────────────────────────────┤
+  │ benang     │ #A8332A              │ benang pinggir selvedge. Aksen       │
+  │            │                      │ panas, plafon ≤2% luas layar.        │
+  ├────────────┼──────────────────────┼──────────────────────────────────────┤
+  │ tinta      │ #2A2622 /            │ teks.                                │
+  │            │ tinta-pudar #4F4A40  │                                      │
+  └────────────┴──────────────────────┴──────────────────────────────────────┘
+
+  Kuncinya: ground-nya mid-value, bukan near-white. Karena greige #CBC4B4 cukup
+  gelap, kartu kapas otomatis terbaca sebagai material yang lebih terang dan 
+  terangkat — kedalaman didapat gratis dari nilai, bukan dari bayangan. Ini
+  nggak bisa dilakukan di atas cream terang.
+
+  Kontras terverifikasi: tinta di greige = 8.4:1 · tinta-pudar di greige = 4.9:1
+  · benang di kapas = 5.4:1 · kapas di nila = 12.7:1.
+
+  Token — tipografi (3 role)
+
+  - Display — Archivo, weight 700–800, sumbu variabel wdth didorong ke ekspan.
+  Huruf kapital lebar-berat terbaca seperti stensil pada peti/karung gudang.
+  Sengaja bukan serif kontras-tinggi.
+  - Body — Public Sans, 400/500/600. Humanis, jernih untuk teks Indonesia, dan
+  bukan Inter/Geist.
+  - Data — IBM Plex Mono, 400/500. Kode grading, berat, rupiah. Ini muka
+  industri sungguhan, bukan mono default.
+
+  Token — layout: logika lungsin & pakan
+
+  Bukan hiasan. Dalam kain nyata, kerapatan lungsin (warp, vertikal) selalu 
+  lebih tinggi dari pakan (weft, horizontal) — itu sebabnya kain punya arah.
+  Jadi:
+
+  - Skala spasi diturunkan dari thread pitch 4px dengan langkah tidak beraturan:
+  4 · 8 · 12 · 20 · 32 · 52 · 84. Deret ganjil (Fibonacci-ish) terbaca
+  hand-set, bukan 4/8/16/32 yang mekanis.
+  - Gap vertikal selalu satu langkah lebih rapat dari gap horizontal. Grid jadi
+  punya arah, persis seperti kain punya arah. Ini aturan sistemik, dipakai
+  konsisten di semua halaman.
+
+  Hero — tesis, bukan angka besar
+
+  ┌───────────────────────────────────────────────────────┐
+  │ nila #16252F                                          │
+  │ INFRASTRUKTUR LIMBAH TEKSTIL           ← stensil kecil │
+  │                                                       │
+  │ Lihat isi balnya                                      │
+  │ sebelum Anda beli.                     ← display 800  │
+  │                                                       │
+  │ [ Jual limbah pabrik ]  [ Cari material ]             │
+  │                                                       │
+  │ ▓▒▓░▓▒▒▓░▒▓▓▒░▓▒▓▒▓░▒▓▒▓▓░▒▓▒░▓▒▓▓▒░▓▒▓▒▓░▒▓▒▓▓░▒▓▒░ │ ← penampang
+  │ └COT-B─┘└DNM-A┘└─KTN-C──┘└RJC-B┘└─COT-A─┘└DNM-B┘     │   full-bleed
+  │  820kg   340kg   1.150kg   470kg   660kg   290kg      │   dari data asli
+  └───────────────────────────────────────────────────────┘
+
+  Hero bukan "angka besar + label kecil + gradient". Hero adalah penampang bal 
+  selebar layar yang isinya listing yang benar-benar ada di pipeline sekarang —
+  lebar tiap strata proporsional terhadap berat sungguhan. Gambar sekaligus data
+  sekaligus tesis produk.
+
+  Motion — dua momen saja
+
+  1. Load hero: strata mengendap berurutan, scaleY dari sedikit lebih tinggi →
+  padat. Seperti bal sedang dipres. ~600ms, ter-stagger.
+  2. Hover kartu: dekompresi (di atas).
+
+  Selesai. Tidak ada scroll-reveal, tidak ada ambient. prefers-reduced-motion
+  mematikan keduanya.
+
+  ---
+  2. Kritik terhadap rencana saya sendiri
+
+  Kritik 1 — palet lama itu default AI #1, nyaris presisi. #F4EFE3 cream +
+  #B9791F amber = "warm cream background + terracotta accent". Itu bukan pilihan
+  untuk brief ini, itu default yang muncul di brief apa pun. Diubah: ground
+  pindah ke greige #CBC4B4 — desaturasi ke arah dingin dan mid-value, bukan
+  cream hangat terang. Greige juga istilah tekstil harfiah (kain mentah belum
+  dicelup), jadi lebih spesifik ke subjek dan keluar dari klise sekaligus.
+
+  Kritik 2 — aksen merah saya berisiko jatuh ke default #2 ("aksen vermillion
+  terang"). Penjagaan: ground-nya bukan near-black, merahnya bukan vermillion
+  terang tapi #A8332A yang tumpul, dan luasnya dibatasi ≤2% layar. Sitasinya
+  jelas: benang pinggir selvedge.
+
+  Kritik 3 — saya sempat mau pakai sage green untuk status "Tersedia". Itu
+  warisan draf lama dan menambah hue keempat tanpa alasan material. Nasihat
+  Chanel: lepas satu aksesori. Dibuang. Status cuma dua tone: nila (tersedia)
+  dan benang (dalam negosiasi). Palet jadi dua-material — belum dicelup vs sudah
+  dicelup — yang justru lebih jujur ke subjeknya.
+
+  Kritik 4 — punch hole di kartu. Ikut hilang bersama metafora hang tag. Nggak
+  ada bal 820 kg yang dikasih lubang gantungan.
+
+  Kritik 5 — penomoran 01/02/03 di "How it works". Skill mewanti-wanti ini. Tapi
+  di sini alurnya memang urutan sungguhan (unggah → grading → pencocokan →
+  escrow → kirim), jadi angkanya membawa informasi. Tetap dipakai, tapi diset
+  sebagai kode stasiun proses bergaya stensil, bukan angka besar dekoratif.
+
+  Kritik 6 — saya hampir bikin plain-weave alternation (kartu selang-seling
+  gelap-terang meniru anyaman). Itu dekorasi yang menyamar jadi sistem, dan
+  bakal terbaca seperti bug rendering. Dibuang; logika warp/weft dipindah ke
+  tempat yang benar-benar struktural, yaitu skala spasi berarah.
+
+  Kritik 7 — risiko teknis yang saya antisipasi: feDisplacementMap di elemen
+  hidup merusak AA teks → dipisah jadi layer generatif. Math.random() untuk
+  jitter jahitan → hydration mismatch di Next 16 → PRNG ber-seed. Sumbu variabel
+  wdth Archivo lewat next/font → kalau bermasalah saat build, fallback ke
+  Archivo statik weight 800 + tracking negatif, dan saya laporkan.
+
+  ---
+  Yang tidak saya sentuh: src/lib/data/* (hooks TanStack Query, store, seed),
+  skema Zod, dan struktur route — semuanya sudah memenuhi brief. Kerja ini
+  mengganti sistem token, komponen brand, dan komponen shell.
+
+  Kalau arah ini oke, saya mulai coding: token system dulu → SVG filter sprite →
+  komponen PenampangBal → shell → halaman, lalu npm run build dan screenshot
+  hasil render (saya punya akses Chrome di environment ini) untuk verifikasi
+  teksturnya benar-benar muncul, bukan cuma benar di kode.
+
+  Ada yang mau kamu koreksi dari arah ini sebelum saya jalan?
+
+✻ Brewed for 3m 44s
+
+※ recap: Goal is redesigning ReKain's visual layer so the textiles feel physically real. I've presented the design brainstorm and self-critique, proposing a bale cross-section signature with a greige and indigo palette. Waiting on your approval before coding. (disable recaps in /config)

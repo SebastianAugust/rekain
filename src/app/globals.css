@@ -1,26 +1,373 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Keep the dark variant class-based. Without this, Tailwind v4 falls back to its
+  default `prefers-color-scheme` strategy, and the shadcn primitives' built-in
+  `dark:*` utilities (Input, SelectTrigger, …) would activate on a viewer whose OS
+  is in dark mode — mixing a dark control treatment into this deliberately
+  light-only palette. Nothing ever sets `.dark`, so `dark:*` stays inert.
+*/
+@custom-variant dark (&:is(.dark *));
+
+/*
+  ReKain — design system.
+
+  ── The palette is a dip ladder ───────────────────────────────────────────────
+  The four brand blues, sorted by depth, are the stages of an indigo vat: cloth
+  starts undyed and darkens with every dip. So colour here is not decoration, it
+  encodes depth — and the token names say so.
+
+      kain      →   nila-1   →   nila-3   →   nila-6   →   nila-9
+      undyed        1 dip        3 dips       6 dips       9 dips
+      #F7F9FC       #A0D0F8      #3880C0      #103868      #003060
+
+  The four `nila` values are the business-plan hexes, unaltered.
+*/
+
+@theme {
+  /* ── Dip ladder (brand, verbatim from the business plan) ─────────────────── */
+  --color-nila-9: #003060; /* deepest dip — hover/pressed, strongest contrast */
+  --color-nila-6: #103868; /* primary — sidebar, hero, primary buttons */
+  --color-nila-3: #3880c0; /* interactive fills, active icons, focus ring */
+  --color-nila-1: #a0d0f8; /* soft tint — badge grounds, type on dark */
+
+  /*
+    `nila-3` measures 4.18:1 on white — it passes AA for large text and for
+    non-text (3:1) but FAILS for body copy. Link and small-label text steps one
+    rung deeper to stay legible without leaving the ladder. 5.98:1 on white.
+  */
+  --color-nila-tinta: #2a66a0;
+
+  /* ── Undyed cloth and neutrals ───────────────────────────────────────────── */
+  --color-kain: #f7f9fc; /* page ground — cloth before the vat */
+  --color-garis: #e0e6ed; /* borders */
+  --color-tinta: #101c2b; /* body and heading type */
+  --color-tinta-pudar: #4e5c6e; /* secondary type — 6.5:1 on kain */
+
+  /*
+    Selvedge guard thread. Hairlines and error type only — never an area fill.
+    6.5:1 on white, so it is safe as small error text.
+  */
+  --color-benang: #a63a2c;
+
+  /* ── Warp and weft spacing ───────────────────────────────────────────────── */
+  /*
+    Derived from a 4px thread pitch, but the steps are deliberately irregular — a
+    doubling scale (4/8/16/32) reads machine-set. Real cloth does not.
+
+    The rule that comes with it: warp (vertical) density is higher than weft
+    (horizontal) density in every woven fabric, so vertical gaps are always one
+    step tighter than the horizontal gap beside them. The grid gets a grain.
+  */
+  --spacing-w1: 4px;
+  --spacing-w2: 8px;
+  --spacing-w3: 12px;
+  --spacing-w4: 20px;
+  --spacing-w5: 32px;
+  --spacing-w6: 52px;
+  --spacing-w7: 84px;
+
+  /* ── Physical depth ──────────────────────────────────────────────────────── */
+  /*
+    Not a Material-style centred blur. Two hard offsets read as the sheets
+    stacked underneath, then two soft layers carry the weight pressing down.
+  */
+  --shadow-bal:
+    0 1px 0 0 var(--color-garis), 0 3px 0 -1px #edf1f6,
+    0 4px 5px -3px rgb(16 56 104 / 0.16), 0 10px 14px -10px rgb(16 56 104 / 0.22);
+  --shadow-bal-angkat:
+    0 2px 0 0 var(--color-garis), 0 6px 0 -1px #edf1f6,
+    0 9px 12px -6px rgb(16 56 104 / 0.2), 0 20px 28px -16px rgb(16 56 104 / 0.28);
+  --shadow-panel: 0 1px 2px 0 rgb(16 56 104 / 0.06);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-archivo);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 1.5);
+  --radius-xl: calc(var(--radius) * 2);
+  --radius-2xl: calc(var(--radius) * 3);
+  --radius-3xl: calc(var(--radius) * 4);
+  --radius-4xl: calc(var(--radius) * 5);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+  shadcn semantic slots are remapped onto the dip ladder so the Base UI
+  primitives (Button, Input, Select, Dialog…) inherit ReKain by default.
+
+  --radius is 2px, not 0 and not `lg`. Square corners read as a broadsheet
+  affectation; an 8px radius reads as a SaaS dashboard. 2px reads as a cut edge.
+*/
+:root {
+  /* single light theme: keep form controls and scrollbars light too */
+  color-scheme: light;
+
+  --radius: 0.125rem;
+
+  --background: var(--color-kain);
+  --foreground: var(--color-tinta);
+
+  --card: #ffffff;
+  --card-foreground: var(--color-tinta);
+  --popover: #ffffff;
+  --popover-foreground: var(--color-tinta);
+
+  --primary: var(--color-nila-6);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-kain);
+  --secondary-foreground: var(--color-tinta);
+
+  --muted: var(--color-kain);
+  --muted-foreground: var(--color-tinta-pudar);
+  --accent: var(--color-nila-1);
+  --accent-foreground: var(--color-nila-6);
+
+  --destructive: var(--color-benang);
+
+  --border: var(--color-garis);
+  --input: var(--color-garis);
+  --ring: var(--color-nila-3);
+
+  --chart-1: var(--color-nila-6);
+  --chart-2: var(--color-nila-3);
+  --chart-3: var(--color-nila-1);
+  --chart-4: var(--color-nila-9);
+  --chart-5: var(--color-tinta-pudar);
+
+  --sidebar: var(--color-nila-6);
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: var(--color-nila-1);
+  --sidebar-primary-foreground: var(--color-nila-9);
+  --sidebar-accent: var(--color-nila-9);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: var(--color-nila-9);
+  --sidebar-ring: var(--color-nila-1);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  /*
+    Fibre grain on the page ground.
+
+    Delivered as a tiled data-URI rather than an overlay element on purpose: it
+    needs no DOM node, cannot disturb stacking, and renders identically whether
+    or not JavaScript ran. `stitchTiles="stitch"` makes the turbulence continuous
+    across tile boundaries — without it the 140px repeat is plainly visible as a
+    grid, which is exactly the "computer-generated" tell being designed out.
+
+    Overlay blending does nothing against a near-white ground, so this paints a
+    faint cool speckle with normal compositing instead.
+  */
+  body {
+    @apply bg-background text-foreground;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.04 0 0 0 0 0.09 0 0 0 0 0.17 0.34 0 0 0 -0.14'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23s)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 140px 140px;
+  }
+  html {
+    @apply font-sans;
+  }
+  /*
+    Focus is loud and uniform: a nila-3 ring offset against whatever it sits on.
+    On dyed surfaces `.di-nila` lifts it to nila-1, which has 7.15:1 there.
+  */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-nila-3;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /*
+    Display type. Archivo is loaded with its `wdth` axis so headings can be
+    pushed wide — heavy, expanded caps read like lettering stencilled onto a
+    crate, which is the register this product actually lives in. The stretch and
+    the optical tracking correction belong together, so they travel as one class
+    rather than as two utilities somebody will eventually apply only half of.
+  */
+  .judul {
+    font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+    font-stretch: 112%;
+    font-weight: 800;
+    letter-spacing: -0.021em;
+  }
+  .judul-kecil {
+    font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+    font-stretch: 108%;
+    font-weight: 700;
+    letter-spacing: -0.012em;
+  }
+
+  /* ── Uneven dye ──────────────────────────────────────────────────────────── */
+  /*
+    The single most important rule in this system: no navy surface is ever a flat
+    fill. `.celup` marks a surface as dyed and DyeWash paints turbulence over it.
+    A flat #103868 is precisely what makes brand blue read as corporate SaaS.
+
+    Amplitude is capped deliberately. Past roughly 0.3 the overlay stops reading
+    as hand-dipped cloth and starts reading as a dirty screen.
+  */
+  .celup {
+    position: relative;
+    isolation: isolate;
+  }
+  .celup-wash {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.28;
+  }
+  /*
+    A narrow column shows the same cloud at a much larger apparent scale, so the
+    sidebar reads blotchy at the amplitude that suits a full-width hero. Cut it.
+  */
+  .celup-wash-halus {
+    opacity: 0.17;
+  }
+  /*
+    Card and panel surfaces — bleached cotton rather than screen white.
+
+    The page ground already carries a fibre grain, but on a phone the cards span
+    the full width and cover almost all of it, so the whole product went flat
+    below `md`. This puts the weave on the surfaces people actually look at.
+
+    Deliberately finer and fainter than the ground: a card has to keep reading as
+    lighter and cleaner cloth than what it sits on, or the depth collapses.
+  */
+  .permukaan {
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.05 0 0 0 0 0.10 0 0 0 0 0.18 0.34 0 0 0 -0.135'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23k)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 120px 120px;
+  }
+
+  /* Fine fibre grain. Far weaker — this is felt rather than seen. */
+  .serat-wash {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+    opacity: 0.07;
+  }
+  .di-atas-celup {
+    position: relative;
+    z-index: 1;
+  }
+
+  .di-nila :focus-visible {
+    outline-color: var(--color-nila-1);
+    outline-offset: 2px;
+  }
+
+  /* ── Bale decompression ──────────────────────────────────────────────────── */
+  /*
+    Hovering a listing should feel like weight coming off a compressed stack: the
+    card lifts, the stacked-sheet shadows lengthen, and the strata themselves
+    loosen and separate. A bare translate-y says "this is a button". This says
+    "this is 820 kg of cloth".
+  */
+  .bal {
+    box-shadow: var(--shadow-bal);
+    transition:
+      transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .bal:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-bal-angkat);
+  }
+  .bal-strata {
+    transform-origin: 50% 50%;
+    transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .bal:hover .bal-strata {
+    transform: scaleY(1.02);
+  }
+  .bal-renggang {
+    stroke-opacity: 0.16;
+    transition: stroke-opacity 260ms ease-out;
+  }
+  .bal:hover .bal-renggang {
+    stroke-opacity: 0.6;
+  }
+
+  /* ── Press ───────────────────────────────────────────────────────────────── */
+  /* Hero strata settle into place on load, like a bale coming out of the press. */
+  /*
+    Compression only — deliberately no opacity fade. A fade would mean the
+    element's resting state before its stagger delay is `opacity: 0`, so any
+    frame captured early (a static render, a screenshot, a print, a browser that
+    skipped the animation) shows nothing at all. Animating the transform alone
+    means every frame, including the very first, shows the cloth.
+  */
+  .mengendap {
+    transform-origin: 50% 100%;
+    animation: mengendap 520ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  @keyframes mengendap {
+    from {
+      transform: scaleY(1.32);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bal,
+  .bal-strata,
+  .bal-renggang {
+    transition: none;
+  }
+  .bal:hover {
+    transform: none;
+  }
+  .bal:hover .bal-strata {
+    transform: none;
+  }
+  .mengendap {
+    animation: none;
+  }
 }
