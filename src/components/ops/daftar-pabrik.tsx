@@ -3,8 +3,8 @@
 import { Factory } from "lucide-react";
 
 import { DipChip } from "@/components/brand/dip-chip";
-import { EmptyState } from "@/components/brand/empty-state";
-import { Eyebrow } from "@/components/brand/eyebrow";
+import { EmptyState, ErrorState } from "@/components/brand/empty-state";
+import { Halaman, PageHeader } from "@/components/brand/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { usePabrik } from "@/lib/data/hooks";
 import { formatKm } from "@/lib/format";
@@ -24,27 +24,28 @@ function urutkan(pabrik: Pabrik[]): Pabrik[] {
 }
 
 export function DaftarPabrik() {
-  const { data, isPending } = usePabrik();
+  const { data, isPending, isError, refetch } = usePabrik();
 
   return (
-    <div className="mx-auto max-w-6xl px-w4 py-w4 sm:px-w5">
-      <Eyebrow className="mb-w2">Registri · {KLASTER}</Eyebrow>
-      <h1 className="judul mb-w2 text-xl text-tinta">Titik jemput pabrik</h1>
-      <p className="mb-w5 max-w-2xl text-sm text-tinta-pudar">
-        Koordinat yang dipakai perencana rute. Jarak dihitung dari {DEPOT_NAMA}; pabrik tanpa
-        koordinat tidak bisa masuk rute sampai titiknya disurvei.
-      </p>
+    <Halaman>
+      <PageHeader
+        eyebrow={`Registri · ${KLASTER}`}
+        title="Titik jemput pabrik"
+        description={`Koordinat yang dipakai perencana rute. Jarak dihitung dari ${DEPOT_NAMA}; pabrik tanpa koordinat tidak bisa masuk rute sampai titiknya disurvei.`}
+      />
 
-      {isPending || !data ? (
+      {isPending ? (
         <div className="space-y-w2" role="status" aria-label="Memuat titik jemput">
           {Array.from({ length: 4 }, (_, i) => (
             <div key={i} className="rounded-sm border border-garis permukaan px-w4 py-w3">
-              <Skeleton className="h-4 w-48 bg-kain" />
-              <Skeleton className="mt-w2 h-3 w-64 bg-kain" />
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="mt-w2 h-3 w-64" />
             </div>
           ))}
           <span className="sr-only">Memuat titik jemput…</span>
         </div>
+      ) : isError || !data ? (
+        <ErrorState title="Registri pabrik gagal dimuat" onRetry={() => refetch()} />
       ) : data.length === 0 ? (
         <EmptyState
           icon={Factory}
@@ -113,6 +114,6 @@ export function DaftarPabrik() {
           </table>
         </div>
       )}
-    </div>
+    </Halaman>
   );
 }

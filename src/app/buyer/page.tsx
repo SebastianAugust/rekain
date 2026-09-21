@@ -3,44 +3,75 @@
 import { useState } from "react";
 import { SearchX } from "lucide-react";
 
-import { EmptyState } from "@/components/brand/empty-state";
-import { Eyebrow } from "@/components/brand/eyebrow";
 import { BaleCard } from "@/components/brand/bale-card";
 import { BaleCardSkeletonGrid } from "@/components/brand/bale-card-skeleton";
+import { EmptyState, ErrorState } from "@/components/brand/empty-state";
+import { Halaman, PageHeader } from "@/components/brand/page-header";
+import { tombol } from "@/components/brand/tombol";
 import { FavoriteButton } from "@/components/buyer/favorite-button";
-import { SearchBar } from "@/components/buyer/search-bar";
+import { SearchBar, saringListing } from "@/components/buyer/search-bar";
 import { useListings } from "@/lib/data/hooks";
 import { KLASTER_INLINE } from "@/lib/session";
 
 export default function BuyerCariPage() {
   const [query, setQuery] = useState("");
-  const { data, isPending } = useListings();
+  const [aktif, setAktif] = useState<string[]>([]);
+  const { data, isPending, isError, refetch } = useListings();
 
-  const hasil = (data ?? []).filter((l) =>
-    l.material.toLowerCase().includes(query.trim().toLowerCase()),
-  );
+  const semua = data ?? [];
+  const hasil = saringListing(semua, query, aktif);
+  const menyaring = query.trim() !== "" || aktif.length > 0;
+
+  function reset() {
+    setQuery("");
+    setAktif([]);
+  }
+
+  const judul = isPending
+    ? `Memuat material di ${KLASTER_INLINE}…`
+    : isError
+      ? `Katalog material ${KLASTER_INLINE}`
+      : menyaring
+        ? `${hasil.length} dari ${semua.length} material cocok`
+        : `${semua.length} material tersedia di ${KLASTER_INLINE}`;
 
   return (
-    <div className="mx-auto max-w-6xl px-w4 py-w4 sm:px-w5">
-      <Eyebrow className="mb-w2">Cari Material</Eyebrow>
-      <h1 className="judul mb-w4 text-xl text-tinta">
-        {isPending
-          ? `Memuat material di ${KLASTER_INLINE}…`
-          : `${hasil.length} material tersedia di ${KLASTER_INLINE}`}
-      </h1>
+    <Halaman>
+      <PageHeader eyebrow="Cari Material" title={judul} />
 
-      <SearchBar value={query} onValueChange={setQuery} />
+      <SearchBar
+        value={query}
+        onValueChange={setQuery}
+        aktif={aktif}
+        onToggle={(id) =>
+          setAktif((a) => (a.includes(id) ? a.filter((x) => x !== id) : [...a, id]))
+        }
+        onReset={menyaring ? reset : undefined}
+      />
 
       {isPending ? (
         <BaleCardSkeletonGrid />
+      ) : isError ? (
+        <ErrorState
+          title="Katalog gagal dimuat"
+          description="Daftar material belum bisa diambil. Coba muat ulang sebentar lagi."
+          onRetry={() => refetch()}
+        />
       ) : hasil.length === 0 ? (
         <EmptyState
           icon={SearchX}
           title="Tidak ada material yang cocok"
           description={
-            query
-              ? `Tidak ada material yang cocok dengan "${query}". Coba kata kunci lain.`
+            menyaring
+              ? "Coba kata kunci lain atau longgarkan filter — material baru masuk setiap hari."
               : "Belum ada material yang siap ditawarkan di klaster ini."
+          }
+          action={
+            menyaring ? (
+              <button type="button" onClick={reset} className={tombol({ nada: "garis" })}>
+                Hapus pencarian dan filter
+              </button>
+            ) : undefined
           }
         />
       ) : (
@@ -55,6 +86,6 @@ export default function BuyerCariPage() {
           ))}
         </div>
       )}
-    </div>
+    </Halaman>
   );
 }

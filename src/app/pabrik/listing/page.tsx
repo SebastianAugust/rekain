@@ -1,20 +1,40 @@
 "use client";
 
-import { Eyebrow } from "@/components/brand/eyebrow";
+import Link from "next/link";
+import { Plus } from "lucide-react";
+
+import { Halaman, PageHeader } from "@/components/brand/page-header";
+import { tombol } from "@/components/brand/tombol";
 import { ListingGrid } from "@/components/pabrik/listing-grid";
 import { useMyListings } from "@/lib/data/hooks";
 
 export default function PabrikListingPage() {
-  const { data, isPending } = useMyListings();
+  const { data, isPending, isError, refetch } = useMyListings();
 
   return (
-    <div className="mx-auto max-w-6xl px-w4 py-w4 sm:px-w5">
-      <Eyebrow className="mb-w2">Listing Saya</Eyebrow>
-      <h1 className="judul mb-w4 text-xl text-tinta">
-        {isPending ? "Memuat material…" : `${data?.length ?? 0} material diunggah`}
-      </h1>
+    <Halaman>
+      <PageHeader
+        eyebrow="Listing Saya"
+        title={
+          isPending
+            ? "Memuat material…"
+            : isError
+              ? "Material yang Anda unggah"
+              : `${data?.length ?? 0} material diunggah`
+        }
+        action={
+          <Link href="/pabrik/upload" className={tombol({ ukuran: "kecil" })}>
+            <Plus size={13} aria-hidden="true" /> Upload Limbah
+          </Link>
+        }
+      />
 
-      <ListingGrid listings={data} isPending={isPending} />
-    </div>
+      <ListingGrid
+        listings={data}
+        isPending={isPending}
+        isError={isError}
+        onRetry={() => refetch()}
+      />
+    </Halaman>
   );
 }

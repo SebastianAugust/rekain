@@ -70,19 +70,19 @@ function jahitSegmen(a: Pt, b: Pt, seed: string): Jahitan[] {
   const panjang = Math.hypot(dx, dy);
   if (panjang < 0.5) return [];
 
-  const jumlah = Math.max(2, Math.round(panjang / 11));
+  const jumlah = Math.max(2, Math.round(panjang / 16));
   const ux = dx / panjang;
   const uy = dy / panjang;
   // Perpendicular, so the wobble is across the thread rather than along it.
   const px = -uy;
   const py = ux;
 
-  const geser = jitter(seed, jumlah, 1.5);
-  const ragam = jitter(`${seed}-panjang`, jumlah, 1.5);
+  const geser = jitter(seed, jumlah, 2.2);
+  const ragam = jitter(`${seed}-panjang`, jumlah, 2.2);
 
   return Array.from({ length: jumlah }, (_, i) => {
     const mulai = (i / jumlah) * panjang;
-    const jahit = Math.max(2.5, (panjang / jumlah) * 0.62 + ragam[i]);
+    const jahit = Math.max(4, (panjang / jumlah) * 0.62 + ragam[i]);
     const o = geser[i];
     return {
       x1: a.x + ux * mulai + px * o,
@@ -154,14 +154,19 @@ export function PetaJahitan({
       style={{ display: "block", width: "100%", height: "100%" }}
     >
       {konteks.map((t) => (
-        <circle key={t.kunci} cx={t.pos.x} cy={t.pos.y} r={3} fill="#3880c0" opacity={0.28} />
+        <circle key={t.kunci} cx={t.pos.x} cy={t.pos.y} r={5} fill="#3880c0" opacity={0.3} />
       ))}
 
+      {/*
+        Sizes here are in viewBox units, and the card draws this 480×300 box at
+        roughly half scale. At the old 9-unit markers a stop rendered about 4px
+        across and the whole map read as an empty panel.
+      */}
       {kaki.map((k, i) => (
         <g
           key={i}
           stroke={k.pulang ? "#3880c0" : "#103868"}
-          strokeWidth={k.pulang ? 1.3 : 1.7}
+          strokeWidth={k.pulang ? 2.2 : 3}
           strokeLinecap="round"
           /* The run home is empty, so its thread is lighter. */
           opacity={k.pulang ? 0.45 : 0.9}
@@ -174,26 +179,26 @@ export function PetaJahitan({
 
       {/* Depot: a square knot where the thread is anchored. */}
       <rect
-        x={pDepot.x - 6}
-        y={pDepot.y - 6}
-        width={12}
-        height={12}
-        rx={1.5}
+        x={pDepot.x - 10}
+        y={pDepot.y - 10}
+        width={20}
+        height={20}
+        rx={2}
         fill="#003060"
         stroke="#ffffff"
-        strokeWidth={1.5}
+        strokeWidth={2.5}
       />
 
       {titik.map((t) => (
         <g key={`${t.pabrik}-${t.urutan}`}>
-          <circle cx={t.pos.x} cy={t.pos.y} r={9} fill="#103868" stroke="#ffffff" strokeWidth={1.5} />
+          <circle cx={t.pos.x} cy={t.pos.y} r={15} fill="#103868" stroke="#ffffff" strokeWidth={2.5} />
           <text
             x={t.pos.x}
             y={t.pos.y}
             textAnchor="middle"
             dominantBaseline="central"
             fill="#ffffff"
-            fontSize={10}
+            fontSize={16}
             fontFamily="var(--font-plex-mono), ui-monospace, monospace"
             fontWeight={600}
           >

@@ -35,7 +35,7 @@ export function BaleCard({
 }) {
   const label = [
     listing.material,
-    listing.grade ? `grade ${listing.grade}` : "belum digrading",
+    listing.grade ? `grade ${listing.grade}` : "belum dinilai",
     formatBerat(listing.berat),
     listing.lokasi,
   ].join(", ");
@@ -74,7 +74,7 @@ export function BaleCard({
             {listing.grade ? (
               <DipChip dip="d3">GRADE {listing.grade}</DipChip>
             ) : (
-              <DipChip dip="d0">BELUM DIGRADING</DipChip>
+              <DipChip dip="d0">BELUM DINILAI</DipChip>
             )}
           </div>
         </div>
@@ -90,7 +90,7 @@ export function BaleCard({
 
         <div className="mt-w3 flex items-center justify-between gap-w2">
           {listing.harga === null ? (
-            <span className="text-xs text-tinta-pudar italic">Harga menunggu grading</span>
+            <span className="text-xs text-tinta-pudar italic">Harga menunggu penilaian</span>
           ) : (
             <span className="font-mono text-sm font-semibold text-tinta">
               {formatRupiah(listing.harga)}

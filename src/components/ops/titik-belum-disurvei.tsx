@@ -24,8 +24,8 @@ export function TitikBelumDisurvei({ daftar }: { daftar: TidakTerutekan[] }) {
 
       <Eyebrow className="mb-w2">Belum bisa dirutekan</Eyebrow>
       <p className="mb-w3 text-sm text-tinta">
-        {formatBerat(total)} dari {daftar.length}{" "}
-        {daftar.length === 1 ? "pabrik" : "pabrik"} tidak masuk rencana.
+        {/* Indonesian nouns do not inflect for number, so no singular/plural branch. */}
+        {formatBerat(total)} dari {daftar.length} pabrik tidak masuk rencana.
       </p>
 
       <ul className="space-y-w2">

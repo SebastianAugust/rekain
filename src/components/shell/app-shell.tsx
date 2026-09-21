@@ -21,8 +21,15 @@ export function AppShell({ role, children }: { role: Role; children: React.React
 
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar role={role} />
-        {/* pb keeps content clear of the fixed mobile tab bar */}
-        <main id="konten" className="flex-1 pb-20 md:pb-0">
+        {/*
+          pb keeps content clear of the fixed mobile tab bar, home indicator included.
+          The side insets keep it out from under a landscape notch / Dynamic Island;
+          from `md` the sidebar already absorbs the left one.
+        */}
+        <main
+          id="konten"
+          className="flex-1 pr-[env(safe-area-inset-right)] pb-[calc(5rem+var(--aman-bawah))] pl-[env(safe-area-inset-left)] md:pb-0 md:pl-0"
+        >
           {children}
         </main>
       </div>

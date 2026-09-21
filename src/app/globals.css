@@ -42,7 +42,13 @@
 
   /* ── Undyed cloth and neutrals ───────────────────────────────────────────── */
   --color-kain: #f7f9fc; /* page ground — cloth before the vat */
-  --color-garis: #e0e6ed; /* borders */
+  --color-garis: #e0e6ed; /* decorative dividers and card edges */
+  /*
+    Control boundaries. `garis` is 1.26:1 on white — fine for a card edge, but an
+    input's outline is how a person finds the field at all, and WCAG 1.4.11 asks
+    3:1 of it. Same cool grey family, pushed to 3.2:1.
+  */
+  --color-garis-kuat: #8392a4;
   --color-tinta: #101c2b; /* body and heading type */
   --color-tinta-pudar: #4e5c6e; /* secondary type — 6.5:1 on kain */
 
@@ -81,6 +87,22 @@
     0 2px 0 0 var(--color-garis), 0 6px 0 -1px #edf1f6,
     0 9px 12px -6px rgb(16 56 104 / 0.2), 0 20px 28px -16px rgb(16 56 104 / 0.28);
   --shadow-panel: 0 1px 2px 0 rgb(16 56 104 / 0.06);
+  /*
+    A dyed button is a folded strip of cloth: a lit top fold and a hard darker
+    edge underneath. Pressing it (see `.tekan`) closes that edge.
+  */
+  --shadow-tombol: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 1px 0 0 var(--color-nila-9);
+
+  --animate-tenun-sapu: tenun-sapu 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+  @keyframes tenun-sapu {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
 }
 
 @theme inline {
@@ -138,6 +160,15 @@
   /* single light theme: keep form controls and scrollbars light too */
   color-scheme: light;
 
+  /*
+    Breathing room above the top bars and below the bottom tab bar. On a
+    notched phone the inset already covers the status bar / home indicator;
+    everywhere it reads 0 (Safari in-browser, Android, DevTools) the bars
+    would sit flush against the edge, so phones get a floor instead.
+  */
+  --aman-atas: max(env(safe-area-inset-top), 3.625rem);
+  --aman-bawah: max(env(safe-area-inset-bottom), 1.5rem);
+
   --radius: 0.125rem;
 
   --background: var(--color-kain);
@@ -161,7 +192,7 @@
   --destructive: var(--color-benang);
 
   --border: var(--color-garis);
-  --input: var(--color-garis);
+  --input: var(--color-garis-kuat);
   --ring: var(--color-nila-3);
 
   --chart-1: var(--color-nila-6);
@@ -185,22 +216,28 @@
     @apply border-border outline-ring/50;
   }
   /*
-    Fibre grain on the page ground.
+    The page ground is plain-weave cotton, not noise.
 
-    Delivered as a tiled data-URI rather than an overlay element on purpose: it
-    needs no DOM node, cannot disturb stacking, and renders identically whether
-    or not JavaScript ran. `stitchTiles="stitch"` makes the turbulence continuous
-    across tile boundaries — without it the 140px repeat is plainly visible as a
-    grid, which is exactly the "computer-generated" tell being designed out.
+    The previous grain was isotropic turbulence — a speckle, which is what a
+    photocopy looks like, not cloth. Woven fabric has direction: it is two sets
+    of threads, and each thread is a slub yarn whose thickness wanders along its
+    length. So this is two turbulence fields, one stretched along x (weft) and one
+    along y (warp), averaged. Where both run thick you get the raised crossing
+    points; where both run thin, the tiny gaps. That interference is the weave.
 
-    Overlay blending does nothing against a near-white ground, so this paints a
-    faint cool speckle with normal compositing instead.
+    `stitchTiles` keeps the 180px repeat seamless. The alpha ramp is inverted so
+    only the thick crossings darken — the ground stays #F7F9FC on average.
+
+    The ramp is shallow on purpose. At three times this strength (tried, and
+    screenshotted) the ground read as burlap sacking and fought every line of
+    body copy. Cloth under a page should be felt at reading distance, and only
+    properly seen when you lean in.
   */
   body {
     @apply bg-background text-foreground;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.04 0 0 0 0 0.09 0 0 0 0 0.17 0.34 0 0 0 -0.14'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23s)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='t' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72 0.022' numOctaves='2' seed='3' stitchTiles='stitch' result='a'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.022 0.72' numOctaves='2' seed='9' stitchTiles='stitch' result='b'/%3E%3CfeComposite in='a' in2='b' operator='arithmetic' k2='0.5' k3='0.5'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.06 0 0 0 0 0.16 0 0 0 0 0.3 -0.5 0 0 0 0.27'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23t)'/%3E%3C/svg%3E");
     background-repeat: repeat;
-    background-size: 140px 140px;
+    background-size: 180px 180px;
   }
   html {
     @apply font-sans;
@@ -211,6 +248,27 @@
   */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-nila-3;
+  }
+  /*
+    Every interactive surface eases between states. An instant colour swap reads
+    as a repaint; 150ms reads as something that responded to you.
+  */
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="combobox"] {
+    transition-property: color, background-color, border-color, box-shadow, transform, opacity;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+
+@utility tekan {
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: inset 0 1px 2px rgb(0 20 50 / 0.3);
   }
 }
 
@@ -227,6 +285,7 @@
     font-stretch: 112%;
     font-weight: 800;
     letter-spacing: -0.021em;
+    text-wrap: balance;
   }
   .judul-kecil {
     font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
@@ -235,14 +294,15 @@
     letter-spacing: -0.012em;
   }
 
-  /* ── Uneven dye ──────────────────────────────────────────────────────────── */
+  /* ── Indigo denim ────────────────────────────────────────────────────────── */
   /*
     The single most important rule in this system: no navy surface is ever a flat
-    fill. `.celup` marks a surface as dyed and DyeWash paints turbulence over it.
-    A flat #103868 is precisely what makes brand blue read as corporate SaaS.
+    fill. `.celup` marks a surface as dyed and DyeWash weaves denim over it — a
+    right-hand twill, ring-dyed slub streaks along the warp, and uneven vat
+    mottling, composited as one overlay (see `textile-filters.tsx`).
 
-    Amplitude is capped deliberately. Past roughly 0.3 the overlay stops reading
-    as hand-dipped cloth and starts reading as a dirty screen.
+    Amplitude is capped deliberately. Past roughly 0.4 the overlay stops reading
+    as cloth and starts reading as a dirty screen.
   */
   .celup {
     position: relative;
@@ -254,41 +314,29 @@
     z-index: 0;
     pointer-events: none;
     mix-blend-mode: overlay;
-    opacity: 0.28;
+    opacity: 0.36;
   }
   /*
-    A narrow column shows the same cloud at a much larger apparent scale, so the
+    A narrow column shows the same mottle at a much larger apparent scale, so the
     sidebar reads blotchy at the amplitude that suits a full-width hero. Cut it.
   */
   .celup-wash-halus {
-    opacity: 0.17;
+    opacity: 0.24;
   }
   /*
     Card and panel surfaces — bleached cotton rather than screen white.
 
-    The page ground already carries a fibre grain, but on a phone the cards span
-    the full width and cover almost all of it, so the whole product went flat
-    below `md`. This puts the weave on the surfaces people actually look at.
-
-    Deliberately finer and fainter than the ground: a card has to keep reading as
-    lighter and cleaner cloth than what it sits on, or the depth collapses.
+    Same plain-weave construction as the page ground, finer and fainter: a card
+    has to keep reading as lighter, cleaner cloth than what it sits on, or the
+    depth collapses.
   */
   .permukaan {
     background-color: #ffffff;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.05 0 0 0 0 0.10 0 0 0 0 0.18 0.34 0 0 0 -0.135'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23k)'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='t' x='0' y='0' width='100%25' height='100%25' color-interpolation-filters='sRGB'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95 0.03' numOctaves='2' seed='5' stitchTiles='stitch' result='a'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03 0.95' numOctaves='2' seed='12' stitchTiles='stitch' result='b'/%3E%3CfeComposite in='a' in2='b' operator='arithmetic' k2='0.5' k3='0.5'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.06 0 0 0 0 0.16 0 0 0 0 0.3 -0.3 0 0 0 0.16'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23t)'/%3E%3C/svg%3E");
     background-repeat: repeat;
-    background-size: 120px 120px;
+    background-size: 140px 140px;
   }
 
-  /* Fine fibre grain. Far weaker — this is felt rather than seen. */
-  .serat-wash {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    mix-blend-mode: overlay;
-    opacity: 0.07;
-  }
   .di-atas-celup {
     position: relative;
     z-index: 1;
@@ -297,6 +345,10 @@
   .di-nila :focus-visible {
     outline-color: var(--color-nila-1);
     outline-offset: 2px;
+  }
+  /* Undyed cloth set back onto a dyed ground (e.g. the hero's packing slip). */
+  .di-nila .di-kain :focus-visible {
+    outline-color: var(--color-nila-3);
   }
 
   /* ── Bale decompression ──────────────────────────────────────────────────── */
@@ -353,6 +405,65 @@
       transform: scaleY(1);
     }
   }
+
+  /* ── Loading: cloth on the loom ──────────────────────────────────────────── */
+  /*
+    A skeleton is cloth that is not woven yet — so it shows bare warp threads, and
+    a shuttle of light passes across them. A grey pulse says "waiting"; this says
+    "being made", which is what a loading lot actually is.
+  */
+  .tenun-muat {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-kain);
+    background-image: repeating-linear-gradient(
+      90deg,
+      rgb(16 56 104 / 0.05) 0 1px,
+      transparent 1px 3px
+    );
+  }
+  .tenun-muat::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 25%,
+      rgb(160 208 248 / 0.38) 50%,
+      transparent 75%
+    );
+    animation: var(--animate-tenun-sapu);
+  }
+
+  /* A needle running a seam — the inline "working" indicator on buttons. */
+  .jahit-jalan path {
+    stroke-dasharray: 3.5 2.5;
+    animation: jahit-jalan 650ms linear infinite;
+  }
+  @keyframes jahit-jalan {
+    to {
+      stroke-dashoffset: -12;
+    }
+  }
+
+  /* A confirmation stitches itself closed rather than popping in. */
+  .jahit-tutup {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: jahit-tutup 520ms cubic-bezier(0.65, 0, 0.35, 1) 120ms forwards;
+  }
+  @keyframes jahit-tutup {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+@media (width >= 48rem) {
+  :root {
+    --aman-atas: env(safe-area-inset-top);
+    --aman-bawah: env(safe-area-inset-bottom);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -367,7 +478,63 @@
   .bal:hover .bal-strata {
     transform: none;
   }
-  .mengendap {
+  .mengendap,
+  .jahit-jalan path,
+  .tenun-muat::after {
     animation: none;
+  }
+  .jahit-tutup {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/*
+  Cetak — dipakai halaman /simulasi untuk menghasilkan PDF skenario.
+
+  Tekstur tenun di `body` dan permukaan kartu berasal dari data-URI turbulence.
+  Di layar itu yang membuat halaman terasa seperti kain; di atas kertas ia jadi
+  raster kelabu yang menghabiskan tinta dan membuat angka kecil sulit dibaca.
+*/
+@media print {
+  .cetak-sembunyi {
+    display: none !important;
+  }
+
+  body {
+    background-image: none;
+  }
+
+  .permukaan {
+    background-image: none;
+  }
+
+  /* Panel asumsi menempel dan bergulir sendiri di layar; di kertas harus mengalir. */
+  .cetak-mengalir {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  figure,
+  table {
+    break-inside: avoid;
+  }
+
+  /*
+    Bagian dyed dicetak sebagai kotak bergaris, bukan blok tinta pekat. Warna
+    tulisannya harus ikut dibalik: di layar itu putih di atas nila, dan tanpa
+    aturan ini ia jadi putih di atas putih.
+  */
+  .celup {
+    background-color: #ffffff !important;
+    border: 1px solid var(--color-garis);
+  }
+  .celup-wash {
+    display: none;
+  }
+  .celup,
+  .celup * {
+    color: var(--color-tinta) !important;
   }
 }

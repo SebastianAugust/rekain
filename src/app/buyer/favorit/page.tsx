@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { Heart } from "lucide-react";
 
-import { EmptyState } from "@/components/brand/empty-state";
-import { Eyebrow } from "@/components/brand/eyebrow";
 import { BaleCard } from "@/components/brand/bale-card";
 import { BaleCardSkeletonGrid } from "@/components/brand/bale-card-skeleton";
+import { EmptyState, ErrorState } from "@/components/brand/empty-state";
+import { Halaman, PageHeader } from "@/components/brand/page-header";
+import { tombol } from "@/components/brand/tombol";
 import { FavoriteButton } from "@/components/buyer/favorite-button";
 import { useFavorit, useListings } from "@/lib/data/hooks";
 
@@ -15,25 +16,33 @@ export default function BuyerFavoritPage() {
   const favorit = useFavorit();
 
   const isPending = listings.isPending || favorit.isPending;
+  const isError = listings.isError || favorit.isError;
   const tersimpan = (listings.data ?? []).filter((l) => favorit.data?.includes(l.id));
 
   return (
-    <div className="mx-auto max-w-6xl px-w4 py-w4 sm:px-w5">
-      <Eyebrow className="mb-w2">Favorit</Eyebrow>
-      <h1 className="judul mb-w4 text-xl text-tinta">Material yang Anda simpan</h1>
+    <Halaman>
+      <PageHeader
+        eyebrow="Favorit"
+        title="Material yang Anda simpan"
+        description="Pantau harga dan status bal yang sedang Anda pertimbangkan."
+      />
 
       {isPending ? (
         <BaleCardSkeletonGrid count={2} />
+      ) : isError ? (
+        <ErrorState
+          onRetry={() => {
+            listings.refetch();
+            favorit.refetch();
+          }}
+        />
       ) : tersimpan.length === 0 ? (
         <EmptyState
           icon={Heart}
           title="Belum ada material yang disimpan"
           description="Tekan ikon hati pada material untuk menyimpannya di sini."
           action={
-            <Link
-              href="/buyer"
-              className="rounded-sm bg-nila-6 px-w4 py-w2 text-sm font-medium text-white hover:bg-nila-9"
-            >
+            <Link href="/buyer" className={tombol()}>
               Cari material
             </Link>
           }
@@ -50,6 +59,6 @@ export default function BuyerFavoritPage() {
           ))}
         </div>
       )}
-    </div>
+    </Halaman>
   );
 }

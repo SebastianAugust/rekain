@@ -56,13 +56,13 @@ export function PenampangBal({
             never pulls a transparent notch in at the edges.
           */}
           <g filter="url(#rk-tepi-v)">
-            {lapisan.map((l) => (
+            {lapisan.map((l, i) => (
               <rect
                 key={l.mulai}
                 x={-4}
-                y={l.mulai}
+                y={i === 0 ? l.mulai - 6 : l.mulai}
                 width={lebar + 8}
-                height={l.panjang + 0.7}
+                height={l.panjang + 0.7 + (i === 0 || i === lapisan.length - 1 ? 6 : 0)}
                 fill={l.warna}
               />
             ))}
@@ -136,16 +136,26 @@ export function PitaPenampang({
     };
   });
 
-  // 26 sample points across the band, each nudged off the true waterline.
-  const goyang = jitter("garis-air", 27, 6.5);
+  /*
+    The surface of a vat is liquid, so the tide mark it leaves is a long, slow
+    swell — not the independent per-point jitter this used to be, which drew a
+    row of mountain peaks. Three seeded sine swells of falling wavelength give
+    the slow line; the fine irregularity comes from `rk-rembes` wicking dye up
+    the threads, which is where real irregularity comes from.
+  */
+  const [f1, f2, f3] = jitter("garis-air", 3, Math.PI);
   const yDasar = PITA_H * GARIS_AIR;
-  const titik = goyang.map((d, i) => ({
-    x: (i / (goyang.length - 1)) * PITA_W,
-    y: yDasar + d,
-  }));
+  const titik = Array.from({ length: 49 }, (_, i) => {
+    const x = (i / 48) * PITA_W;
+    return {
+      x,
+      y: yDasar + 3.4 * Math.sin(x / 150 + f1) + 1.7 * Math.sin(x / 57 + f2) + 0.9 * Math.sin(x / 23 + f3),
+    };
+  });
 
   const garisAir = titik.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
-  const bidangTerendam = `${garisAir} L${PITA_W},${PITA_H} L0,${PITA_H} Z`;
+  // Runs past the bottom edge so displacement never lifts it clear of the cut.
+  const bidangTerendam = `${garisAir} L${PITA_W + 10},${PITA_H + 24} L-10,${PITA_H + 24} Z`;
 
   return (
     <svg
@@ -170,13 +180,18 @@ export function PitaPenampang({
           );
           return (
             <g key={k.id} className="mengendap" style={{ animationDelay: `${i * 55}ms` }}>
-              {lapisan.map((l) => (
+              {/*
+                The first and last layers overhang the band vertically. Without
+                it the displacement filter drags transparent pixels in along the
+                top edge, which showed as a row of white nicks under the hero copy.
+              */}
+              {lapisan.map((l, n) => (
                 <rect
                   key={l.mulai}
                   x={k.x - 2}
-                  y={l.mulai}
+                  y={n === 0 ? l.mulai - 8 : l.mulai}
                   width={k.w + 4}
-                  height={l.panjang + 0.8}
+                  height={l.panjang + 0.8 + (n === 0 || n === lapisan.length - 1 ? 8 : 0)}
                   fill={l.warna}
                 />
               ))}
@@ -201,12 +216,12 @@ export function PitaPenampang({
       </g>
 
       {terendam && (
-        <>
+        <g filter="url(#rk-rembes)">
           {/* Everything below the waterline is still in the vat. */}
           <path d={bidangTerendam} fill="#103868" opacity={0.72} />
           {/* Dye concentrates and dries darker exactly at the tide mark. */}
           <path d={garisAir} fill="none" stroke="#003060" strokeWidth={1.5} opacity={0.55} />
-        </>
+        </g>
       )}
       {/* Guard thread along the cut edge. */}
       <line x1={0} y1={PITA_H - 0.5} x2={PITA_W} y2={PITA_H - 0.5} stroke="#a63a2c" strokeWidth={1} />

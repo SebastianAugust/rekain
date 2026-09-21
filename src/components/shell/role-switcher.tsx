@@ -30,7 +30,7 @@ export function RoleSwitcher({ role }: { role: Role }) {
         <Link
           key={r}
           href={`/${r}`}
-          className="rounded-sm border border-garis px-w2 py-1.5 text-xs font-medium text-tinta hover:border-nila-3 hover:text-nila-tinta"
+          className="tekan rounded-sm border border-garis-kuat bg-white px-w2 py-1.5 text-xs font-medium text-tinta hover:border-nila-3 hover:text-nila-tinta"
         >
           <span className="hidden sm:inline">{LABEL[r].panjang}</span>
           <span className="sm:hidden">{LABEL[r].pendek}</span>

@@ -9,7 +9,8 @@ export function TopBar({ role }: { role: Role }) {
   const persona = PERSONA[role];
 
   return (
-    <header className="flex h-14 shrink-0 items-center justify-between gap-w3 border-b border-garis permukaan px-w4 sm:px-w5">
+    /* The status bar / notch strip is added on top of the 3.5rem bar, not taken out of it. */
+    <header className="flex h-[calc(3.5rem+var(--aman-atas))] shrink-0 items-center justify-between gap-w3 border-b border-garis permukaan pt-(--aman-atas) pr-[calc(var(--spacing-w4)+env(safe-area-inset-right))] pl-[calc(var(--spacing-w4)+env(safe-area-inset-left))] sm:pr-[calc(var(--spacing-w5)+env(safe-area-inset-right))] sm:pl-[calc(var(--spacing-w5)+env(safe-area-inset-left))] md:pl-w5">
       {/* The wordmark doubles as the way home on mobile, where the sidebar is hidden. */}
       <Link href="/" className="md:hidden" aria-label="ReKain — kembali ke beranda">
         <BrandMark />

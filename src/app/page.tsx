@@ -7,7 +7,8 @@ import { ValueProps } from "@/components/landing/value-props";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-dvh">
+    /* Side insets keep the page out from under a landscape notch / Dynamic Island. */
+    <div className="min-h-dvh pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)]">
       <a
         href="#konten"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-sm focus:bg-nila-6 focus:px-w3 focus:py-w2 focus:text-sm focus:text-white"

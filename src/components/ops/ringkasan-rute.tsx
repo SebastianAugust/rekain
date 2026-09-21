@@ -1,4 +1,5 @@
 import { Eyebrow } from "@/components/brand/eyebrow";
+import { DyeWash } from "@/components/brand/textile-filters";
 import { formatBerat, formatKm } from "@/lib/format";
 import type { RencanaRute } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -56,20 +57,27 @@ export function RingkasanRute({ rencana }: { rencana: RencanaRute }) {
         {sel.map((s) => (
           <div
             key={s.label}
-            className={cn("px-w4 py-w3", s.sorot ? "bg-nila-6" : "permukaan")}
+            className={cn("px-w4 py-w3", s.sorot ? "celup di-nila bg-nila-6" : "permukaan")}
           >
-            <dt>
+            {/* The one dyed tile follows the rule every navy surface does. */}
+            {s.sorot && <DyeWash halus />}
+            <dt className="di-atas-celup">
               <Eyebrow className={cn("mb-w2", s.sorot && "text-nila-1")}>{s.label}</Eyebrow>
             </dt>
             <dd
               className={cn(
-                "font-mono text-xl font-semibold sm:text-2xl",
+                "di-atas-celup font-mono text-xl font-semibold sm:text-2xl",
                 s.sorot ? "text-white" : s.redup ? "text-tinta-pudar" : "text-tinta",
               )}
             >
               {s.nilai}
             </dd>
-            <dd className={cn("mt-w1 text-xs", s.sorot ? "text-nila-1" : "text-tinta-pudar")}>
+            <dd
+              className={cn(
+                "di-atas-celup mt-w1 text-xs",
+                s.sorot ? "text-nila-1" : "text-tinta-pudar",
+              )}
+            >
               {s.catatan}
             </dd>
           </div>

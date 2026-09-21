@@ -40,7 +40,7 @@ export function KartuRute({
 
       {/* Explicit height: the seam is orientation, not detail, so it does not need
           to grow with the card. Half a phone screen was too much to spend on it. */}
-      <div className="h-44 bg-kain px-w4 py-w3 sm:h-40">
+      <div className="h-48 border-y border-garis bg-kain px-w4 py-w3 sm:h-56">
         <PetaJahitan
           depot={depot}
           perhentian={rute.perhentian}

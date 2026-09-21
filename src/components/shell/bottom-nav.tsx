@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { StitchLine } from "@/components/brand/stitch-line";
 import { DyeWash } from "@/components/brand/textile-filters";
 import { isNavItemActive, NAV } from "@/components/shell/nav-config";
 import type { Role } from "@/lib/types";
@@ -24,9 +25,12 @@ export function BottomNav({ role }: { role: Role }) {
   return (
     <nav
       aria-label="Navigasi utama"
-      className="celup di-nila fixed inset-x-0 bottom-0 z-30 flex overflow-hidden border-t border-nila-9 bg-nila-6 md:hidden"
+      className="celup di-nila fixed inset-x-0 bottom-0 z-30 flex overflow-hidden border-t border-nila-9 bg-nila-6 pr-[env(safe-area-inset-right)] pb-(--aman-bawah) pl-[env(safe-area-inset-left)] md:hidden"
     >
       <DyeWash halus />
+      <span className="pointer-events-none absolute inset-x-0 top-0.5 z-1" aria-hidden="true">
+        <StitchLine seed="tab" warna="#a0d0f8" />
+      </span>
 
       {NAV[role].map((item) => {
         const active = isNavItemActive(pathname, item, rootHref);

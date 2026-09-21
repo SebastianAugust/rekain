@@ -7,6 +7,7 @@ export const listingKeys = {
 };
 
 export const transactionKeys = {
+  all: ["transaksi"] as const,
   pabrik: ["transaksi", "pabrik"] as const,
   buyer: ["transaksi", "buyer"] as const,
 };

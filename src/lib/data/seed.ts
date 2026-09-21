@@ -261,36 +261,44 @@ export const seedListings: Listing[] = [
   },
 ];
 
-export const seedTransaksiPabrik: Transaction[] = [
+/*
+  One ledger for both sides. Each record names its factory and its buyer, and the
+  store slices it per persona — so a trade can never show one status to the
+  factory and another to the buyer. Totals are berat × the listing's price/kg.
+*/
+export const seedTransaksi: Transaction[] = [
   {
     id: "TX-2291",
+    listingId: "DNM-A-007",
     material: "Denim Deadstock",
+    pabrik: "Karya Tenun Jaya",
     buyer: "Ulang Studio",
     berat: 210,
     total: 1_512_000,
     tanggal: "24 Agu 2026",
+    status: "Dikirim",
+  },
+  {
+    id: "TX-2284",
+    listingId: "RJC-B-031",
+    material: "Reject Roll Ends",
+    pabrik: "PT Mitra Garmindo",
+    buyer: "Ulang Studio",
+    berat: 240,
+    total: 864_000,
+    tanggal: "21 Agu 2026",
     status: "Selesai",
   },
   {
     id: "TX-2278",
+    listingId: "COT-B-014",
     material: "Cotton Cutting Scraps",
+    pabrik: "PT Mitra Garmindo",
     buyer: "Daur Tekstil ID",
     berat: 400,
     total: 1_800_000,
     tanggal: "18 Agu 2026",
     status: "Selesai",
-  },
-];
-
-export const seedTransaksiBuyer: Transaction[] = [
-  {
-    id: "TX-2291",
-    material: "Denim Deadstock",
-    pabrik: "Karya Tenun Jaya",
-    berat: 210,
-    total: 1_512_000,
-    tanggal: "24 Agu 2026",
-    status: "Dikirim",
   },
 ];
 

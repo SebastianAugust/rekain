@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Route } from "lucide-react";
 
-import { EmptyState } from "@/components/brand/empty-state";
-import { Eyebrow } from "@/components/brand/eyebrow";
+import { EmptyState, ErrorState } from "@/components/brand/empty-state";
+import { Halaman, PageHeader } from "@/components/brand/page-header";
 import { KartuRute } from "@/components/ops/kartu-rute";
 import { KontrolKapasitas } from "@/components/ops/kontrol-kapasitas";
 import { RingkasanRute } from "@/components/ops/ringkasan-rute";
@@ -20,19 +20,19 @@ function RencanaSkeleton() {
       <div className="grid grid-cols-1 gap-px rounded-sm border border-garis bg-garis sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }, (_, i) => (
           <div key={i} className="space-y-w2 permukaan px-w4 py-w3">
-            <Skeleton className="h-3 w-24 bg-kain" />
-            <Skeleton className="h-7 w-28 bg-kain" />
-            <Skeleton className="h-3 w-32 bg-kain" />
+            <Skeleton className="h-3 w-24" />
+            <Skeleton className="h-7 w-28" />
+            <Skeleton className="h-3 w-32" />
           </div>
         ))}
       </div>
       <div className="grid gap-x-w5 gap-y-w4 xl:grid-cols-2">
         {Array.from({ length: 2 }, (_, i) => (
           <div key={i} className="space-y-w3 rounded-sm border border-garis permukaan px-w4 py-w4">
-            <Skeleton className="h-4 w-32 bg-kain" />
-            <Skeleton className="h-40 w-full bg-kain" />
-            <Skeleton className="h-3 w-full bg-kain" />
-            <Skeleton className="h-3 w-2/3 bg-kain" />
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-40 w-full" />
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-2/3" />
           </div>
         ))}
       </div>
@@ -43,17 +43,15 @@ function RencanaSkeleton() {
 
 export function RencanaRutePanel() {
   const [kapasitas, setKapasitas] = useState<number>(KAPASITAS_DEFAULT);
-  const { data, isPending, isFetching } = useRencanaRute(kapasitas);
+  const { data, isPending, isFetching, isError, refetch } = useRencanaRute(kapasitas);
 
   return (
-    <div className="mx-auto max-w-6xl px-w4 py-w4 sm:px-w5">
-      <Eyebrow className="mb-w2">Logistik · {KLASTER}</Eyebrow>
-      <h1 className="judul mb-w2 text-xl text-tinta">Rencana pengambilan hari ini</h1>
-      <p className="mb-w5 max-w-2xl text-sm text-tinta-pudar">
-        Material yang sudah digrading dikelompokkan per kecamatan, dipadatkan ke muatan truk,
-        lalu diurutkan jadi rute terpendek dari {DEPOT_NAMA}. Ubah kapasitas truk untuk menyusun
-        ulang.
-      </p>
+    <Halaman>
+      <PageHeader
+        eyebrow={`Logistik · ${KLASTER}`}
+        title="Rencana pengambilan hari ini"
+        description={`Material yang sudah dinilai dikelompokkan per kecamatan, dipadatkan ke muatan truk, lalu diurutkan jadi rute terpendek dari ${DEPOT_NAMA}. Ubah kapasitas truk untuk menyusun ulang.`}
+      />
 
       <div className="mb-w5">
         <KontrolKapasitas
@@ -63,7 +61,13 @@ export function RencanaRutePanel() {
         />
       </div>
 
-      {isPending || !data ? (
+      {isError && !data ? (
+        <ErrorState
+          title="Rencana rute gagal disusun"
+          description="Perencana rute tidak merespons. Coba susun ulang."
+          onRetry={() => refetch()}
+        />
+      ) : isPending || !data ? (
         <RencanaSkeleton />
       ) : data.rute.length === 0 ? (
         <EmptyState
@@ -99,6 +103,6 @@ export function RencanaRutePanel() {
           </section>
         </div>
       )}
-    </div>
+    </Halaman>
   );
 }

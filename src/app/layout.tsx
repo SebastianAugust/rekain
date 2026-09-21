@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, Plus_Jakarta_Sans } from "next/font/google";
 
+import { SplashScreen } from "@/components/brand/splash-screen";
 import { TextileFilters } from "@/components/brand/textile-filters";
 import { Providers } from "@/app/providers";
 import "./globals.css";
@@ -46,6 +47,17 @@ export const metadata: Metadata = {
     "ReKain menghubungkan pabrik garmen dengan recycler, upcycler, dan brand berkelanjutan — dengan grading kualitas, harga transparan, dan logistik terkelola.",
 };
 
+/*
+  `cover` lets the page run under the notch and the home indicator, so the
+  bars can paint those strips themselves and pad their content clear of them
+  with `env(safe-area-inset-*)`. Without it the insets always read as 0.
+*/
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -56,6 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Filter definitions must exist in the document before anything references them. */}
         <TextileFilters />
         <Providers>{children}</Providers>
+        <SplashScreen />
       </body>
     </html>
   );

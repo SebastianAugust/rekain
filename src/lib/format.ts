@@ -35,6 +35,45 @@ export function formatDurasi(menit: number): string {
   return sisa === 0 ? `${jam}j` : `${jam}j ${sisa}m`;
 }
 
+/** Ledger date, matching the seed records: "24 Agu 2026". */
+export function formatTanggal(tanggal: Date): string {
+  return tanggal.toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" });
+}
+
 export function formatPersen(rasio: number): string {
   return `${Math.round(rasio * 100)}%`;
+}
+
+/**
+ * Persen dengan desimal — indikator kelayakan disebut proposal sampai dua angka
+ * di belakang koma (378,99%, 71,32%), dan membulatkannya jadi 379% menghapus
+ * justru presisi yang sedang diverifikasi.
+ */
+export function formatPersenPresisi(rasio: number, desimal = 2): string {
+  return `${(rasio * 100).toLocaleString("id-ID", {
+    minimumFractionDigits: desimal,
+    maximumFractionDigits: desimal,
+  })}%`;
+}
+
+/**
+ * Selalu dalam juta, tidak pernah berpindah satuan.
+ *
+ * `formatRupiahRingkas` berpindah ke "m" di atas satu miliar — bagus untuk satu
+ * kartu berdiri sendiri, tapi merusak kolom tabel dan sumbu grafik, karena mata
+ * jadi membandingkan "1,2 m" dengan "942,2 jt" alih-alih dua angka sekaligus.
+ */
+export function formatJuta(value: number, desimal = 1): string {
+  return `${(value / 1_000_000).toLocaleString("id-ID", {
+    minimumFractionDigits: desimal,
+    maximumFractionDigits: desimal,
+  })} jt`;
+}
+
+/** Ton dengan satu desimal: 125,57 -> "125,6 ton". */
+export function formatTon(ton: number, desimal = 1): string {
+  return `${ton.toLocaleString("id-ID", {
+    minimumFractionDigits: desimal,
+    maximumFractionDigits: desimal,
+  })} ton`;
 }

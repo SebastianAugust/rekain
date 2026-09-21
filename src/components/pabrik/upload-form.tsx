@@ -7,6 +7,9 @@ import { ImageOff } from "lucide-react";
 import { toast } from "sonner";
 
 import { Eyebrow } from "@/components/brand/eyebrow";
+import { JahitanMuat } from "@/components/brand/jahitan-muat";
+import { Halaman, PageHeader } from "@/components/brand/page-header";
+import { tombol } from "@/components/brand/tombol";
 import { UploadSuccess } from "@/components/pabrik/upload-success";
 import { Field } from "@/components/shared/field";
 import { Input } from "@/components/ui/input";
@@ -27,9 +30,9 @@ import {
   type UploadLimbahValues,
 } from "@/lib/validation/upload-limbah";
 
-/** What happens to the lot after it is sent — the first three stations. */
+/** What happens to the lot after it is sent — the next three stations. */
 const SETELAH_INI = [
-  { kode: "ST-02", t: "Grading", d: "Tim kami menilai kualitas dalam 1–2 hari kerja." },
+  { kode: "ST-02", t: "Penilaian mutu", d: "Tim kami menilai kualitas dalam 1–2 hari kerja." },
   { kode: "ST-03", t: "Harga wajar", d: "Estimasi harga per kg keluar bersama grade." },
   { kode: "ST-04", t: "Ditawarkan", d: "Buyer yang cocok melihat listing Anda." },
 ];
@@ -60,11 +63,13 @@ export function UploadForm() {
         catatan: values.catatan || undefined,
       });
       toast.success("Limbah berhasil diunggah", {
-        description: `${listing.id} masuk antrean grading.`,
+        description: `${listing.id} masuk antrean penilaian mutu.`,
       });
       setBerhasil(listing);
-    } catch {
-      toast.error("Gagal mengunggah limbah", { description: "Silakan coba lagi." });
+    } catch (e) {
+      toast.error("Gagal mengunggah limbah", {
+        description: e instanceof Error ? e.message : "Silakan coba lagi.",
+      });
     }
   }
 
@@ -81,15 +86,19 @@ export function UploadForm() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-w4 py-w4 sm:px-w5">
-      <Eyebrow className="mb-w2">Upload limbah baru</Eyebrow>
-      <h1 className="judul mb-w5 text-xl text-tinta">Ceritakan material yang Anda miliki</h1>
+    <Halaman>
+      <PageHeader
+        eyebrow="Upload limbah baru"
+        title="Ceritakan material yang Anda miliki"
+        description="Cukup jenis, berat, dan lokasi. Penilaian mutu dan harga kami yang urus."
+      />
 
       <div className="grid max-w-5xl gap-x-w5 gap-y-w4 lg:grid-cols-3 lg:items-start">
         <form
           onSubmit={handleSubmit(onSubmit)}
           noValidate
-          className="space-y-w4 rounded-sm border border-garis permukaan px-w4 py-w4 lg:col-span-2"
+          aria-busy={isSubmitting}
+          className="space-y-w4 rounded-sm border border-garis permukaan px-w4 py-w4 shadow-panel lg:col-span-2"
         >
           <Controller
             control={control}
@@ -102,7 +111,7 @@ export function UploadForm() {
                       id={id}
                       {...a11y}
                       onBlur={field.onBlur}
-                      className="h-10 w-full rounded-sm border-garis bg-white"
+                      className="h-10 w-full rounded-sm bg-white"
                     >
                       <SelectValue placeholder="Pilih jenis material" />
                     </SelectTrigger>
@@ -130,18 +139,14 @@ export function UploadForm() {
                   min={0}
                   step="any"
                   placeholder="mis. 500"
-                  className="h-10 rounded-sm border-garis bg-white"
+                  className="h-10 rounded-sm bg-white"
                 />
               )}
             </Field>
 
             <Field label="Lokasi" required error={errors.lokasi?.message}>
               {(a11y) => (
-                <Input
-                  {...a11y}
-                  {...register("lokasi")}
-                  className="h-10 rounded-sm border-garis bg-white"
-                />
+                <Input {...a11y} {...register("lokasi")} className="h-10 rounded-sm bg-white" />
               )}
             </Field>
           </div>
@@ -163,7 +168,7 @@ export function UploadForm() {
                 {...register("catatan")}
                 rows={3}
                 placeholder="mis. kondisi, campuran warna, dll."
-                className="rounded-sm border-garis bg-white"
+                className="rounded-sm bg-white"
               />
             )}
           </Field>
@@ -171,17 +176,28 @@ export function UploadForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-sm bg-nila-6 py-2.5 text-sm font-medium text-white hover:bg-nila-9 disabled:opacity-40"
+            className={tombol({ ukuran: "besar", penuh: true })}
           >
-            {isSubmitting ? "Mengirim…" : "Kirim untuk Grading"}
+            {isSubmitting ? (
+              <>
+                <JahitanMuat /> Mengirim…
+              </>
+            ) : (
+              "Kirim untuk Dinilai"
+            )}
           </button>
         </form>
 
         <aside className="rounded-sm border border-garis permukaan px-w4 py-w4">
           <Eyebrow className="mb-w4">Setelah dikirim</Eyebrow>
-          <ol className="space-y-w4">
+          {/* The stations are joined by a thread, because they are one seam. */}
+          <ol className="relative space-y-w4 border-l border-dashed border-nila-3/50 pl-w4">
             {SETELAH_INI.map((s) => (
-              <li key={s.kode}>
+              <li key={s.kode} className="relative">
+                <span
+                  className="absolute top-1.5 -left-w4 size-2 -translate-x-1/2 rounded-full bg-nila-3 ring-2 ring-white"
+                  aria-hidden="true"
+                />
                 <span className="inline-block rounded-sm bg-nila-1 px-w2 py-0.5 font-mono text-xs text-nila-6">
                   {s.kode}
                 </span>
@@ -192,6 +208,6 @@ export function UploadForm() {
           </ol>
         </aside>
       </div>
-    </div>
+    </Halaman>
   );
 }

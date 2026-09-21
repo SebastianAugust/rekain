@@ -23,12 +23,33 @@ export function TextileFilters() {
     >
       <defs>
         {/*
-          Uneven vat dye. Low frequency, slightly stretched vertically because
-          cloth hangs in the vat and pools along its length. The colour matrix
-          copies the red channel into RGB (keeping full variance rather than
-          averaging three channels down) and forces alpha to 1, producing a
-          mid-grey cloud that `mix-blend-mode: overlay` reads in both directions:
-          above 0.5 lightens, below 0.5 darkens.
+          Twill wale. Denim is a 3/1 twill: the weft passes under three warp
+          threads and over one, and the offset steps each row, so the face shows
+          fine diagonal ribs climbing to the right. A 5px repeat with a 2px rib
+          rotated to the classic ~63° of a right-hand twill.
+        */}
+        <pattern
+          id="rk-kepar"
+          width="5"
+          height="5"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(27)"
+        >
+          <rect width="2" height="5" fill="#ffffff" />
+        </pattern>
+
+        {/*
+          Indigo denim, as one grey overlay layer. Three things real denim shows,
+          summed around mid-grey so `mix-blend-mode: overlay` both lightens and
+          darkens:
+
+          1. The twill ribs above, pushed through low-amplitude displacement so
+             they wander the way yarn under tension does instead of ruling
+             perfectly straight.
+          2. Slub streaks along the warp. Indigo only dyes the outside of a yarn
+             (ring dyeing), and slub yarn varies in thickness, so a denim face is
+             streaked lengthwise — high x-frequency, very low y-frequency.
+          3. Vat mottling — the slow cloud that uneven dipping leaves behind.
         */}
         <filter
           id="rk-celup"
@@ -40,13 +61,86 @@ export function TextileFilters() {
         >
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.011 0.026"
-            numOctaves={4}
-            seed={11}
-            result="vat"
+            baseFrequency="0.035 0.21"
+            numOctaves={2}
+            seed={7}
+            result="goyang"
+          />
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="goyang"
+            scale={2.6}
+            xChannelSelector="R"
+            yChannelSelector="G"
+            result="kepar-mentah"
+          />
+          {/* Pattern alpha becomes a 0/1 grey value with an opaque alpha. */}
+          <feColorMatrix
+            in="kepar-mentah"
+            type="matrix"
+            values="0 0 0 1 0
+                    0 0 0 1 0
+                    0 0 0 1 0
+                    0 0 0 0 1"
+            result="kepar"
+          />
+
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.42 0.008"
+            numOctaves={2}
+            seed={5}
+            result="slub-mentah"
           />
           <feColorMatrix
-            in="vat"
+            in="slub-mentah"
+            type="matrix"
+            values="1 0 0 0 0
+                    1 0 0 0 0
+                    1 0 0 0 0
+                    0 0 0 0 1"
+            result="slub"
+          />
+
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.0065 0.017"
+            numOctaves={3}
+            seed={11}
+            result="awan-mentah"
+          />
+          <feColorMatrix
+            in="awan-mentah"
+            type="matrix"
+            values="1 0 0 0 0
+                    1 0 0 0 0
+                    1 0 0 0 0
+                    0 0 0 0 1"
+            result="awan"
+          />
+
+          {/* 0.5 + 0.18·(rib − 0.5) + 0.62·(slub − 0.5) */}
+          <feComposite
+            in="kepar"
+            in2="slub"
+            operator="arithmetic"
+            k2={0.18}
+            k3={0.62}
+            k4={0.1}
+            result="tenun"
+          />
+          {/* … + 0.8·(vat − 0.5) */}
+          <feComposite
+            in="tenun"
+            in2="awan"
+            operator="arithmetic"
+            k2={1}
+            k3={0.8}
+            k4={-0.4}
+            result="denim"
+          />
+          <feColorMatrix
+            in="denim"
             type="matrix"
             values="1 0 0 0 0
                     1 0 0 0 0
@@ -55,29 +149,38 @@ export function TextileFilters() {
           />
         </filter>
 
-        {/* Fine fibre grain — the weave itself, an order of magnitude finer. */}
+        {/*
+          Dye wicking. Cloth pulled out of a vat does not have a clean tide mark:
+          dye climbs the threads by capillary action, higher up some yarns than
+          others. Displacing the submerged shape in y with noise that changes fast
+          across x and hardly at all down y draws exactly that — fine fingers of
+          blue creeping up the cut face.
+        */}
         <filter
-          id="rk-serat"
-          x="0"
-          y="0"
-          width="100%"
-          height="100%"
+          id="rk-rembes"
+          x="-2%"
+          y="-40%"
+          width="104%"
+          height="160%"
           colorInterpolationFilters="sRGB"
         >
+          {/*
+            Two octaves, not three, and a gentle scale: the third octave and a
+            16-unit push turned the tide mark into a row of grass blades.
+          */}
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.86"
-            numOctaves={3}
-            seed={4}
-            result="serat"
+            baseFrequency="0.07 0.02"
+            numOctaves={2}
+            seed={29}
+            result="t"
           />
-          <feColorMatrix
-            in="serat"
-            type="matrix"
-            values="1 0 0 0 0
-                    1 0 0 0 0
-                    1 0 0 0 0
-                    0 0 0 0 1"
+          <feDisplacementMap
+            in="SourceGraphic"
+            in2="t"
+            scale={7}
+            xChannelSelector="A"
+            yChannelSelector="R"
           />
         </filter>
 
@@ -146,8 +249,8 @@ export function TextileFilters() {
 }
 
 /**
- * The uneven-dye layer. Drop inside any element carrying `.celup` — it fills the
- * surface and mottles it. Never put this on a light ground; overlay on near-white
+ * The denim layer. Drop inside any element carrying `.celup` — it fills the
+ * surface and weaves it. Never put this on a light ground; overlay on near-white
  * does almost nothing and just costs a paint.
  */
 export function DyeWash({ halus }: { halus?: boolean }) {
@@ -160,23 +263,7 @@ export function DyeWash({ halus }: { halus?: boolean }) {
       height="100%"
       preserveAspectRatio="none"
     >
-      <rect width="100%" height="100%" filter="url(#rk-celup)" />
-    </svg>
-  );
-}
-
-/** The fibre-grain layer. Weaker sibling of DyeWash; safe on light surfaces too. */
-export function FibreWash() {
-  return (
-    <svg
-      className="serat-wash"
-      aria-hidden="true"
-      focusable="false"
-      width="100%"
-      height="100%"
-      preserveAspectRatio="none"
-    >
-      <rect width="100%" height="100%" filter="url(#rk-serat)" />
+      <rect width="100%" height="100%" fill="url(#rk-kepar)" filter="url(#rk-celup)" />
     </svg>
   );
 }

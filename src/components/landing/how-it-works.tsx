@@ -10,7 +10,7 @@ import { StitchLine } from "@/components/brand/stitch-line";
 */
 const STASIUN = [
   { kode: "ST-01", t: "Pabrik unggah limbah", d: "Jenis material, berat, lokasi, kondisi." },
-  { kode: "ST-02", t: "Grading dan estimasi harga", d: "Klasifikasi kualitas dan harga pasar wajar." },
+  { kode: "ST-02", t: "Penilaian mutu dan harga", d: "Grade kualitas dan harga pasar yang wajar." },
   { kode: "ST-03", t: "Pencocokan pembeli", d: "Ditawarkan ke buyer sesuai kebutuhan mereka." },
   { kode: "ST-04", t: "Logistik dan escrow", d: "Pengambilan barang dan pembayaran terjamin." },
   { kode: "ST-05", t: "Sampai ke buyer", d: "Recycler, upcycler, atau brand berkelanjutan." },
@@ -33,8 +33,8 @@ export function HowItWorks() {
             <span className="inline-block rounded-sm bg-nila-1 px-w2 py-0.5 font-mono text-xs tracking-wide text-nila-6">
               {s.kode}
             </span>
-            <h3 className="judul-kecil mt-w2 text-sm text-tinta">{s.t}</h3>
-            <p className="mt-w1 text-xs text-tinta-pudar">{s.d}</p>
+            <h3 className="judul-kecil mt-w2 text-base text-tinta">{s.t}</h3>
+            <p className="mt-w1 text-sm text-pretty text-tinta-pudar">{s.d}</p>
           </li>
         ))}
       </ol>

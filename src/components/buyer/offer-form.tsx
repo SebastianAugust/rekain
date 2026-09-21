@@ -1,17 +1,21 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { Send } from "lucide-react";
+import { ArrowRight, Send } from "lucide-react";
 import { toast } from "sonner";
 
+import { JahitanMuat } from "@/components/brand/jahitan-muat";
+import { BingkaiJahit } from "@/components/brand/stitch-line";
+import { tombol } from "@/components/brand/tombol";
 import { Field } from "@/components/shared/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useCreateOffer } from "@/lib/data/hooks";
 import { formatBerat, formatRupiah } from "@/lib/format";
-import type { Listing } from "@/lib/types";
+import type { Listing, Transaction } from "@/lib/types";
 import {
   buildPenawaranSchema,
   type PenawaranParsed,
@@ -19,7 +23,7 @@ import {
 } from "@/lib/validation/ajukan-penawaran";
 
 export function OfferForm({ listing }: { listing: Listing }) {
-  const [terkirim, setTerkirim] = useState(false);
+  const [terkirim, setTerkirim] = useState<Transaction | null>(null);
   const createOffer = useCreateOffer();
 
   // The max depends on this listing's stock, so the schema is built per listing.
@@ -45,7 +49,7 @@ export function OfferForm({ listing }: { listing: Listing }) {
 
   async function onSubmit(values: PenawaranParsed) {
     try {
-      await createOffer.mutateAsync({
+      const transaksi = await createOffer.mutateAsync({
         listingId: listing.id,
         jumlah: values.jumlah,
         catatan: values.catatan || undefined,
@@ -53,34 +57,90 @@ export function OfferForm({ listing }: { listing: Listing }) {
       toast.success("Penawaran terkirim", {
         description: `${formatBerat(values.jumlah)} ${listing.material} ke ${listing.pabrik}.`,
       });
-      setTerkirim(true);
-    } catch {
-      toast.error("Gagal mengirim penawaran", { description: "Silakan coba lagi." });
+      setTerkirim(transaksi);
+    } catch (e) {
+      // The store's own message ("sudah terjual", "melebihi stok") is the useful one.
+      toast.error("Gagal mengirim penawaran", {
+        description: e instanceof Error ? e.message : "Silakan coba lagi.",
+      });
     }
   }
 
   if (listing.harga === null) {
     return (
       <p className="text-sm text-tinta-pudar">
-        Material ini masih menunggu grading, jadi belum bisa ditawar. Simpan ke favorit untuk
-        dapat kabar begitu harganya keluar.
+        Material ini masih menunggu penilaian mutu, jadi belum bisa ditawar. Simpan ke favorit
+        untuk dapat kabar begitu harganya keluar.
+      </p>
+    );
+  }
+
+  if (listing.status === "Terjual") {
+    return (
+      <p className="text-sm text-tinta-pudar">
+        Bal ini sudah terjual.{" "}
+        <Link href="/buyer" className="font-medium text-nila-tinta underline underline-offset-2">
+          Cari material serupa
+        </Link>
+        .
       </p>
     );
   }
 
   if (terkirim) {
     return (
-      <p
-        role="status"
-        className="rounded-sm bg-nila-1 px-w3 py-w3 text-sm font-medium text-nila-6"
-      >
-        Penawaran terkirim ke {listing.pabrik}. Menunggu konfirmasi.
-      </p>
+      <div role="status" className="relative rounded-sm bg-nila-1/35 px-w4 py-w4">
+        <BingkaiJahit rapat warna="#103868" />
+        <div className="relative flex items-start gap-w3">
+          <span
+            className="flex size-9 shrink-0 items-center justify-center rounded-sm bg-nila-6 shadow-tombol"
+            aria-hidden="true"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" focusable="false">
+              <path
+                className="jahit-tutup"
+                d="M5 12.5 10 17 19 7"
+                fill="none"
+                stroke="#ffffff"
+                strokeWidth={2.6}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+          <div className="min-w-0">
+            <p className="judul-kecil text-sm text-tinta">
+              Penawaran terkirim ke {listing.pabrik}
+            </p>
+            <p className="mt-w1 text-xs text-tinta-pudar">
+              <span className="font-mono">{terkirim.id}</span> · {formatBerat(terkirim.berat)} ·{" "}
+              <span className="font-mono">{formatRupiah(terkirim.total)}</span> — menunggu
+              konfirmasi pabrik.
+            </p>
+            <Link
+              href="/buyer/transaksi"
+              className="group mt-w2 inline-flex items-center gap-1 rounded-sm text-xs font-medium text-nila-tinta hover:underline"
+            >
+              Pantau di Transaksi
+              <ArrowRight
+                size={12}
+                aria-hidden="true"
+                className="transition-transform group-hover:translate-x-0.5"
+              />
+            </Link>
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-w4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      noValidate
+      aria-busy={isSubmitting}
+      className="space-y-w4"
+    >
       <Field
         label="Jumlah yang ditawar (kg)"
         required
@@ -97,7 +157,7 @@ export function OfferForm({ listing }: { listing: Listing }) {
             max={listing.berat}
             step="any"
             placeholder={`maks. ${listing.berat}`}
-            className="h-10 rounded-sm border-garis bg-white"
+            className="h-10 rounded-sm bg-white"
           />
         )}
       </Field>
@@ -109,14 +169,14 @@ export function OfferForm({ listing }: { listing: Listing }) {
             {...register("catatan")}
             rows={3}
             placeholder="mis. jadwal pengambilan, kebutuhan sortir."
-            className="rounded-sm border-garis bg-white"
+            className="rounded-sm bg-white"
           />
         )}
       </Field>
 
-      <div className="flex items-center justify-between rounded-sm bg-kain px-w3 py-w2 text-sm">
+      <div className="flex items-center justify-between rounded-sm border border-garis bg-kain px-w3 py-w2 text-sm">
         <span className="text-tinta-pudar">Estimasi total</span>
-        <span className="font-mono font-semibold text-tinta">
+        <span className="font-mono font-semibold text-tinta tabular-nums" aria-live="polite">
           {estimasi === null ? "—" : formatRupiah(estimasi)}
         </span>
       </div>
@@ -124,10 +184,17 @@ export function OfferForm({ listing }: { listing: Listing }) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="inline-flex w-full items-center justify-center gap-w2 rounded-sm bg-nila-6 py-2.5 text-sm font-medium text-white hover:bg-nila-9 disabled:opacity-40"
+        className={tombol({ ukuran: "besar", penuh: true })}
       >
-        <Send size={14} aria-hidden="true" />
-        {isSubmitting ? "Mengirim…" : "Ajukan Penawaran"}
+        {isSubmitting ? (
+          <>
+            <JahitanMuat /> Mengirim…
+          </>
+        ) : (
+          <>
+            <Send size={14} aria-hidden="true" /> Ajukan Penawaran
+          </>
+        )}
       </button>
     </form>
   );

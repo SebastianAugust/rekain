@@ -4,6 +4,14 @@ import { TransactionList } from "@/components/shared/transaction-list";
 import { useTransaksiPabrik } from "@/lib/data/hooks";
 
 export default function PabrikTransaksiPage() {
-  const { data, isPending } = useTransaksiPabrik();
-  return <TransactionList items={data} isPending={isPending} role="pabrik" />;
+  const { data, isPending, isError, refetch } = useTransaksiPabrik();
+  return (
+    <TransactionList
+      items={data}
+      isPending={isPending}
+      isError={isError}
+      onRetry={() => refetch()}
+      role="pabrik"
+    />
+  );
 }

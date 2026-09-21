@@ -7,7 +7,7 @@ import { Eyebrow } from "@/components/brand/eyebrow";
   a better one, and it leaves these free to read as what they are — a citation.
 */
 const ANGKA = [
-  { nilai: "2,3 jt", satuan: "ton", label: "limbah tekstil Indonesia per tahun" },
+  { nilai: "2,3", satuan: "juta ton", label: "limbah tekstil Indonesia per tahun" },
   { nilai: "<15", satuan: "%", label: "porsi yang benar-benar didaur ulang" },
   { nilai: "1", satuan: "klaster", label: "percontohan — Bandung Raya" },
 ];
@@ -25,7 +25,7 @@ export function MacroStats() {
               {a.nilai}
               <span className="ml-1 text-base font-normal text-tinta-pudar">{a.satuan}</span>
             </dd>
-            <dt className="mt-w1 text-xs text-tinta-pudar">{a.label}</dt>
+            <dt className="mt-w1 text-sm text-tinta-pudar">{a.label}</dt>
           </div>
         ))}
       </dl>

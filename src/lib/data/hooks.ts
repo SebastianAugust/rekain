@@ -47,10 +47,26 @@ export function useFavorit() {
   return useQuery({ queryKey: favoritKeys.all, queryFn: store.fetchFavorit });
 }
 
+/**
+ * Optimistic: the heart fills on the click, not 150ms later. A toggle that waits
+ * for the network feels broken even when it isn't. On failure the cache rolls
+ * back to what it was, and the caller decides how to tell the user.
+ */
 export function useToggleFavorit() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => store.toggleFavorit(id),
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: favoritKeys.all });
+      const sebelumnya = queryClient.getQueryData<string[]>(favoritKeys.all);
+      queryClient.setQueryData<string[]>(favoritKeys.all, (ids = []) =>
+        ids.includes(id) ? ids.filter((f) => f !== id) : [...ids, id],
+      );
+      return { sebelumnya };
+    },
+    onError: (_error, _id, context) => {
+      queryClient.setQueryData(favoritKeys.all, context?.sebelumnya);
+    },
     onSuccess: (ids) => {
       queryClient.setQueryData(favoritKeys.all, ids);
     },
@@ -63,6 +79,7 @@ export function useCreateListing() {
     mutationFn: (input: NewListingInput) => store.createListing(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: listingKeys.all });
+      queryClient.invalidateQueries({ queryKey: ruteKeys.all });
     },
   });
 }
@@ -73,6 +90,9 @@ export function useCreateOffer() {
     mutationFn: (input: NewOfferInput) => store.createOffer(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: listingKeys.all });
+      queryClient.invalidateQueries({ queryKey: transactionKeys.all });
+      // A listing in negotiation changes what the route planner should expect.
+      queryClient.invalidateQueries({ queryKey: ruteKeys.all });
     },
   });
 }

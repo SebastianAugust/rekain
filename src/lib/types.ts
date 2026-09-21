@@ -43,13 +43,18 @@ export type Listing = {
 
 export type TransactionStatus = "Selesai" | "Dikirim" | "Menunggu Konfirmasi";
 
+/**
+ * One trade, recorded once. Both sides of the marketplace read the same ledger
+ * and each sees its own slice of it — a transaction that looked different to the
+ * factory and to the buyer would be a data bug, not a point of view.
+ */
 export type Transaction = {
   id: string;
-  material: string;
-  /** Set on transactions shown to a pabrik — who bought it. */
-  buyer?: string;
-  /** Set on transactions shown to a buyer — who supplied it. */
-  pabrik?: string;
+  /** The listing this trade came from, when it originated on the platform. */
+  listingId?: string;
+  material: MaterialKind;
+  pabrik: string;
+  buyer: string;
   berat: number;
   /** Total in rupiah. */
   total: number;

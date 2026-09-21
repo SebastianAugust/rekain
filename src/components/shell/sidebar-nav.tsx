@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 
 import { BrandMark } from "@/components/brand/brand-mark";
+import { StitchLine } from "@/components/brand/stitch-line";
 import { DyeWash } from "@/components/brand/textile-filters";
 import { isNavItemActive, NAV } from "@/components/shell/nav-config";
 import type { Role } from "@/lib/types";
@@ -24,11 +25,16 @@ export function SidebarNav({ role }: { role: Role }) {
   return (
     <nav
       aria-label="Navigasi utama"
-      className="celup di-nila hidden w-56 shrink-0 flex-col bg-nila-6 md:flex"
+      className="celup di-nila hidden w-[calc(14rem+env(safe-area-inset-left))] shrink-0 flex-col bg-nila-6 md:flex"
     >
+      {/* A landscape iPhone puts the notch or Dynamic Island on this edge; the dye runs under it, the content doesn't. */}
       <DyeWash halus />
+      {/* The sidebar is a panel sewn onto the page: a seam runs down its inner edge. */}
+      <span className="pointer-events-none absolute inset-y-0 right-1 z-1 w-2.5" aria-hidden="true">
+        <StitchLine arah="vertikal" seed="sisi" warna="#a0d0f8" className="w-full" />
+      </span>
 
-      <div className="di-atas-celup flex flex-1 flex-col">
+      <div className="di-atas-celup flex flex-1 flex-col pl-[env(safe-area-inset-left)]">
         <div className="flex h-14 items-center border-b border-nila-9 px-w4">
           <BrandMark tone="dark" />
         </div>

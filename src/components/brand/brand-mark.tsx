@@ -1,9 +1,17 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 /**
- * The mark: a dyed square with a guard thread down its binding edge — the same
- * construction as a listing's cross-section strip, reduced to 28px. The logo and
- * the product's central object are built from one idea rather than two.
+ * The ReKain mark plus wordmark.
+ *
+ * The source PNG is 2388×1944 and was being shipped whole for a 28px slot, and
+ * squeezed into a square that flattened the loop of the R. `next/image` now
+ * serves a right-sized file, and `h-7 w-auto` keeps the drawing's own ratio.
+ *
+ * The mark is drawn in navy, so on a dyed ground it simply disappeared. There it
+ * sits on a small square of undyed cloth instead — a woven label sewn onto
+ * denim, which is how a garment carries its brand anyway.
  */
 export function BrandMark({
   className,
@@ -19,11 +27,21 @@ export function BrandMark({
 
   return (
     <span className={cn("flex items-center gap-w2", className)}>
-      <img
-        src="/logo.png"
-        alt="ReKain"
-        className="shrink-0 size-7"
-      />
+      <span
+        className={cn(
+          "flex shrink-0 items-center justify-center",
+          gelap && "rounded-sm bg-kain px-1 py-0.5 shadow-tombol",
+        )}
+      >
+        <Image
+          src="/logo.png"
+          alt={showWordmark ? "" : "ReKain"}
+          width={2388}
+          height={1944}
+          sizes="40px"
+          className={gelap ? "h-6 w-auto" : "h-7 w-auto"}
+        />
+      </span>
 
       {showWordmark && (
         <span className={cn("judul-kecil", gelap ? "text-sm text-white" : "text-tinta")}>

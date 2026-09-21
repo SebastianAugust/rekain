@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { BrandMark } from "@/components/brand/brand-mark";
+import { tombol } from "@/components/brand/tombol";
 
 const SECTIONS = [
   { href: "#untuk-pabrik", label: "Untuk Pabrik" },
@@ -10,18 +11,23 @@ const SECTIONS = [
 
 export function LandingNav() {
   return (
-    <header className="border-b border-garis permukaan">
+    <header className="border-b border-garis permukaan pt-(--aman-atas)">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-w4 px-w4 py-w3 sm:px-w5">
-        <Link href="/" aria-label="ReKain — beranda">
+        <Link href="/" aria-label="ReKain — beranda" className="rounded-sm">
           <BrandMark />
         </Link>
 
+        {/* From `md`, not `lg`: a tablet had no way to reach these at all. */}
         <nav
           aria-label="Bagian halaman"
-          className="hidden items-center gap-w6 text-sm text-tinta-pudar lg:flex"
+          className="hidden items-center gap-w5 text-sm text-tinta-pudar md:flex"
         >
           {SECTIONS.map((s) => (
-            <a key={s.href} href={s.href} className="hover:text-nila-tinta">
+            <a
+              key={s.href}
+              href={s.href}
+              className="rounded-sm underline-offset-4 hover:text-nila-tinta hover:underline"
+            >
               {s.label}
             </a>
           ))}
@@ -30,14 +36,11 @@ export function LandingNav() {
         <div className="flex items-center gap-w2">
           <Link
             href="/pabrik"
-            className="rounded-sm px-w3 py-1.5 text-xs font-medium text-nila-tinta hover:underline sm:text-sm"
+            className="rounded-sm px-w2 py-1.5 text-xs font-medium text-nila-tinta underline-offset-4 hover:underline sm:text-sm"
           >
             Masuk Pabrik
           </Link>
-          <Link
-            href="/buyer"
-            className="rounded-sm bg-nila-6 px-w3 py-1.5 text-xs font-medium text-white hover:bg-nila-9 sm:text-sm"
-          >
+          <Link href="/buyer" className={tombol({ ukuran: "kecil" })}>
             Masuk Buyer
           </Link>
         </div>

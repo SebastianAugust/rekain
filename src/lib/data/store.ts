@@ -1,12 +1,5 @@
-import {
-  KODE_MATERIAL,
-  PABRIK,
-  SWATCH,
-  seedFavoritIds,
-  seedListings,
-  seedTransaksiBuyer,
-  seedTransaksiPabrik,
-} from "@/lib/data/seed";
+import { KODE_MATERIAL, PABRIK, SWATCH, seedFavoritIds, seedListings, seedTransaksi } from "@/lib/data/seed";
+import { formatTanggal } from "@/lib/format";
 import type {
   Listing,
   NewListingInput,
@@ -15,7 +8,7 @@ import type {
   RencanaRute,
   Transaction,
 } from "@/lib/types";
-import { DEPOT, PABRIK_AKTIF } from "@/lib/session";
+import { BUYER_AKTIF, DEPOT, PABRIK_AKTIF } from "@/lib/session";
 import { susunRencana } from "@/lib/logistik/rute";
 
 /*
@@ -30,8 +23,7 @@ import { susunRencana } from "@/lib/logistik/rute";
 const FAVORIT_KEY = "rekain:favorit";
 
 let listings: Listing[] = [...seedListings];
-const transaksiPabrik: Transaction[] = [...seedTransaksiPabrik];
-const transaksiBuyer: Transaction[] = [...seedTransaksiBuyer];
+let transaksi: Transaction[] = [...seedTransaksi];
 
 /** Simulated network latency, so loading states are actually exercised in the demo. */
 function delay(ms = 450): Promise<void> {
@@ -68,20 +60,23 @@ function generateId(material: NewListingInput["material"]): string {
   return `${prefix}-X-${nextNumber}`;
 }
 
-export async function fetchListings(): Promise<Listing[]> {
-  await delay();
-  return [...listings];
+/** Only graded listings are offered to buyers — grading gates visibility. */
+function terlihatOlehBuyer(l: Listing): boolean {
+  return l.status !== "Menunggu Grading";
 }
 
-/** Only graded listings are offered to buyers — grading gates visibility. */
 export async function fetchListingsForBuyer(): Promise<Listing[]> {
   await delay();
-  return listings.filter((l) => l.status !== "Menunggu Grading");
+  return listings.filter(terlihatOlehBuyer);
 }
 
+/**
+ * Same gate as the catalogue. Without it an ungraded lot was reachable by URL,
+ * which contradicted the promise that nothing reaches buyers before grading.
+ */
 export async function fetchListing(id: string): Promise<Listing | null> {
   await delay(300);
-  return listings.find((l) => l.id === id) ?? null;
+  return listings.find((l) => l.id === id && terlihatOlehBuyer(l)) ?? null;
 }
 
 export async function fetchMyListings(): Promise<Listing[]> {
@@ -91,12 +86,12 @@ export async function fetchMyListings(): Promise<Listing[]> {
 
 export async function fetchTransaksiPabrik(): Promise<Transaction[]> {
   await delay();
-  return [...transaksiPabrik];
+  return transaksi.filter((t) => t.pabrik === PABRIK_AKTIF);
 }
 
 export async function fetchTransaksiBuyer(): Promise<Transaction[]> {
   await delay();
-  return [...transaksiBuyer];
+  return transaksi.filter((t) => t.buyer === BUYER_AKTIF);
 }
 
 export async function fetchFavorit(): Promise<string[]> {
@@ -131,24 +126,36 @@ export async function createListing(input: NewListingInput): Promise<Listing> {
   return listing;
 }
 
-export type OfferResult = {
-  listing: Listing;
-  jumlah: number;
-  total: number;
-};
-
-export async function createOffer(input: NewOfferInput): Promise<OfferResult> {
+/**
+ * An offer opens a trade: the listing moves into negotiation and a pending record
+ * lands in the shared ledger, so the buyer can find it again under Transaksi.
+ */
+export async function createOffer(input: NewOfferInput): Promise<Transaction> {
   await delay(700);
   const listing = listings.find((l) => l.id === input.listingId);
   if (!listing) throw new Error(`Listing ${input.listingId} tidak ditemukan`);
   if (listing.harga === null) throw new Error("Material ini belum digrading");
+  if (listing.status === "Terjual") throw new Error("Material ini sudah terjual");
   if (input.jumlah > listing.berat) throw new Error("Jumlah melebihi stok tersedia");
 
   listings = listings.map((l) =>
     l.id === input.listingId ? { ...l, status: "Dalam Negosiasi" as const } : l,
   );
 
-  return { listing, jumlah: input.jumlah, total: input.jumlah * listing.harga };
+  const nomor = Math.max(...transaksi.map((t) => Number(t.id.slice(3))), 2300) + 1;
+  const record: Transaction = {
+    id: `TX-${nomor}`,
+    listingId: listing.id,
+    material: listing.material,
+    pabrik: listing.pabrik,
+    buyer: BUYER_AKTIF,
+    berat: input.jumlah,
+    total: Math.round(input.jumlah * listing.harga),
+    tanggal: formatTanggal(new Date()),
+    status: "Menunggu Konfirmasi",
+  };
+  transaksi = [record, ...transaksi];
+  return record;
 }
 
 /*

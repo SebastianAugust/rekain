@@ -4,7 +4,7 @@ const PROPS = [
   {
     icon: ClipboardCheck,
     t: "Kualitas terverifikasi",
-    d: "Setiap bal digrading sebelum ditawarkan, jadi Anda tahu apa yang dibeli — bukan tebak-tebakan lewat foto di WhatsApp.",
+    d: "Setiap bal dinilai mutunya sebelum ditawarkan, jadi Anda tahu persis apa yang dibeli — bukan menebak-nebak dari foto di WhatsApp.",
   },
   {
     icon: Handshake,
@@ -27,10 +27,12 @@ export function ValueProps() {
       {PROPS.map((v) => {
         const Icon = v.icon;
         return (
-          <div key={v.t} className="rounded-sm border border-garis permukaan px-w4 py-w4">
-            <Icon size={18} className="mb-w3 text-nila-3" aria-hidden="true" />
-            <h3 className="judul-kecil mb-w1 text-sm text-tinta">{v.t}</h3>
-            <p className="text-xs leading-relaxed text-tinta-pudar">{v.d}</p>
+          <div key={v.t} className="rounded-sm border border-garis permukaan px-w4 py-w4 shadow-panel">
+            <span className="mb-w3 flex size-9 items-center justify-center rounded-sm bg-nila-1/35">
+              <Icon size={18} className="text-nila-6" aria-hidden="true" />
+            </span>
+            <h3 className="judul-kecil mb-w1 text-base text-tinta">{v.t}</h3>
+            <p className="text-sm leading-relaxed text-pretty text-tinta-pudar">{v.d}</p>
           </div>
         );
       })}
