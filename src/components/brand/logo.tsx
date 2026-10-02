@@ -23,10 +23,10 @@ export function Logo({
   return (
     <span className={cn("inline-flex items-center gap-w2", className)}>
       <Image
-        src="/logo.png"
+        src="/logo-mark.png"
         alt={tanpaTeks ? "ReKain" : ""}
-        width={2388}
-        height={1944}
+        width={512}
+        height={417}
         sizes="48px"
         className={cn("h-8 w-auto shrink-0", putih && "brightness-0 invert")}
       />
