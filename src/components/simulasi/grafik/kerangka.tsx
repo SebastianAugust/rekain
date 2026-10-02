@@ -137,7 +137,7 @@ export function Kanvas({
   children: React.ReactNode;
 }) {
   return (
-    <figure className="rounded-sm border border-garis permukaan px-w4 py-w3 shadow-panel">
+    <figure className="rounded-kartu border border-garis permukaan px-w4 py-w3 shadow-panel">
       <figcaption className="mb-w3">
         <div className="flex items-start justify-between gap-w3">
           <h3 className="judul-kecil text-sm text-tinta">{judul}</h3>

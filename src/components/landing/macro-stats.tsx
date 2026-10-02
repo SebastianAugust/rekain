@@ -14,7 +14,7 @@ const ANGKA = [
 
 export function MacroStats() {
   return (
-    <section aria-label="Skala masalah" className="rounded-sm border border-garis permukaan">
+    <section aria-label="Skala masalah" className="rounded-kartu border border-garis permukaan">
       <div className="px-w4 pt-w3">
         <Eyebrow>Skala masalahnya</Eyebrow>
       </div>

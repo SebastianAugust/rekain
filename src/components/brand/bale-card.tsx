@@ -2,7 +2,7 @@ import Link from "next/link";
 import { MapPin, Scale } from "lucide-react";
 
 import { DipChip, type DipTone } from "@/components/brand/dip-chip";
-import { PenampangBal } from "@/components/brand/penampang-bal";
+import { MaterialSwatch } from "@/components/brand/material-swatch";
 import { formatBerat, formatRupiah } from "@/lib/format";
 import type { Listing, ListingStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -16,7 +16,7 @@ const STATUS_DIP: Record<ListingStatus, DipTone> = {
 };
 
 /**
- * A listing, rendered as a bale of cloth in cross-section.
+ * A listing: swatch, code, grade, name, weight and place, price per kilo, status.
  *
  * Pass `href` to make the whole card a link (buyer browsing). Omit it for the
  * factory's own listings, which are not navigable.
@@ -43,62 +43,64 @@ export function BaleCard({
   return (
     <article
       className={cn(
-        "relative min-w-0 overflow-hidden rounded-sm border border-garis permukaan",
-        href && "bal",
+        "relative min-w-0 rounded-kartu permukaan",
+        compact ? "p-w3" : "p-w4",
+        href ? "bal" : "shadow-bal",
         // card-level focus ring, driven by the stretched link inside
         "has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-offset-2 has-[a:focus-visible]:outline-nila-3",
       )}
     >
-      <PenampangBal seed={listing.id} dasar={listing.swatch} berat={listing.berat} />
+      <div className="flex items-start gap-w3">
+        <MaterialSwatch
+          material={listing.material}
+          seed={listing.id}
+          className={compact ? "size-14" : "size-16"}
+        />
 
-      {/* Horizontal padding runs one step looser than vertical — weft over warp. */}
-      <div
-        className={cn("min-w-0", compact ? "px-w3 py-w2" : "px-w4 py-w3")}
-        style={{ marginLeft: 18 }}
-      >
-        <div className="flex items-start justify-between gap-w2">
-          <div className="min-w-0">
-            <div className="font-mono text-xs tracking-wide text-tinta-pudar">{listing.id}</div>
-            <h3 className="judul-kecil mt-0.5 text-base leading-snug text-tinta">
-              {href ? (
-                <Link href={href} className="outline-none after:absolute after:inset-0" aria-label={label}>
-                  {listing.material}
-                </Link>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-w2">
+            <div className="flex min-w-0 flex-wrap items-center gap-x-w2 gap-y-w1">
+              <span className="font-mono text-xs tracking-wide text-tinta-pudar">{listing.id}</span>
+              {listing.grade ? (
+                <DipChip dip="d3">GRADE {listing.grade}</DipChip>
               ) : (
-                listing.material
+                <DipChip dip="d0">BELUM DINILAI</DipChip>
               )}
-            </h3>
+            </div>
+            <div className="relative z-10 -my-w2 -mr-w2 flex shrink-0 items-center">{action}</div>
           </div>
-          <div className="relative z-10 flex shrink-0 items-center gap-w2">
-            {action}
-            {listing.grade ? (
-              <DipChip dip="d3">GRADE {listing.grade}</DipChip>
+
+          <h3 className="judul-kecil mt-w1 text-lg leading-snug text-tinta">
+            {href ? (
+              <Link href={href} className="outline-none after:absolute after:inset-0" aria-label={label}>
+                {listing.material}
+              </Link>
             ) : (
-              <DipChip dip="d0">BELUM DINILAI</DipChip>
+              listing.material
             )}
+          </h3>
+
+          <div className="mt-w1 flex flex-wrap items-center gap-x-w3 gap-y-w1 text-sm text-tinta-pudar">
+            <span className="inline-flex items-center gap-1">
+              <Scale size={14} strokeWidth={1.8} aria-hidden="true" /> {formatBerat(listing.berat)}
+            </span>
+            <span className="inline-flex items-center gap-1">
+              <MapPin size={14} strokeWidth={1.8} aria-hidden="true" /> {listing.lokasi}
+            </span>
           </div>
         </div>
+      </div>
 
-        <div className="mt-w2 flex flex-wrap items-center gap-x-w4 gap-y-w1 text-xs text-tinta-pudar">
-          <span className="inline-flex items-center gap-1">
-            <Scale size={12} aria-hidden="true" /> {formatBerat(listing.berat)}
+      <div className="mt-w4 flex items-end justify-between gap-w2">
+        {listing.harga === null ? (
+          <span className="text-sm text-tinta-pudar">Harga menunggu penilaian</span>
+        ) : (
+          <span className="judul text-3xl tabular-nums text-tinta">
+            {formatRupiah(listing.harga)}
+            <span className="ml-0.5 text-sm font-semibold tracking-normal text-tinta-pudar">/kg</span>
           </span>
-          <span className="inline-flex items-center gap-1">
-            <MapPin size={12} aria-hidden="true" /> {listing.lokasi}
-          </span>
-        </div>
-
-        <div className="mt-w3 flex items-center justify-between gap-w2">
-          {listing.harga === null ? (
-            <span className="text-xs text-tinta-pudar italic">Harga menunggu penilaian</span>
-          ) : (
-            <span className="font-mono text-sm font-semibold text-tinta">
-              {formatRupiah(listing.harga)}
-              <span className="text-xs font-normal text-tinta-pudar">/kg</span>
-            </span>
-          )}
-          <DipChip dip={STATUS_DIP[listing.status]}>{listing.status}</DipChip>
-        </div>
+        )}
+        <DipChip dip={STATUS_DIP[listing.status]}>{listing.status}</DipChip>
       </div>
     </article>
   );

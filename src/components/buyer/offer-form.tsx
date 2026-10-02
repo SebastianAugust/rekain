@@ -89,11 +89,11 @@ export function OfferForm({ listing }: { listing: Listing }) {
 
   if (terkirim) {
     return (
-      <div role="status" className="relative rounded-sm bg-nila-1/35 px-w4 py-w4">
+      <div role="status" className="relative rounded-kartu bg-nila-1/35 px-w4 py-w4">
         <BingkaiJahit rapat warna="#103868" />
         <div className="relative flex items-start gap-w3">
           <span
-            className="flex size-9 shrink-0 items-center justify-center rounded-sm bg-nila-6 shadow-tombol"
+            className="flex size-9 shrink-0 items-center justify-center rounded-input bg-nila-6 shadow-tombol"
             aria-hidden="true"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" focusable="false">
@@ -119,7 +119,7 @@ export function OfferForm({ listing }: { listing: Listing }) {
             </p>
             <Link
               href="/buyer/transaksi"
-              className="group mt-w2 inline-flex items-center gap-1 rounded-sm text-xs font-medium text-nila-tinta hover:underline"
+              className="group mt-w2 inline-flex items-center gap-1 rounded-input text-xs font-medium text-nila-tinta hover:underline"
             >
               Pantau di Transaksi
               <ArrowRight
@@ -157,7 +157,7 @@ export function OfferForm({ listing }: { listing: Listing }) {
             max={listing.berat}
             step="any"
             placeholder={`maks. ${listing.berat}`}
-            className="h-10 rounded-sm bg-white"
+            className="h-10 rounded-input bg-white"
           />
         )}
       </Field>
@@ -169,12 +169,12 @@ export function OfferForm({ listing }: { listing: Listing }) {
             {...register("catatan")}
             rows={3}
             placeholder="mis. jadwal pengambilan, kebutuhan sortir."
-            className="rounded-sm bg-white"
+            className="rounded-input bg-white"
           />
         )}
       </Field>
 
-      <div className="flex items-center justify-between rounded-sm border border-garis bg-kain px-w3 py-w2 text-sm">
+      <div className="flex items-center justify-between rounded-kartu border border-garis bg-kain px-w3 py-w2 text-sm">
         <span className="text-tinta-pudar">Estimasi total</span>
         <span className="font-mono font-semibold text-tinta tabular-nums" aria-live="polite">
           {estimasi === null ? "—" : formatRupiah(estimasi)}

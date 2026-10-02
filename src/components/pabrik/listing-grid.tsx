@@ -45,7 +45,7 @@ export function ListingGrid({
   }
 
   return (
-    <div className="grid gap-x-w4 gap-y-w3 sm:grid-cols-2">
+    <div className="grid gap-w4 sm:grid-cols-2 xl:grid-cols-3">
       {listings.map((l) => (
         <BaleCard key={l.id} listing={l} compact={compact} />
       ))}

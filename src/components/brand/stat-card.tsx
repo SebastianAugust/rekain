@@ -1,35 +1,76 @@
 import type { LucideIcon } from "lucide-react";
 
 import { Eyebrow } from "@/components/brand/eyebrow";
+import { DyeWash } from "@/components/brand/textile-filters";
+import { cn } from "@/lib/utils";
 
 /**
- * Stat tile. The value is mono — these are readings off a scale, not prose.
+ * Stat tile: the figure is the tile. Large, tight, set in the display face.
  *
- * On a phone three tiles share the width, so the icon steps out and the figure
- * steps down: the label and the number are what the tile is for, and a 16px
- * glyph competing for 80px of column was pushing the label onto two lines and
- * leaving the row of tiles ragged.
+ * `utama` marks the one tile that leads the screen: dyed indigo with the denim
+ * wash, so the eye lands there first and the other tiles stay quiet white cloth.
  */
 export function StatCard({
   label,
   value,
+  satuan,
+  catatan,
   icon: Icon,
+  utama,
+  className,
 }: {
   label: string;
   value: string | number;
-  icon: LucideIcon;
+  /** Unit set small beside the figure, e.g. "kg". */
+  satuan?: string;
+  catatan?: string;
+  icon?: LucideIcon;
+  utama?: boolean;
+  className?: string;
 }) {
   return (
-    <div className="rounded-sm border border-garis permukaan px-w2 py-w3 sm:px-w4">
-      <div className="flex items-start justify-between gap-w2">
-        <Eyebrow className="mb-w2">{label}</Eyebrow>
-        <Icon size={16} className="hidden shrink-0 text-nila-3 sm:block" aria-hidden="true" />
+    <div
+      className={cn(
+        "relative min-w-0 rounded-kartu px-w4 py-w4 sm:px-w5",
+        utama ? "celup di-nila overflow-hidden bg-nila-6 text-white" : "permukaan shadow-bal",
+        className,
+      )}
+    >
+      {utama && <DyeWash />}
+      <div className={cn("flex items-start justify-between gap-w2", utama && "di-atas-celup")}>
+        <Eyebrow className={cn("mb-w3", utama && "text-nila-1")}>{label}</Eyebrow>
+        {Icon && (
+          <Icon
+            size={20}
+            strokeWidth={1.8}
+            className={cn("shrink-0", utama ? "text-nila-1" : "text-nila-3")}
+            aria-hidden="true"
+          />
+        )}
       </div>
-      {/* No wrapping: "Rp3,3 jt" breaking after the comma made one tile taller
-          than its neighbours and the whole row ragged. */}
-      <div className="font-mono text-base font-semibold whitespace-nowrap text-tinta sm:text-2xl">
+      <div
+        className={cn(
+          "judul font-bold tabular-nums whitespace-nowrap",
+          utama ? "di-atas-celup text-5xl sm:text-6xl" : "text-3xl text-tinta sm:text-4xl",
+        )}
+      >
         {value}
+        {satuan && (
+          <span
+            className={cn(
+              "ml-1.5 text-base font-semibold tracking-normal sm:text-lg",
+              utama ? "text-nila-1" : "text-tinta-pudar",
+            )}
+          >
+            {satuan}
+          </span>
+        )}
       </div>
+      {catatan && (
+        <p className={cn("mt-w2 text-sm", utama ? "di-atas-celup text-nila-1" : "text-tinta-pudar")}>
+          {catatan}
+        </p>
+      )}
     </div>
   );
 }

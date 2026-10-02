@@ -69,7 +69,7 @@ const BARIS: Baris[] = [
 
 export function TabelProyeksi({ proyeksi }: { proyeksi: Proyeksi }) {
   return (
-    <div className="overflow-hidden rounded-sm border border-garis permukaan">
+    <div className="overflow-hidden rounded-kartu border border-garis permukaan">
       {/* Kolom angka harus tetap sejajar; di layar sempit tabel digeser, bukan ditumpuk. */}
       <div className="overflow-x-auto">
         <table className="w-full min-w-xl border-collapse text-sm">

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 /** The page frame every dashboard route sits in — one gutter, one measure. */
 export function Halaman({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn("mx-auto max-w-6xl px-w4 py-w5 sm:px-w5", className)}>{children}</div>;
+  return <div className={cn("mx-auto max-w-[1190px] px-w4 py-w5 sm:px-w5 sm:py-w6", className)}>{children}</div>;
 }
 
 /**
@@ -27,14 +27,14 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        "mb-w5 flex flex-wrap items-end justify-between gap-x-w4 gap-y-w3",
+        "mb-w6 flex flex-wrap items-end justify-between gap-x-w4 gap-y-w3",
         className,
       )}
     >
       <div className="min-w-0 max-w-2xl">
         <Eyebrow className="mb-w2">{eyebrow}</Eyebrow>
-        <h1 className="judul text-xl text-tinta sm:text-2xl">{title}</h1>
-        {description && <p className="mt-w2 text-sm text-tinta-pudar">{description}</p>}
+        <h1 className="judul text-3xl text-tinta sm:text-[2.5rem] sm:leading-[1.1]">{title}</h1>
+        {description && <p className="mt-w3 text-base text-tinta-pudar">{description}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </header>

@@ -61,7 +61,7 @@ export function SearchBar({
 }) {
   return (
     <div className="mb-w4 space-y-w3">
-      <div className="flex items-center gap-w2 rounded-sm border border-garis-kuat bg-white px-w3 py-w2 transition-shadow focus-within:border-nila-3 focus-within:shadow-bal focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nila-3">
+      <div className="flex items-center gap-w2 rounded-kartu border border-garis-kuat bg-white px-w3 py-w2 transition-shadow focus-within:border-nila-3 focus-within:shadow-bal focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nila-3">
         <Search size={15} className="shrink-0 text-nila-3" aria-hidden="true" />
         <label htmlFor="cari-material" className="sr-only">
           Cari material, kode, pabrik, atau lokasi
@@ -79,7 +79,7 @@ export function SearchBar({
             type="button"
             onClick={() => onValueChange("")}
             aria-label="Kosongkan pencarian"
-            className="flex size-6 shrink-0 items-center justify-center rounded-sm text-tinta-pudar hover:bg-kain hover:text-tinta"
+            className="flex size-6 shrink-0 items-center justify-center rounded-input text-tinta-pudar hover:bg-kain hover:text-tinta"
           >
             <X size={14} aria-hidden="true" />
           </button>
@@ -96,7 +96,7 @@ export function SearchBar({
               aria-pressed={nyala}
               onClick={() => onToggle(f.id)}
               className={cn(
-                "tekan inline-flex items-center gap-1 rounded-sm border px-w2 py-1.5 text-xs font-medium",
+                "tekan inline-flex items-center gap-1 rounded-input border px-w2 py-1.5 text-xs font-medium",
                 nyala
                   ? "border-nila-6 bg-nila-6 text-white shadow-tombol"
                   : "border-garis-kuat bg-white text-tinta hover:border-nila-3 hover:text-nila-tinta",
@@ -111,7 +111,7 @@ export function SearchBar({
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center gap-1 rounded-sm px-w2 py-1.5 text-xs font-medium text-nila-tinta underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1 rounded-input px-w2 py-1.5 text-xs font-medium text-nila-tinta underline-offset-4 hover:underline"
           >
             <X size={12} aria-hidden="true" /> Hapus semua
           </button>

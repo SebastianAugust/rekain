@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { BrandMark } from "@/components/brand/brand-mark";
+import { Logo } from "@/components/brand/logo";
 import { DyeWash } from "@/components/brand/textile-filters";
 import { cn } from "@/lib/utils";
 
@@ -43,7 +43,7 @@ export function SplashScreen() {
       <DyeWash />
 
       <div className="di-atas-celup flex flex-col items-center gap-w4">
-        <BrandMark tone="dark" className="scale-125" />
+        <Logo putih className="scale-125" />
 
         {/* A shuttle sweeping the width of a woven strip — a loom running, not a bar filling. */}
         <div className="h-px w-28 overflow-hidden rounded-full bg-nila-9">

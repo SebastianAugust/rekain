@@ -32,7 +32,7 @@ export function FavoriteButton({
         disimpan ? `Hapus ${materialLabel} dari favorit` : `Simpan ${materialLabel} ke favorit`
       }
       /* 32px target: the 23px glyph-sized button fell under WCAG 2.5.8's 24px floor. */
-      className="tekan flex size-8 items-center justify-center rounded-sm text-tinta-pudar hover:bg-benang/8 hover:text-benang"
+      className="tekan flex size-8 items-center justify-center rounded-input text-tinta-pudar hover:bg-benang/8 hover:text-benang"
     >
       <Heart
         size={16}

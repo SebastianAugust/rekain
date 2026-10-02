@@ -39,7 +39,7 @@ export function Field({
 
   return (
     <div className={cn("space-y-1.5", className)}>
-      <Label htmlFor={id} className="text-xs font-medium text-tinta-pudar">
+      <Label htmlFor={id} className="text-sm font-medium text-tinta">
         {label}
         {/* The guard thread's second and last job: marking what is required. */}
         {required && (
@@ -50,7 +50,7 @@ export function Field({
       </Label>
 
       {description && (
-        <p id={descriptionId} className="text-xs text-tinta-pudar">
+        <p id={descriptionId} className="text-sm text-tinta-pudar">
           {description}
         </p>
       )}
@@ -58,7 +58,7 @@ export function Field({
       {children({ id, "aria-describedby": describedBy, "aria-invalid": Boolean(error) })}
 
       {error && (
-        <p id={errorId} role="alert" className="text-xs font-medium text-benang">
+        <p id={errorId} role="alert" className="text-sm font-medium text-benang">
           {error}
         </p>
       )}

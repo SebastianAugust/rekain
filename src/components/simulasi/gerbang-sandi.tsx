@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { Lock } from "lucide-react";
 
-import { BrandMark } from "@/components/brand/brand-mark";
+import { Logo } from "@/components/brand/logo";
 import { BingkaiJahit } from "@/components/brand/stitch-line";
 import { DyeWash } from "@/components/brand/textile-filters";
 import { tombol } from "@/components/brand/tombol";
@@ -22,10 +22,10 @@ export function GerbangSandi({ belumDisetel }: { belumDisetel: boolean }) {
 
       <div className="di-atas-celup w-full max-w-sm">
         <div className="mb-w5 flex justify-center">
-          <BrandMark tone="dark" />
+          <Logo putih />
         </div>
 
-        <div className="di-kain relative rounded-sm permukaan px-w5 py-w5 shadow-bal-angkat">
+        <div className="di-kain relative rounded-kartu permukaan px-w5 py-w5 shadow-bal-angkat">
           <BingkaiJahit />
 
           <div className="relative">

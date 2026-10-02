@@ -30,7 +30,7 @@ export function HowItWorks() {
       <ol className="grid grid-cols-1 gap-x-w5 gap-y-w4 sm:grid-cols-2 lg:grid-cols-5">
         {STASIUN.map((s) => (
           <li key={s.kode}>
-            <span className="inline-block rounded-sm bg-nila-1 px-w2 py-0.5 font-mono text-xs tracking-wide text-nila-6">
+            <span className="inline-block rounded-input bg-nila-1 px-w2 py-0.5 font-mono text-xs tracking-wide text-nila-6">
               {s.kode}
             </span>
             <h3 className="judul-kecil mt-w2 text-base text-tinta">{s.t}</h3>

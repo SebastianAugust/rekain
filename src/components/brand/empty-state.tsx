@@ -1,7 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import { RotateCcw, TriangleAlert } from "lucide-react";
 
-import { BingkaiJahit } from "@/components/brand/stitch-line";
 import { tombol } from "@/components/brand/tombol";
 import { cn } from "@/lib/utils";
 
@@ -14,12 +13,11 @@ function Tambalan({ icon: Icon, putus }: { icon: LucideIcon; putus?: boolean }) 
   return (
     <span
       className={cn(
-        "relative flex size-14 items-center justify-center rounded-sm shadow-panel",
-        putus ? "rotate-3 bg-white" : "-rotate-3 bg-nila-1/35",
+        "relative flex size-14 items-center justify-center rounded-full shadow-panel",
+        putus ? "bg-benang/10" : "bg-nila-1/40",
       )}
       aria-hidden="true"
     >
-      <BingkaiJahit rapat putus={putus} warna={putus ? "#a63a2c" : "#103868"} />
       <Icon size={22} className={putus ? "text-benang" : "text-nila-6"} />
     </span>
   );
@@ -44,8 +42,7 @@ export function EmptyState({
   judul?: "h1" | "h2";
 }) {
   return (
-    <div className="relative rounded-sm border border-garis permukaan px-w4 py-w6 text-center">
-      <BingkaiJahit />
+    <div className="relative rounded-kartu border border-garis permukaan px-w4 py-w7 text-center shadow-panel">
       <div className="relative flex flex-col items-center">
         <Tambalan icon={icon} />
         <Judul className="judul-kecil mt-w4 text-base text-tinta">{title}</Judul>
@@ -74,9 +71,8 @@ export function ErrorState({
   return (
     <div
       role="alert"
-      className="relative rounded-sm border border-garis permukaan px-w4 py-w6 text-center"
+      className="relative rounded-kartu border border-garis permukaan px-w4 py-w7 text-center shadow-panel"
     >
-      <BingkaiJahit putus warna="#a63a2c" />
       <div className="relative flex flex-col items-center">
         <Tambalan icon={TriangleAlert} putus />
         <h2 className="judul-kecil mt-w4 text-base text-tinta">{title}</h2>

@@ -18,7 +18,7 @@ export function TitikBelumDisurvei({ daftar }: { daftar: TidakTerutekan[] }) {
   return (
     <section
       aria-label="Material yang belum bisa dirutekan"
-      className="relative overflow-hidden rounded-sm border border-garis permukaan px-w4 py-w3"
+      className="relative overflow-hidden rounded-kartu border border-garis permukaan px-w4 py-w3"
     >
       <span className="absolute inset-y-0 left-0 bg-benang" style={{ width: 2 }} aria-hidden="true" />
 
@@ -42,7 +42,7 @@ export function TitikBelumDisurvei({ daftar }: { daftar: TidakTerutekan[] }) {
 
       <Link
         href="/ops/pabrik"
-        className="mt-w3 inline-block rounded-sm text-xs font-medium text-nila-tinta hover:underline"
+        className="mt-w3 inline-block rounded-input text-xs font-medium text-nila-tinta hover:underline"
       >
         Kelola titik jemput
       </Link>

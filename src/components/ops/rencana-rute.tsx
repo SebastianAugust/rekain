@@ -17,7 +17,7 @@ import { DEPOT_NAMA, KLASTER } from "@/lib/session";
 function RencanaSkeleton() {
   return (
     <div className="space-y-w5" role="status" aria-label="Menyusun rencana rute">
-      <div className="grid grid-cols-1 gap-px rounded-sm border border-garis bg-garis sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-px rounded-kartu border border-garis bg-garis sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 4 }, (_, i) => (
           <div key={i} className="space-y-w2 permukaan px-w4 py-w3">
             <Skeleton className="h-3 w-24" />
@@ -28,7 +28,7 @@ function RencanaSkeleton() {
       </div>
       <div className="grid gap-x-w5 gap-y-w4 xl:grid-cols-2">
         {Array.from({ length: 2 }, (_, i) => (
-          <div key={i} className="space-y-w3 rounded-sm border border-garis permukaan px-w4 py-w4">
+          <div key={i} className="space-y-w3 rounded-kartu border border-garis permukaan px-w4 py-w4">
             <Skeleton className="h-4 w-32" />
             <Skeleton className="h-40 w-full" />
             <Skeleton className="h-3 w-full" />

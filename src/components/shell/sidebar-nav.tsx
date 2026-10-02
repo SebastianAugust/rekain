@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogOut } from "lucide-react";
 
-import { BrandMark } from "@/components/brand/brand-mark";
+import { Logo } from "@/components/brand/logo";
 import { StitchLine } from "@/components/brand/stitch-line";
 import { DyeWash } from "@/components/brand/textile-filters";
 import { isNavItemActive, NAV } from "@/components/shell/nav-config";
@@ -36,7 +36,7 @@ export function SidebarNav({ role }: { role: Role }) {
 
       <div className="di-atas-celup flex flex-1 flex-col pl-[env(safe-area-inset-left)]">
         <div className="flex h-14 items-center border-b border-nila-9 px-w4">
-          <BrandMark tone="dark" />
+          <Logo putih />
         </div>
 
         <ul className="flex-1 space-y-w1 px-w2 py-w3">
@@ -49,7 +49,7 @@ export function SidebarNav({ role }: { role: Role }) {
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "relative flex w-full items-center gap-w3 rounded-sm px-w3 py-2.5 text-sm",
+                    "relative flex w-full items-center gap-w3 rounded-input px-w3 py-2.5 text-sm",
                     active
                       ? "bg-nila-9 font-semibold text-white"
                       : "text-nila-1 hover:bg-nila-9/60 hover:text-white",
@@ -59,7 +59,7 @@ export function SidebarNav({ role }: { role: Role }) {
                   {active && (
                     <span
                       aria-hidden="true"
-                      className="absolute inset-y-1 left-0 rounded-sm bg-nila-1"
+                      className="absolute inset-y-1 left-0 rounded-input bg-nila-1"
                       style={{ width: 2 }}
                     />
                   )}
@@ -74,7 +74,7 @@ export function SidebarNav({ role }: { role: Role }) {
         <div className="px-w2 pb-w3">
           <Link
             href="/"
-            className="flex w-full items-center gap-w3 rounded-sm px-w3 py-2.5 text-sm text-nila-1 hover:bg-nila-9/60 hover:text-white"
+            className="flex w-full items-center gap-w3 rounded-input px-w3 py-2.5 text-sm text-nila-1 hover:bg-nila-9/60 hover:text-white"
           >
             <LogOut size={16} aria-hidden="true" />
             Keluar

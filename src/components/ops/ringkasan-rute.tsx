@@ -50,7 +50,7 @@ export function RingkasanRute({ rencana }: { rencana: RencanaRute }) {
   return (
     <section
       aria-label="Ringkasan rencana rute"
-      className="overflow-hidden rounded-sm border border-garis"
+      className="overflow-hidden rounded-kartu border border-garis"
     >
       {/* A 1px gap over a garis ground draws the dividers at any column count. */}
       <dl className="grid grid-cols-2 gap-px bg-garis lg:grid-cols-4">

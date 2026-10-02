@@ -1,5 +1,4 @@
 import { Halaman, PageHeader } from "@/components/brand/page-header";
-import { BingkaiJahit } from "@/components/brand/stitch-line";
 import { KLASTER, PERSONA } from "@/lib/session";
 import type { Role } from "@/lib/types";
 
@@ -20,17 +19,16 @@ export function ProfileCard({ role }: { role: Role }) {
     <Halaman className="max-w-2xl">
       <PageHeader eyebrow="Profil" title="Akun Anda" />
 
-      <div className="relative rounded-sm border border-garis permukaan px-w4 py-w5 shadow-panel">
-        <BingkaiJahit />
+      <div className="relative rounded-kartu border border-garis permukaan px-w5 py-w5 shadow-bal">
         <div className="relative flex items-center gap-w4">
           <span
-            className="flex size-14 shrink-0 items-center justify-center rounded-sm bg-nila-6 font-mono text-xl font-semibold text-white shadow-tombol"
+            className="flex size-16 shrink-0 items-center justify-center rounded-full bg-nila-6 text-2xl font-bold text-white shadow-tombol"
             aria-hidden="true"
           >
             {persona.nama.charAt(0)}
           </span>
           <div className="min-w-0">
-            <div className="judul-kecil text-lg text-tinta">{persona.nama}</div>
+            <div className="judul-kecil text-2xl text-tinta">{persona.nama}</div>
             <div className="mt-0.5 text-sm text-tinta-pudar">{persona.deskripsi}</div>
           </div>
         </div>

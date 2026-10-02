@@ -38,7 +38,7 @@ export function KontrolKapasitas({
           Kapasitas truk
         </Label>
         <Select value={String(kapasitas)} onValueChange={(v) => onKapasitasChange(Number(v))}>
-          <SelectTrigger id={id} className="h-10 w-52 rounded-sm bg-white">
+          <SelectTrigger id={id} className="h-10 w-52 rounded-input bg-white">
             <Truck size={14} className="shrink-0 text-nila-3" aria-hidden="true" />
             {/* Base UI renders the raw value by default; the label is the kilogram figure. */}
             <SelectValue>{formatBerat(kapasitas)}</SelectValue>

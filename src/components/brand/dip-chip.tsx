@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
   the same hierarchy the business has.
 */
 const dipChipVariants = cva(
-  "inline-flex items-center gap-1 rounded-sm px-2 py-0.5 font-mono text-xs tracking-tight whitespace-nowrap",
+  "inline-flex items-center gap-1 rounded-full px-w2 py-1 font-mono text-xs font-medium tracking-wide whitespace-nowrap",
   {
     variants: {
       dip: {

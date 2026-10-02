@@ -155,7 +155,7 @@ function SimulatorDalam() {
       />
 
       <div className="mt-w5 grid gap-w5 lg:grid-cols-[19rem_minmax(0,1fr)] lg:items-start">
-        <aside className="cetak-mengalir rounded-sm border border-garis permukaan px-w4 py-w4 shadow-panel lg:sticky lg:top-w4 lg:max-h-[calc(100dvh-2rem)] lg:overflow-y-auto">
+        <aside className="cetak-mengalir rounded-kartu border border-garis permukaan px-w4 py-w4 shadow-panel lg:sticky lg:top-w4 lg:max-h-[calc(100dvh-2rem)] lg:overflow-y-auto">
           <h2 className="judul-kecil mb-w3 text-sm text-tinta">Asumsi</h2>
           <PanelAsumsi asumsi={asumsi} ubah={ubah} lengkap={lengkap} />
         </aside>
@@ -286,7 +286,7 @@ function SimulatorDalam() {
                       onClick={() => setMetrik(m)}
                       aria-pressed={metrik === m}
                       className={cn(
-                        "rounded-sm px-w2 py-1 font-mono text-xs transition-colors",
+                        "rounded-input px-w2 py-1 font-mono text-xs transition-colors",
                         metrik === m
                           ? "bg-nila-6 text-white"
                           : "border border-garis text-tinta-pudar hover:border-nila-3",
@@ -299,7 +299,7 @@ function SimulatorDalam() {
               }
             />
 
-            <p className="rounded-sm border border-garis bg-kain px-w4 py-w3 text-xs text-tinta-pudar">
+            <p className="rounded-kartu border border-garis bg-kain px-w4 py-w3 text-xs text-tinta-pudar">
               <span className="font-medium text-tinta">Catatan atas klaim Bab 5.4.</span>{" "}
               Proposal menyebut model ini paling sensitif terhadap harga per kg dan biaya
               logistik. Pada uji seragam ±{Math.round(DEVIASI_BAWAAN * 100)}% di atas, harga
@@ -319,7 +319,7 @@ function SimulatorDalam() {
                 {proyeksi.tahun.map((t, i) => (
                   <div
                     key={t.tahun}
-                    className="rounded-sm border border-garis permukaan px-w4 py-w3 shadow-panel"
+                    className="rounded-kartu border border-garis permukaan px-w4 py-w3 shadow-panel"
                   >
                     <div className="font-mono text-xs tracking-widest text-nila-tinta uppercase">
                       BEP Tahun {t.tahun}

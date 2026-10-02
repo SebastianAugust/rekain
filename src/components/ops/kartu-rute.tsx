@@ -26,7 +26,7 @@ export function KartuRute({
   const utilisasi = nadaUtilisasi(rute.utilisasi);
 
   return (
-    <article className="overflow-hidden rounded-sm border border-garis permukaan">
+    <article className="overflow-hidden rounded-kartu border border-garis permukaan">
       <header className="flex flex-wrap items-center justify-between gap-w3 border-b border-garis px-w4 py-w3">
         <div className="min-w-0">
           <div className="font-mono text-xs text-tinta-pudar">{rute.id}</div>
@@ -53,7 +53,7 @@ export function KartuRute({
         {rute.perhentian.map((p) => (
           <li key={`${p.pabrik}-${p.urutan}`} className="flex items-start gap-w3 px-w4 py-w3">
             <span
-              className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-sm bg-nila-6 font-mono text-xs font-semibold text-white"
+              className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-input bg-nila-6 font-mono text-xs font-semibold text-white"
               aria-hidden="true"
             >
               {p.urutan}
@@ -113,7 +113,7 @@ export function KartuRute({
         </dl>
 
         {/* The bar repeats the figure above it, so it carries no information of its own. */}
-        <div className="mt-w3 h-1.5 w-full overflow-hidden rounded-sm bg-kain" aria-hidden="true">
+        <div className="mt-w3 h-1.5 w-full overflow-hidden rounded-kartu bg-kain" aria-hidden="true">
           <div
             className="h-full bg-nila-6"
             style={{ width: `${Math.min(100, rute.utilisasi * 100)}%` }}

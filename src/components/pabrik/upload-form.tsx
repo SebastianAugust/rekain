@@ -98,7 +98,7 @@ export function UploadForm() {
           onSubmit={handleSubmit(onSubmit)}
           noValidate
           aria-busy={isSubmitting}
-          className="space-y-w4 rounded-sm border border-garis permukaan px-w4 py-w4 shadow-panel lg:col-span-2"
+          className="space-y-w4 rounded-kartu border border-garis permukaan px-w4 py-w4 shadow-panel lg:col-span-2"
         >
           <Controller
             control={control}
@@ -111,7 +111,7 @@ export function UploadForm() {
                       id={id}
                       {...a11y}
                       onBlur={field.onBlur}
-                      className="h-10 w-full rounded-sm bg-white"
+                      className="h-10 w-full rounded-input bg-white"
                     >
                       <SelectValue placeholder="Pilih jenis material" />
                     </SelectTrigger>
@@ -139,14 +139,14 @@ export function UploadForm() {
                   min={0}
                   step="any"
                   placeholder="mis. 500"
-                  className="h-10 rounded-sm bg-white"
+                  className="h-10 rounded-input bg-white"
                 />
               )}
             </Field>
 
             <Field label="Lokasi" required error={errors.lokasi?.message}>
               {(a11y) => (
-                <Input {...a11y} {...register("lokasi")} className="h-10 rounded-sm bg-white" />
+                <Input {...a11y} {...register("lokasi")} className="h-10 rounded-input bg-white" />
               )}
             </Field>
           </div>
@@ -155,7 +155,7 @@ export function UploadForm() {
               than pretending to be a working uploader. */}
           <div className="space-y-1.5">
             <span className="text-xs font-medium text-tinta-pudar">Foto kondisi material</span>
-            <div className="flex items-center gap-w3 rounded-sm bg-kain px-w4 py-w3 text-xs text-tinta-pudar">
+            <div className="flex items-center gap-w3 rounded-input bg-kain px-w4 py-w3 text-xs text-tinta-pudar">
               <ImageOff size={16} className="shrink-0 text-nila-3" aria-hidden="true" />
               Unggah foto belum tersedia di prototipe ini. Jelaskan kondisinya di catatan.
             </div>
@@ -168,7 +168,7 @@ export function UploadForm() {
                 {...register("catatan")}
                 rows={3}
                 placeholder="mis. kondisi, campuran warna, dll."
-                className="rounded-sm bg-white"
+                className="rounded-input bg-white"
               />
             )}
           </Field>
@@ -188,7 +188,7 @@ export function UploadForm() {
           </button>
         </form>
 
-        <aside className="rounded-sm border border-garis permukaan px-w4 py-w4">
+        <aside className="rounded-kartu border border-garis permukaan px-w4 py-w4">
           <Eyebrow className="mb-w4">Setelah dikirim</Eyebrow>
           {/* The stations are joined by a thread, because they are one seam. */}
           <ol className="relative space-y-w4 border-l border-dashed border-nila-3/50 pl-w4">
@@ -198,7 +198,7 @@ export function UploadForm() {
                   className="absolute top-1.5 -left-w4 size-2 -translate-x-1/2 rounded-full bg-nila-3 ring-2 ring-white"
                   aria-hidden="true"
                 />
-                <span className="inline-block rounded-sm bg-nila-1 px-w2 py-0.5 font-mono text-xs text-nila-6">
+                <span className="inline-block rounded-input bg-nila-1 px-w2 py-0.5 font-mono text-xs text-nila-6">
                   {s.kode}
                 </span>
                 <h2 className="judul-kecil mt-w2 text-sm text-tinta">{s.t}</h2>

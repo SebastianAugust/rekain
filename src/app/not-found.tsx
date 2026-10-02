@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PackageSearch } from "lucide-react";
 
-import { BrandMark } from "@/components/brand/brand-mark";
+import { Logo } from "@/components/brand/logo";
 import { EmptyState } from "@/components/brand/empty-state";
 import { tombol } from "@/components/brand/tombol";
 
@@ -14,8 +14,8 @@ export default function NotFound() {
     <div className="flex min-h-dvh flex-col">
       <header className="border-b border-garis permukaan">
         <div className="mx-auto flex max-w-6xl items-center px-w4 py-w3 sm:px-w5">
-          <Link href="/" aria-label="ReKain — beranda" className="rounded-sm">
-            <BrandMark />
+          <Link href="/" aria-label="ReKain — beranda" className="rounded-input">
+            <Logo />
           </Link>
         </div>
       </header>

@@ -34,7 +34,7 @@ export function BadgeDeviasi({
     return (
       <span
         className={cn(
-          "inline-flex items-center gap-1 rounded-sm bg-kain px-1.5 py-0.5 font-mono text-xs text-tinta-pudar tabular-nums",
+          "inline-flex items-center gap-1 rounded-input bg-kain px-1.5 py-0.5 font-mono text-xs text-tinta-pudar tabular-nums",
           className,
         )}
       >
@@ -52,7 +52,7 @@ export function BadgeDeviasi({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 font-mono text-xs tabular-nums",
+        "inline-flex items-center gap-1 rounded-input px-1.5 py-0.5 font-mono text-xs tabular-nums",
         membaik ? "bg-nila-1/45 text-nila-9" : "bg-kain text-benang",
         className,
       )}
@@ -88,7 +88,7 @@ export function KartuMetrik({
     return (
       <div
         className={cn(
-          "celup di-nila relative overflow-hidden rounded-sm bg-nila-6 px-w4 py-w3 shadow-bal",
+          "celup di-nila relative overflow-hidden rounded-kartu bg-nila-6 px-w4 py-w3 shadow-bal",
           className,
         )}
       >
@@ -109,7 +109,7 @@ export function KartuMetrik({
   return (
     <div
       className={cn(
-        "rounded-sm border border-garis permukaan px-w4 py-w3 shadow-panel",
+        "rounded-kartu border border-garis permukaan px-w4 py-w3 shadow-panel",
         className,
       )}
     >

@@ -24,7 +24,7 @@ function BackLink() {
   return (
     <Link
       href="/buyer"
-      className="group mb-w4 inline-flex items-center gap-1 rounded-sm text-xs text-tinta-pudar hover:text-nila-tinta"
+      className="group mb-w4 inline-flex items-center gap-1 rounded-input text-xs text-tinta-pudar hover:text-nila-tinta"
     >
       <ChevronLeft
         size={14}
@@ -44,7 +44,7 @@ export function MaterialDetailSkeleton() {
     <Halaman>
       <BackLink />
       <div className={KOLOM} role="status" aria-label="Memuat material">
-        <div className="overflow-hidden rounded-sm border border-garis permukaan">
+        <div className="overflow-hidden rounded-kartu border border-garis permukaan">
           <Skeleton className="h-32 rounded-none" />
           <div className="space-y-w3 px-w4 py-w4">
             <Skeleton className="h-3 w-24" />
@@ -52,7 +52,7 @@ export function MaterialDetailSkeleton() {
             <Skeleton className="h-16 w-full" />
           </div>
         </div>
-        <div className="space-y-w3 rounded-sm border border-garis permukaan px-w4 py-w4">
+        <div className="space-y-w3 rounded-kartu border border-garis permukaan px-w4 py-w4">
           <Skeleton className="h-3 w-32" />
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-20 w-full" />
@@ -69,7 +69,7 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
       <BackLink />
 
       <div className={KOLOM}>
-        <article className="overflow-hidden rounded-sm border border-garis permukaan shadow-bal">
+        <article className="overflow-hidden rounded-kartu border border-garis permukaan shadow-bal">
           {/*
             The full cut face of this one bale, not submerged: a buyer inspecting
             a lot needs to see the cloth itself. This is the only place natural
@@ -133,7 +133,7 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
 
         <section
           aria-label="Ajukan penawaran"
-          className="rounded-sm border border-garis permukaan px-w4 py-w4 shadow-panel"
+          className="rounded-kartu border border-garis permukaan px-w4 py-w4 shadow-panel"
         >
           <Eyebrow className="mb-w4">Ajukan penawaran</Eyebrow>
           <OfferForm listing={listing} />

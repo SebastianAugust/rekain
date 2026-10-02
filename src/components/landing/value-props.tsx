@@ -27,8 +27,8 @@ export function ValueProps() {
       {PROPS.map((v) => {
         const Icon = v.icon;
         return (
-          <div key={v.t} className="rounded-sm border border-garis permukaan px-w4 py-w4 shadow-panel">
-            <span className="mb-w3 flex size-9 items-center justify-center rounded-sm bg-nila-1/35">
+          <div key={v.t} className="rounded-kartu border border-garis permukaan px-w4 py-w4 shadow-panel">
+            <span className="mb-w3 flex size-9 items-center justify-center rounded-input bg-nila-1/35">
               <Icon size={18} className="text-nila-6" aria-hidden="true" />
             </span>
             <h3 className="judul-kecil mb-w1 text-base text-tinta">{v.t}</h3>

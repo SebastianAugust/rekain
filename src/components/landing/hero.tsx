@@ -40,7 +40,7 @@ function SuratMuat({ listings }: { listings: Listing[] | undefined }) {
   return (
     <aside
       aria-label="Ringkasan katalog hari ini"
-      className="di-kain relative hidden rotate-1 rounded-sm permukaan px-w4 py-w4 text-tinta shadow-bal-angkat transition-transform duration-300 hover:rotate-0 lg:col-span-4 lg:block"
+      className="di-kain relative hidden rotate-1 rounded-kartu permukaan px-w4 py-w4 text-tinta shadow-bal-angkat transition-transform duration-300 hover:rotate-0 lg:col-span-4 lg:block"
     >
       <BingkaiJahit />
       <div className="relative">
@@ -58,7 +58,7 @@ function SuratMuat({ listings }: { listings: Listing[] | undefined }) {
         </dl>
         <Link
           href="/buyer"
-          className="mt-w2 inline-flex items-center gap-1 rounded-sm text-xs font-medium text-nila-tinta hover:underline"
+          className="mt-w2 inline-flex items-center gap-1 rounded-input text-xs font-medium text-nila-tinta hover:underline"
         >
           Buka katalog lengkap <ArrowRight size={12} aria-hidden="true" />
         </Link>

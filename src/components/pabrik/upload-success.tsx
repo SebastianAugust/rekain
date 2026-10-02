@@ -22,13 +22,13 @@ export function UploadSuccess({
     <Halaman className="max-w-xl">
       <div
         role="status"
-        className="overflow-hidden rounded-sm border border-garis permukaan shadow-bal"
+        className="overflow-hidden rounded-kartu border border-garis permukaan shadow-bal"
       >
         <StitchLine seed={listing.id} className="mt-w3" />
 
         <div className="px-w4 pt-w4 pb-w5 text-center">
           <span
-            className="inline-flex size-11 items-center justify-center rounded-sm bg-nila-6 shadow-tombol"
+            className="inline-flex size-11 items-center justify-center rounded-input bg-nila-6 shadow-tombol"
             aria-hidden="true"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" focusable="false">
@@ -50,7 +50,7 @@ export function UploadSuccess({
             buyer. Catat kode di bawah untuk pelacakan.
           </p>
 
-          <div className="relative mx-auto mt-w4 inline-flex -rotate-1 items-center gap-w3 rounded-sm bg-white px-w4 py-w3 shadow-bal">
+          <div className="relative mx-auto mt-w4 inline-flex -rotate-1 items-center gap-w3 rounded-kartu bg-white px-w4 py-w3 shadow-bal">
             <BingkaiJahit rapat />
             <span className="relative font-mono text-lg font-semibold tracking-wide text-tinta">
               {listing.id}
