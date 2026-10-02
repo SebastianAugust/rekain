@@ -37,7 +37,7 @@ export function DaftarPabrik() {
       {isPending ? (
         <div className="space-y-w2" role="status" aria-label="Memuat titik jemput">
           {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="rounded-kartu border border-garis permukaan px-w4 py-w3">
+            <div key={i} className="rounded-kartu permukaan px-w4 py-w4 shadow-bal">
               <Skeleton className="h-4 w-48" />
               <Skeleton className="mt-w2 h-3 w-64" />
             </div>
@@ -53,7 +53,7 @@ export function DaftarPabrik() {
           description="Pabrik yang sudah terdaftar beserta titik jemputnya akan muncul di sini."
         />
       ) : (
-        <div className="overflow-hidden rounded-kartu border border-garis permukaan">
+        <div className="overflow-hidden rounded-kartu permukaan shadow-bal">
           {/* A table on desktop; the same rows stack on a phone without a horizontal scroll. */}
           <table className="w-full border-collapse text-sm">
             <caption className="sr-only">

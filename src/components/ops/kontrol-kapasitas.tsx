@@ -34,12 +34,12 @@ export function KontrolKapasitas({
   return (
     <div className="flex flex-wrap items-end gap-w4">
       <div className="space-y-1.5">
-        <Label htmlFor={id} className="text-xs font-medium text-tinta-pudar">
+        <Label htmlFor={id} className="text-sm font-medium text-tinta">
           Kapasitas truk
         </Label>
         <Select value={String(kapasitas)} onValueChange={(v) => onKapasitasChange(Number(v))}>
-          <SelectTrigger id={id} className="h-10 w-52 rounded-input bg-white">
-            <Truck size={14} className="shrink-0 text-nila-3" aria-hidden="true" />
+          <SelectTrigger id={id} className="w-52 bg-white">
+            <Truck size={18} strokeWidth={1.8} className="shrink-0 text-nila-3" aria-hidden="true" />
             {/* Base UI renders the raw value by default; the label is the kilogram figure. */}
             <SelectValue>{formatBerat(kapasitas)}</SelectValue>
           </SelectTrigger>
@@ -56,11 +56,11 @@ export function KontrolKapasitas({
       <p
         role="status"
         aria-live="polite"
-        className="flex h-10 items-center gap-w2 text-xs text-tinta-pudar"
+        className="flex h-11 items-center gap-w2 text-sm text-tinta-pudar"
       >
         {sedangHitung ? (
           <>
-            <Loader2 size={13} className="animate-spin text-nila-3" aria-hidden="true" />
+            <Loader2 size={16} className="animate-spin text-nila-3" aria-hidden="true" />
             Menyusun ulang rute…
           </>
         ) : (

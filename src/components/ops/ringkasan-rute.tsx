@@ -48,16 +48,15 @@ export function RingkasanRute({ rencana }: { rencana: RencanaRute }) {
   ];
 
   return (
-    <section
-      aria-label="Ringkasan rencana rute"
-      className="overflow-hidden rounded-kartu border border-garis"
-    >
-      {/* A 1px gap over a garis ground draws the dividers at any column count. */}
-      <dl className="grid grid-cols-2 gap-px bg-garis lg:grid-cols-4">
+    <section aria-label="Ringkasan rencana rute">
+      <dl className="grid grid-cols-2 gap-w3 sm:gap-w4 lg:grid-cols-4">
         {sel.map((s) => (
           <div
             key={s.label}
-            className={cn("px-w4 py-w3", s.sorot ? "celup di-nila bg-nila-6" : "permukaan")}
+            className={cn(
+              "min-w-0 rounded-kartu px-w4 py-w4",
+              s.sorot ? "celup di-nila overflow-hidden bg-nila-6" : "permukaan shadow-bal",
+            )}
           >
             {/* The one dyed tile follows the rule every navy surface does. */}
             {s.sorot && <DyeWash halus />}
@@ -66,7 +65,7 @@ export function RingkasanRute({ rencana }: { rencana: RencanaRute }) {
             </dt>
             <dd
               className={cn(
-                "di-atas-celup font-mono text-xl font-semibold sm:text-2xl",
+                "di-atas-celup judul text-2xl tabular-nums sm:text-3xl",
                 s.sorot ? "text-white" : s.redup ? "text-tinta-pudar" : "text-tinta",
               )}
             >
@@ -74,7 +73,7 @@ export function RingkasanRute({ rencana }: { rencana: RencanaRute }) {
             </dd>
             <dd
               className={cn(
-                "di-atas-celup mt-w1 text-xs",
+                "di-atas-celup mt-w1 text-sm",
                 s.sorot ? "text-nila-1" : "text-tinta-pudar",
               )}
             >
