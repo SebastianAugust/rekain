@@ -22,7 +22,8 @@ export function RoleSwitcher({ role }: { role: Role }) {
   return (
     <div className="flex items-center gap-w1">
       <ArrowLeftRight
-        size={13}
+        size={16}
+        strokeWidth={1.8}
         className="mr-w1 hidden shrink-0 text-nila-3 sm:block"
         aria-hidden="true"
       />
@@ -30,7 +31,7 @@ export function RoleSwitcher({ role }: { role: Role }) {
         <Link
           key={r}
           href={`/${r}`}
-          className="tekan rounded-kartu border border-garis-kuat bg-white px-w2 py-1.5 text-xs font-medium text-tinta hover:border-nila-3 hover:text-nila-tinta"
+          className="tekan inline-flex min-h-11 items-center rounded-full bg-awan px-w3 text-sm font-medium text-tinta hover:bg-awan-tua"
         >
           <span className="hidden sm:inline">{LABEL[r].panjang}</span>
           <span className="sm:hidden">{LABEL[r].pendek}</span>

@@ -9,25 +9,30 @@ export function TopBar({ role }: { role: Role }) {
   const persona = PERSONA[role];
 
   return (
-    /* The status bar / notch strip is added on top of the 3.5rem bar, not taken out of it. */
-    <header className="flex h-[calc(3.5rem+var(--aman-atas))] shrink-0 items-center justify-between gap-w3 border-b border-garis permukaan pt-(--aman-atas) pr-[calc(var(--spacing-w4)+env(safe-area-inset-right))] pl-[calc(var(--spacing-w4)+env(safe-area-inset-left))] sm:pr-[calc(var(--spacing-w5)+env(safe-area-inset-right))] sm:pl-[calc(var(--spacing-w5)+env(safe-area-inset-left))] md:pl-w5">
+    /* The status bar / notch strip is added on top of the 4rem bar, not taken out of it. */
+    <header className="flex h-[calc(4rem+var(--aman-atas))] shrink-0 items-center justify-between gap-w3 pt-(--aman-atas) pr-[calc(var(--spacing-w4)+env(safe-area-inset-right))] pl-[calc(var(--spacing-w4)+env(safe-area-inset-left))] sm:pr-[calc(var(--spacing-w5)+env(safe-area-inset-right))] sm:pl-[calc(var(--spacing-w5)+env(safe-area-inset-left))] md:pl-w5">
       {/* The wordmark doubles as the way home on mobile, where the sidebar is hidden. */}
-      <Link href="/" className="md:hidden" aria-label="ReKain — kembali ke beranda">
+      <Link href="/" className="rounded-input md:hidden" aria-label="ReKain — kembali ke beranda">
         <Logo />
       </Link>
       <div className="hidden md:block" />
 
       <div className="flex items-center gap-w2 sm:gap-w3">
         <RoleSwitcher role={role} />
-        <div className="flex items-center gap-w2">
+        {/* The avatar is the way to the profile page on mobile, where the tab bar has no room for it. */}
+        <Link
+          href={`/${role}/profil`}
+          aria-label={`Profil ${persona.nama}`}
+          className="flex items-center gap-w2 rounded-full pr-w1 hover:bg-awan sm:pr-w3"
+        >
           <span
-            className="flex size-7 items-center justify-center rounded-input bg-nila-1 font-mono text-xs font-semibold text-nila-6"
+            className="flex size-11 items-center justify-center rounded-full bg-nila-1 text-sm font-bold text-nila-9"
             aria-hidden="true"
           >
             {persona.nama.charAt(0)}
           </span>
-          <span className="hidden text-sm text-tinta sm:inline">{persona.nama}</span>
-        </div>
+          <span className="hidden text-sm font-medium text-tinta sm:inline">{persona.nama}</span>
+        </Link>
       </div>
     </header>
   );

@@ -1,9 +1,11 @@
 import {
+  BadgeCheck,
   Clock,
   ClipboardList,
   Factory,
   Heart,
   Home,
+  Leaf,
   Route,
   Search,
   Upload,
@@ -17,26 +19,30 @@ export type NavItem = {
   href: string;
   label: string;
   icon: LucideIcon;
+  /** Shown in the mobile tab bar. The rest stay in the desktop sidebar. */
+  tab?: boolean;
 };
 
 export const NAV: Record<Role, NavItem[]> = {
   pabrik: [
-    { href: "/pabrik", label: "Beranda", icon: Home },
-    { href: "/pabrik/upload", label: "Upload", icon: Upload },
-    { href: "/pabrik/listing", label: "Listing", icon: ClipboardList },
-    { href: "/pabrik/transaksi", label: "Transaksi", icon: Clock },
+    { href: "/pabrik", label: "Beranda", icon: Home, tab: true },
+    { href: "/pabrik/listing", label: "Listing", icon: ClipboardList, tab: true },
+    { href: "/pabrik/upload", label: "Upload", icon: Upload, tab: true },
+    { href: "/pabrik/transaksi", label: "Transaksi", icon: Clock, tab: true },
+    { href: "/pabrik/dampak", label: "Dampak", icon: Leaf, tab: true },
+    { href: "/pabrik/sertifikat", label: "Sertifikat", icon: BadgeCheck },
     { href: "/pabrik/profil", label: "Profil", icon: User },
   ],
   buyer: [
-    { href: "/buyer", label: "Cari", icon: Search },
-    { href: "/buyer/favorit", label: "Favorit", icon: Heart },
-    { href: "/buyer/transaksi", label: "Transaksi", icon: Clock },
-    { href: "/buyer/profil", label: "Profil", icon: User },
+    { href: "/buyer", label: "Cari", icon: Search, tab: true },
+    { href: "/buyer/favorit", label: "Favorit", icon: Heart, tab: true },
+    { href: "/buyer/transaksi", label: "Transaksi", icon: Clock, tab: true },
+    { href: "/buyer/profil", label: "Profil", icon: User, tab: true },
   ],
   /* Internal. Neither a factory nor a buyer ever sees these routes. */
   ops: [
-    { href: "/ops", label: "Rencana Rute", icon: Route },
-    { href: "/ops/pabrik", label: "Titik Jemput", icon: Factory },
+    { href: "/ops", label: "Rencana Rute", icon: Route, tab: true },
+    { href: "/ops/pabrik", label: "Titik Jemput", icon: Factory, tab: true },
   ],
 };
 
