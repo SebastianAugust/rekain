@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { ArrowRight, Search } from "lucide-react";
 
+import { DataContoh } from "@/components/brand/data-contoh";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { PitaPenampang, type BalPita } from "@/components/brand/penampang-bal";
-import { BingkaiJahit } from "@/components/brand/stitch-line";
 import { DyeWash } from "@/components/brand/textile-filters";
 import { tombol } from "@/components/brand/tombol";
 import { useListings } from "@/lib/data/hooks";
@@ -40,27 +40,26 @@ function SuratMuat({ listings }: { listings: Listing[] | undefined }) {
   return (
     <aside
       aria-label="Ringkasan katalog hari ini"
-      className="di-kain relative hidden rotate-1 rounded-kartu permukaan px-w4 py-w4 text-tinta shadow-bal-angkat transition-transform duration-300 hover:rotate-0 lg:col-span-4 lg:block"
+      className="di-kain relative hidden rounded-kartu permukaan px-w5 py-w5 text-tinta shadow-bal-angkat lg:col-span-4 lg:block"
     >
-      <BingkaiJahit />
       <div className="relative">
         <div className="flex items-baseline justify-between gap-w2">
-          <Eyebrow>Surat muat · hari ini</Eyebrow>
-          <span className="font-mono text-xs text-tinta-pudar">{KLASTER}</span>
+          <Eyebrow>Katalog · {KLASTER}</Eyebrow>
+          <DataContoh />
         </div>
         <dl className="mt-w3 divide-y divide-garis">
           {baris.map((b) => (
             <div key={b.label} className="flex items-baseline justify-between gap-w3 py-w2">
-              <dt className="text-xs text-tinta-pudar">{b.label}</dt>
-              <dd className="font-mono text-base font-semibold text-tinta">{b.nilai}</dd>
+              <dt className="text-sm text-tinta-pudar">{b.label}</dt>
+              <dd className="judul text-2xl tabular-nums text-tinta">{b.nilai}</dd>
             </div>
           ))}
         </dl>
         <Link
           href="/buyer"
-          className="mt-w2 inline-flex items-center gap-1 rounded-input text-xs font-medium text-nila-tinta hover:underline"
+          className="mt-w3 inline-flex min-h-11 items-center gap-1 rounded-full text-sm font-semibold text-nila-tinta hover:underline"
         >
-          Buka katalog lengkap <ArrowRight size={12} aria-hidden="true" />
+          Buka katalog lengkap <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
         </Link>
       </div>
     </aside>
@@ -83,18 +82,18 @@ export function Hero() {
   const totalBerat = bal.reduce((sum, b) => sum + b.berat, 0) || 1;
 
   return (
-    <section className="celup di-nila relative overflow-hidden bg-nila-6">
+    <section className="celup di-nila relative mx-w3 mt-w2 overflow-hidden rounded-[2rem] bg-nila-6 sm:mx-w4 lg:mx-auto lg:mt-w3 lg:max-w-[1190px]">
       <DyeWash />
 
-      <div className="di-atas-celup mx-auto grid max-w-6xl gap-w5 px-w4 pt-w6 pb-w5 sm:px-w5 sm:pt-w7 lg:grid-cols-12 lg:items-end">
+      <div className="di-atas-celup mx-auto grid gap-w5 px-w4 pt-w6 pb-w5 sm:px-w6 sm:pt-w7 lg:grid-cols-12 lg:items-end">
         <div className="lg:col-span-8">
           <Eyebrow className="text-nila-1">Infrastruktur limbah tekstil B2B</Eyebrow>
 
-          <h1 className="judul mt-w3 max-w-3xl text-4xl leading-none text-white sm:text-6xl">
+          <h1 className="judul mt-w3 max-w-3xl text-5xl leading-[1.04] text-white sm:text-7xl">
             Lihat isi setiap bal sebelum Anda membeli.
           </h1>
 
-          <p className="mt-w4 max-w-xl text-base text-pretty text-nila-1 sm:text-lg">
+          <p className="mt-w4 max-w-xl text-lg text-pretty text-nila-1">
             ReKain menghubungkan pabrik garmen dengan recycler, upcycler, dan brand
             berkelanjutan. Setiap bal dinilai mutunya dan diberi harga secara transparan
             sebelum tampil di katalog Anda.
@@ -108,7 +107,8 @@ export function Hero() {
             >
               Jual limbah pabrik saya
               <ArrowRight
-                size={16}
+                size={18}
+                strokeWidth={1.8}
                 aria-hidden="true"
                 className="transition-transform group-hover:translate-x-0.5"
               />
@@ -118,7 +118,7 @@ export function Hero() {
               href="/buyer"
               className={`${tombol({ nada: "garis-terang", ukuran: "besar" })} scroll-mt-24`}
             >
-              Cari material daur ulang <Search size={16} aria-hidden="true" />
+              Cari material daur ulang <Search size={18} strokeWidth={1.8} aria-hidden="true" />
             </Link>
           </div>
         </div>

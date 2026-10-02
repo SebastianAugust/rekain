@@ -1,5 +1,4 @@
 import { Eyebrow } from "@/components/brand/eyebrow";
-import { StitchLine } from "@/components/brand/stitch-line";
 
 /*
   Numbered markers are the reflex move on a landing page and usually decorate
@@ -20,20 +19,18 @@ export function HowItWorks() {
   return (
     <section id="cara-kerja" className="scroll-mt-8">
       <Eyebrow className="mb-w2">Cara kerja</Eyebrow>
-      <h2 className="judul mb-w5 max-w-2xl text-2xl text-tinta sm:text-3xl">
+      <h2 className="judul mb-w5 max-w-2xl text-3xl text-tinta sm:text-5xl sm:leading-[1.08]">
         Dari gudang pabrik ke tangan buyer, lima stasiun
       </h2>
 
-      {/* The seam runs through the stations because the stations are a seam. */}
-      <StitchLine seed="cara-kerja" className="mb-w4" />
 
-      <ol className="grid grid-cols-1 gap-x-w5 gap-y-w4 sm:grid-cols-2 lg:grid-cols-5">
+      <ol className="grid grid-cols-1 gap-w3 sm:grid-cols-2 lg:grid-cols-5">
         {STASIUN.map((s) => (
-          <li key={s.kode}>
-            <span className="inline-block rounded-input bg-nila-1 px-w2 py-0.5 font-mono text-xs tracking-wide text-nila-6">
+          <li key={s.kode} className="rounded-kartu permukaan p-w4 shadow-bal">
+            <span className="inline-block rounded-full bg-nila-1 px-w2 py-1 font-mono text-xs tracking-wide text-nila-6">
               {s.kode}
             </span>
-            <h3 className="judul-kecil mt-w2 text-base text-tinta">{s.t}</h3>
+            <h3 className="judul-kecil mt-w3 text-lg text-tinta">{s.t}</h3>
             <p className="mt-w1 text-sm text-pretty text-tinta-pudar">{s.d}</p>
           </li>
         ))}

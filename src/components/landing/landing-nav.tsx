@@ -11,8 +11,8 @@ const SECTIONS = [
 
 export function LandingNav() {
   return (
-    <header className="border-b border-garis permukaan pt-(--aman-atas)">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-w4 px-w4 py-w3 sm:px-w5">
+    <header className="pt-(--aman-atas)">
+      <div className="mx-auto flex max-w-[1190px] items-center justify-between gap-w4 px-w4 py-w3 sm:px-w5">
         <Link href="/" aria-label="ReKain — beranda" className="rounded-input">
           <Logo />
         </Link>
@@ -26,7 +26,7 @@ export function LandingNav() {
             <a
               key={s.href}
               href={s.href}
-              className="rounded-input underline-offset-4 hover:text-nila-tinta hover:underline"
+              className="inline-flex min-h-11 items-center rounded-full px-w3 hover:bg-awan hover:text-tinta"
             >
               {s.label}
             </a>
@@ -36,7 +36,7 @@ export function LandingNav() {
         <div className="flex items-center gap-w2">
           <Link
             href="/pabrik"
-            className="rounded-input px-w2 py-1.5 text-xs font-medium text-nila-tinta underline-offset-4 hover:underline sm:text-sm"
+            className="inline-flex min-h-11 items-center rounded-full px-w3 text-sm font-semibold text-nila-tinta hover:bg-awan"
           >
             Masuk Pabrik
           </Link>

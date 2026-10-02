@@ -1,3 +1,4 @@
+import { DataContoh } from "@/components/brand/data-contoh";
 import { Eyebrow } from "@/components/brand/eyebrow";
 
 /*
@@ -14,18 +15,20 @@ const ANGKA = [
 
 export function MacroStats() {
   return (
-    <section aria-label="Skala masalah" className="rounded-kartu border border-garis permukaan">
-      <div className="px-w4 pt-w3">
+    <section aria-label="Skala masalah">
+      <div className="mb-w4 flex flex-wrap items-center justify-between gap-w2">
         <Eyebrow>Skala masalahnya</Eyebrow>
+        {/* TODO: cantumkan sumber yang bisa dikutip untuk ketiga angka ini. */}
+        <DataContoh>Perkiraan, belum bersumber</DataContoh>
       </div>
-      <dl className="grid grid-cols-1 sm:grid-cols-3">
+      <dl className="grid grid-cols-1 gap-w3 sm:grid-cols-3 sm:gap-w4">
         {ANGKA.map((a) => (
-          <div key={a.label} className="border-t border-garis px-w4 py-w3 sm:border-t-0 sm:border-l sm:first:border-l-0">
-            <dd className="font-mono text-3xl font-semibold text-nila-6">
+          <div key={a.label} className="rounded-kartu permukaan px-w5 py-w5 shadow-bal">
+            <dd className="judul text-5xl tabular-nums text-nila-6 sm:text-6xl">
               {a.nilai}
-              <span className="ml-1 text-base font-normal text-tinta-pudar">{a.satuan}</span>
+              <span className="ml-1.5 text-xl font-semibold tracking-normal text-tinta-pudar">{a.satuan}</span>
             </dd>
-            <dt className="mt-w1 text-sm text-tinta-pudar">{a.label}</dt>
+            <dt className="mt-w2 text-base text-tinta-pudar">{a.label}</dt>
           </div>
         ))}
       </dl>

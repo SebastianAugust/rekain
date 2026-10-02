@@ -34,7 +34,7 @@ export function BadgeDeviasi({
     return (
       <span
         className={cn(
-          "inline-flex items-center gap-1 rounded-input bg-kain px-1.5 py-0.5 font-mono text-xs text-tinta-pudar tabular-nums",
+          "inline-flex items-center gap-1 rounded-full bg-kain px-w2 py-0.5 font-mono text-xs text-tinta-pudar tabular-nums",
           className,
         )}
       >
@@ -52,7 +52,7 @@ export function BadgeDeviasi({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-input px-1.5 py-0.5 font-mono text-xs tabular-nums",
+        "inline-flex items-center gap-1 rounded-full px-w2 py-0.5 font-mono text-xs tabular-nums",
         membaik ? "bg-nila-1/45 text-nila-9" : "bg-kain text-benang",
         className,
       )}
@@ -96,7 +96,7 @@ export function KartuMetrik({
           <div className="font-mono text-xs tracking-widest text-nila-1 uppercase">
             {label}
           </div>
-          <div className="judul mt-w2 font-mono text-3xl leading-none text-white tabular-nums sm:text-4xl">
+          <div className="judul mt-w2 text-3xl leading-none text-white tabular-nums sm:text-4xl">
             {nilai}
           </div>
           {catatan && <p className="mt-w2 text-xs text-nila-1">{catatan}</p>}
@@ -109,14 +109,14 @@ export function KartuMetrik({
   return (
     <div
       className={cn(
-        "rounded-kartu border border-garis permukaan px-w4 py-w3 shadow-panel",
+        "rounded-kartu permukaan px-w4 py-w4 shadow-bal",
         className,
       )}
     >
       <div className="font-mono text-xs tracking-widest text-nila-tinta uppercase">
         {label}
       </div>
-      <div className="mt-w2 font-mono text-2xl leading-none font-semibold text-tinta tabular-nums">
+      <div className="judul mt-w2 text-2xl leading-none text-tinta tabular-nums">
         {nilai}
       </div>
       {catatan && <p className="mt-w2 text-xs text-tinta-pudar">{catatan}</p>}

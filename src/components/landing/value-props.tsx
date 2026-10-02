@@ -22,17 +22,17 @@ export function ValueProps() {
   return (
     <section
       aria-label="Keunggulan ReKain"
-      className="grid grid-cols-1 gap-x-w5 gap-y-w4 sm:grid-cols-3"
+      className="grid grid-cols-1 gap-w4 sm:grid-cols-3"
     >
       {PROPS.map((v) => {
         const Icon = v.icon;
         return (
-          <div key={v.t} className="rounded-kartu border border-garis permukaan px-w4 py-w4 shadow-panel">
-            <span className="mb-w3 flex size-9 items-center justify-center rounded-input bg-nila-1/35">
-              <Icon size={18} className="text-nila-6" aria-hidden="true" />
+          <div key={v.t} className="rounded-kartu permukaan p-w5 shadow-bal">
+            <span className="mb-w4 flex size-11 items-center justify-center rounded-full bg-nila-1/45">
+              <Icon size={22} strokeWidth={1.8} className="text-nila-6" aria-hidden="true" />
             </span>
-            <h3 className="judul-kecil mb-w1 text-base text-tinta">{v.t}</h3>
-            <p className="text-sm leading-relaxed text-pretty text-tinta-pudar">{v.d}</p>
+            <h3 className="judul-kecil mb-w2 text-xl text-tinta">{v.t}</h3>
+            <p className="text-base leading-relaxed text-pretty text-tinta-pudar">{v.d}</p>
           </div>
         );
       })}

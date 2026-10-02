@@ -21,7 +21,7 @@ export default function LandingPage() {
       <main id="konten">
         <Hero />
         {/* Vertical rhythm is one step tighter than the horizontal gutter throughout. */}
-        <div className="mx-auto flex max-w-6xl flex-col gap-w6 px-w4 py-w6 sm:px-w5">
+        <div className="mx-auto flex max-w-[1190px] flex-col gap-w7 px-w4 py-w7 sm:px-w5">
           <MacroStats />
           <HowItWorks />
           <ValueProps />
