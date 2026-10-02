@@ -51,6 +51,9 @@
   --color-garis-kuat: #8392a4;
   --color-tinta: #101c2b; /* body and heading type */
   --color-tinta-pudar: #4e5c6e; /* secondary type — 6.5:1 on kain */
+  /* Secondary pill fill — a pale blue-grey. Tinta type on it is well above 4.5:1. */
+  --color-awan: #e8eef6;
+  --color-awan-tua: #dbe4f0;
 
   /*
     Selvedge guard thread. Hairlines and error type only — never an area fill.
@@ -75,23 +78,23 @@
   --spacing-w6: 52px;
   --spacing-w7: 84px;
 
-  /* ── Physical depth ──────────────────────────────────────────────────────── */
+  /* ── Soft shape ──────────────────────────────────────────────────────────── */
+  --radius-kartu: 1.375rem; /* 22px — cards and panels */
+  --radius-input: 0.875rem; /* 14px — fields, small thumbnails */
+  --radius-thumb: 1rem; /* 16px — material swatches */
+
+  /* ── Depth ───────────────────────────────────────────────────────────────── */
   /*
-    Not a Material-style centred blur. Two hard offsets read as the sheets
-    stacked underneath, then two soft layers carry the weight pressing down.
+    Two soft layers tinted with the indigo at low opacity: a tight contact shadow
+    and a wide ambient one. No hard offsets; hover only grows the ambient layer.
   */
   --shadow-bal:
-    0 1px 0 0 var(--color-garis), 0 3px 0 -1px #edf1f6,
-    0 4px 5px -3px rgb(16 56 104 / 0.16), 0 10px 14px -10px rgb(16 56 104 / 0.22);
+    0 1px 2px 0 rgb(16 56 104 / 0.06), 0 8px 24px -8px rgb(16 56 104 / 0.12);
   --shadow-bal-angkat:
-    0 2px 0 0 var(--color-garis), 0 6px 0 -1px #edf1f6,
-    0 9px 12px -6px rgb(16 56 104 / 0.2), 0 20px 28px -16px rgb(16 56 104 / 0.28);
-  --shadow-panel: 0 1px 2px 0 rgb(16 56 104 / 0.06);
-  /*
-    A dyed button is a folded strip of cloth: a lit top fold and a hard darker
-    edge underneath. Pressing it (see `.tekan`) closes that edge.
-  */
-  --shadow-tombol: inset 0 1px 0 rgb(255 255 255 / 0.14), 0 1px 0 0 var(--color-nila-9);
+    0 2px 4px 0 rgb(16 56 104 / 0.07), 0 14px 34px -8px rgb(16 56 104 / 0.2);
+  --shadow-panel: 0 1px 2px 0 rgb(16 56 104 / 0.05), 0 4px 14px -6px rgb(16 56 104 / 0.08);
+  /* A dyed button keeps one lit top edge; pressing it drops 1px (see `.tekan`). */
+  --shadow-tombol: inset 0 1px 0 rgb(255 255 255 / 0.14);
 
   --animate-tenun-sapu: tenun-sapu 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 
@@ -108,9 +111,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-jakarta);
+  /* Apple system stack first; Plus Jakarta Sans (loaded) where SF is absent. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono);
-  --font-display: var(--font-archivo);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -153,8 +159,9 @@
   shadcn semantic slots are remapped onto the dip ladder so the Base UI
   primitives (Button, Input, Select, Dialog…) inherit ReKain by default.
 
-  --radius is 2px, not 0 and not `lg`. Square corners read as a broadsheet
-  affectation; an 8px radius reads as a SaaS dashboard. 2px reads as a cut edge.
+  --radius is 14px: the input radius. Every shadcn primitive derives from it
+  (sm 7, md 14, lg 21, xl 28 …); cards use --radius-kartu, buttons and chips are
+  pills.
 */
 :root {
   /* single light theme: keep form controls and scrollbars light too */
@@ -169,7 +176,7 @@
   --aman-atas: max(env(safe-area-inset-top), 3.625rem);
   --aman-bawah: max(env(safe-area-inset-bottom), 1.5rem);
 
-  --radius: 0.125rem;
+  --radius: 0.875rem;
 
   --background: var(--color-kain);
   --foreground: var(--color-tinta);
@@ -268,30 +275,24 @@
 @utility tekan {
   &:active:not(:disabled) {
     transform: translateY(1px);
-    box-shadow: inset 0 1px 2px rgb(0 20 50 / 0.3);
   }
 }
 
 @layer components {
   /*
-    Display type. Archivo is loaded with its `wdth` axis so headings can be
-    pushed wide — heavy, expanded caps read like lettering stencilled onto a
-    crate, which is the register this product actually lives in. The stretch and
-    the optical tracking correction belong together, so they travel as one class
-    rather than as two utilities somebody will eventually apply only half of.
+    Display type is the system sans at weight 700, tightened. Hierarchy comes
+    from size and weight, not from rules and boxes.
   */
   .judul {
-    font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-    font-stretch: 112%;
-    font-weight: 800;
-    letter-spacing: -0.021em;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
     text-wrap: balance;
   }
   .judul-kecil {
-    font-family: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-    font-stretch: 108%;
+    font-family: var(--font-display);
     font-weight: 700;
-    letter-spacing: -0.012em;
+    letter-spacing: -0.02em;
   }
 
   /* ── Indigo denim ────────────────────────────────────────────────────────── */
@@ -351,13 +352,8 @@
     outline-color: var(--color-nila-3);
   }
 
-  /* ── Bale decompression ──────────────────────────────────────────────────── */
-  /*
-    Hovering a listing should feel like weight coming off a compressed stack: the
-    card lifts, the stacked-sheet shadows lengthen, and the strata themselves
-    loosen and separate. A bare translate-y says "this is a button". This says
-    "this is 820 kg of cloth".
-  */
+  /* ── Card lift ───────────────────────────────────────────────────────────── */
+  /* Hover raises a card 2px and widens its ambient shadow. Nothing else moves. */
   .bal {
     box-shadow: var(--shadow-bal);
     transition:
@@ -367,20 +363,6 @@
   .bal:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-bal-angkat);
-  }
-  .bal-strata {
-    transform-origin: 50% 50%;
-    transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
-  .bal:hover .bal-strata {
-    transform: scaleY(1.02);
-  }
-  .bal-renggang {
-    stroke-opacity: 0.16;
-    transition: stroke-opacity 260ms ease-out;
-  }
-  .bal:hover .bal-renggang {
-    stroke-opacity: 0.6;
   }
 
   /* ── Press ───────────────────────────────────────────────────────────────── */
@@ -467,15 +449,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bal,
-  .bal-strata,
-  .bal-renggang {
+  .bal {
     transition: none;
   }
   .bal:hover {
-    transform: none;
-  }
-  .bal:hover .bal-strata {
     transform: none;
   }
   .mengendap,
