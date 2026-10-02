@@ -55,7 +55,8 @@ function TrenEnamBulan({ transaksi }: { transaksi: Transaction[] }) {
         ))}
       </div>
       {/* The bars are decorative to a screen reader; the same numbers are here as text. */}
-      <table className="sr-only">
+      <div className="sr-only">
+        <table>
         <caption>Limbah dialihkan dari TPA per bulan, dalam ton (estimasi, data contoh)</caption>
         <thead>
           <tr>
@@ -71,7 +72,8 @@ function TrenEnamBulan({ transaksi }: { transaksi: Transaction[] }) {
             </tr>
           ))}
         </tbody>
-      </table>
+        </table>
+      </div>
     </figure>
   );
 }

@@ -62,7 +62,7 @@ export function SearchBar({
   return (
     <div className="mb-w4 space-y-w3">
       <div className="flex items-center gap-w2 rounded-kartu border border-garis-kuat bg-white px-w3 py-w2 transition-shadow focus-within:border-nila-3 focus-within:shadow-bal focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-nila-3">
-        <Search size={15} className="shrink-0 text-nila-3" aria-hidden="true" />
+        <Search size={20} strokeWidth={1.8} className="shrink-0 text-nila-3" aria-hidden="true" />
         <label htmlFor="cari-material" className="sr-only">
           Cari material, kode, pabrik, atau lokasi
         </label>
@@ -72,16 +72,16 @@ export function SearchBar({
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
           placeholder="Cari material, kode, pabrik, atau lokasi…"
-          className="min-w-0 flex-1 bg-transparent text-sm text-tinta outline-none placeholder:text-tinta-pudar [&::-webkit-search-cancel-button]:hidden"
+          className="min-w-0 flex-1 bg-transparent py-w2 text-base text-tinta outline-none placeholder:text-tinta-pudar [&::-webkit-search-cancel-button]:hidden"
         />
         {value && (
           <button
             type="button"
             onClick={() => onValueChange("")}
             aria-label="Kosongkan pencarian"
-            className="flex size-6 shrink-0 items-center justify-center rounded-input text-tinta-pudar hover:bg-kain hover:text-tinta"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full text-tinta-pudar hover:bg-awan hover:text-tinta"
           >
-            <X size={14} aria-hidden="true" />
+            <X size={18} strokeWidth={1.8} aria-hidden="true" />
           </button>
         )}
       </div>
@@ -96,13 +96,13 @@ export function SearchBar({
               aria-pressed={nyala}
               onClick={() => onToggle(f.id)}
               className={cn(
-                "tekan inline-flex items-center gap-1 rounded-input border px-w2 py-1.5 text-xs font-medium",
+                "tekan inline-flex min-h-11 items-center gap-1 rounded-full px-w4 text-sm font-semibold",
                 nyala
-                  ? "border-nila-6 bg-nila-6 text-white shadow-tombol"
-                  : "border-garis-kuat bg-white text-tinta hover:border-nila-3 hover:text-nila-tinta",
+                  ? "bg-nila-6 text-white shadow-tombol"
+                  : "bg-awan text-tinta hover:bg-awan-tua",
               )}
             >
-              {nyala && <Check size={12} aria-hidden="true" />}
+              {nyala && <Check size={16} strokeWidth={2} aria-hidden="true" />}
               {f.label}
             </button>
           );
@@ -111,9 +111,9 @@ export function SearchBar({
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex items-center gap-1 rounded-input px-w2 py-1.5 text-xs font-medium text-nila-tinta underline-offset-4 hover:underline"
+            className="inline-flex min-h-11 items-center gap-1 rounded-full px-w3 text-sm font-semibold text-nila-tinta hover:bg-awan"
           >
-            <X size={12} aria-hidden="true" /> Hapus semua
+            <X size={16} strokeWidth={1.8} aria-hidden="true" /> Hapus semua
           </button>
         )}
       </div>

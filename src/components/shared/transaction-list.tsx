@@ -5,6 +5,7 @@ import { Clock } from "lucide-react";
 
 import { DipChip, type DipTone } from "@/components/brand/dip-chip";
 import { EmptyState, ErrorState } from "@/components/brand/empty-state";
+import { DataContoh } from "@/components/brand/data-contoh";
 import { Halaman, PageHeader } from "@/components/brand/page-header";
 import { tombol } from "@/components/brand/tombol";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -39,7 +40,7 @@ export function TransactionList({
 }) {
   return (
     <Halaman>
-      <PageHeader eyebrow="Transaksi" title="Riwayat transaksi" description={DESKRIPSI[role]} />
+      <PageHeader eyebrow="Transaksi" title="Riwayat transaksi" description={DESKRIPSI[role]} action={<DataContoh />} />
 
       {isPending ? (
         <div className="space-y-w3" role="status" aria-label="Memuat transaksi">

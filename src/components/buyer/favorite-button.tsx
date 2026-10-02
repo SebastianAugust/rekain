@@ -31,11 +31,12 @@ export function FavoriteButton({
       aria-label={
         disimpan ? `Hapus ${materialLabel} dari favorit` : `Simpan ${materialLabel} ke favorit`
       }
-      /* 32px target: the 23px glyph-sized button fell under WCAG 2.5.8's 24px floor. */
-      className="tekan flex size-8 items-center justify-center rounded-input text-tinta-pudar hover:bg-benang/8 hover:text-benang"
+      /* 44px touch target. */
+      className="tekan flex size-11 items-center justify-center rounded-full text-tinta-pudar hover:bg-benang/8 hover:text-benang"
     >
       <Heart
-        size={16}
+        size={20}
+        strokeWidth={1.8}
         aria-hidden="true"
         className={cn(
           "transition-transform duration-200",

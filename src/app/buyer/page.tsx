@@ -6,6 +6,7 @@ import { SearchX } from "lucide-react";
 import { BaleCard } from "@/components/brand/bale-card";
 import { BaleCardSkeletonGrid } from "@/components/brand/bale-card-skeleton";
 import { EmptyState, ErrorState } from "@/components/brand/empty-state";
+import { DataContoh } from "@/components/brand/data-contoh";
 import { Halaman, PageHeader } from "@/components/brand/page-header";
 import { tombol } from "@/components/brand/tombol";
 import { FavoriteButton } from "@/components/buyer/favorite-button";
@@ -37,7 +38,7 @@ export default function BuyerCariPage() {
 
   return (
     <Halaman>
-      <PageHeader eyebrow="Cari Material" title={judul} />
+      <PageHeader eyebrow="Cari material" title={judul} action={<DataContoh />} />
 
       <SearchBar
         value={query}

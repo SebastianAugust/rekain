@@ -6,7 +6,7 @@ import { Building2, ChevronLeft } from "lucide-react";
 import { DipChip, type DipTone } from "@/components/brand/dip-chip";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Halaman } from "@/components/brand/page-header";
-import { PitaPenampang } from "@/components/brand/penampang-bal";
+import { MaterialSwatch } from "@/components/brand/material-swatch";
 import { FavoriteButton } from "@/components/buyer/favorite-button";
 import { OfferForm } from "@/components/buyer/offer-form";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -24,10 +24,11 @@ function BackLink() {
   return (
     <Link
       href="/buyer"
-      className="group mb-w4 inline-flex items-center gap-1 rounded-input text-xs text-tinta-pudar hover:text-nila-tinta"
+      className="group mb-w4 inline-flex min-h-11 items-center gap-1 rounded-full pr-w3 text-sm text-tinta-pudar hover:text-nila-tinta"
     >
       <ChevronLeft
-        size={14}
+        size={18}
+        strokeWidth={1.8}
         aria-hidden="true"
         className="transition-transform group-hover:-translate-x-0.5"
       />
@@ -44,15 +45,15 @@ export function MaterialDetailSkeleton() {
     <Halaman>
       <BackLink />
       <div className={KOLOM} role="status" aria-label="Memuat material">
-        <div className="overflow-hidden rounded-kartu border border-garis permukaan">
-          <Skeleton className="h-32 rounded-none" />
-          <div className="space-y-w3 px-w4 py-w4">
+        <div className="rounded-kartu permukaan p-w5 shadow-bal">
+          <Skeleton className="h-44 rounded-kartu" />
+          <div className="space-y-w3 pt-w5">
             <Skeleton className="h-3 w-24" />
             <Skeleton className="h-6 w-48" />
             <Skeleton className="h-16 w-full" />
           </div>
         </div>
-        <div className="space-y-w3 rounded-kartu border border-garis permukaan px-w4 py-w4">
+        <div className="space-y-w3 rounded-kartu permukaan p-w5 shadow-bal">
           <Skeleton className="h-3 w-32" />
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-20 w-full" />
@@ -69,71 +70,71 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
       <BackLink />
 
       <div className={KOLOM}>
-        <article className="overflow-hidden rounded-kartu border border-garis permukaan shadow-bal">
-          {/*
-            The full cut face of this one bale, not submerged: a buyer inspecting
-            a lot needs to see the cloth itself. This is the only place natural
-            fibre colour occupies real estate, and it is doing the job a product
-            photo would do — everything framing it stays on the dip ladder.
-          */}
-          <PitaPenampang
-            bal={[{ id: listing.id, berat: listing.berat, swatch: listing.swatch }]}
-            terendam={false}
-            tinggi={132}
+        <article className="rounded-kartu permukaan p-w5 shadow-bal">
+          {/* The swatch is the cloth itself, large: it does the job a product photo would. */}
+          <MaterialSwatch
+            material={listing.material}
+            seed={listing.id}
+            className="h-44 w-full rounded-kartu sm:h-52"
           />
 
-          <div className="px-w4 py-w4">
-            <div className="flex items-start justify-between gap-w2">
-              <div className="min-w-0">
-                <div className="font-mono text-xs tracking-wide text-tinta-pudar">{listing.id}</div>
-                <h1 className="judul text-xl text-tinta sm:text-2xl">{listing.material}</h1>
-              </div>
-              <div className="flex shrink-0 items-center gap-w1">
-                <FavoriteButton listingId={listing.id} materialLabel={listing.material} />
-                {listing.grade ? (
-                  <DipChip dip="d3">GRADE {listing.grade}</DipChip>
-                ) : (
-                  <DipChip dip="d0">BELUM DINILAI</DipChip>
-                )}
-              </div>
+          <div className="mt-w5 flex items-start justify-between gap-w2">
+            <div className="flex min-w-0 flex-wrap items-center gap-x-w2 gap-y-w1">
+              <span className="font-mono text-xs tracking-wide text-tinta-pudar">{listing.id}</span>
+              {listing.grade ? (
+                <DipChip dip="d3">GRADE {listing.grade}</DipChip>
+              ) : (
+                <DipChip dip="d0">BELUM DINILAI</DipChip>
+              )}
             </div>
-
-            <dl className="mt-w4 grid grid-cols-2 gap-x-w5 gap-y-w3 text-sm">
-              <div>
-                <dt className="text-xs text-tinta-pudar">Berat tersedia</dt>
-                <dd className="font-mono font-medium text-tinta">{formatBerat(listing.berat)}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-tinta-pudar">Harga</dt>
-                <dd className="font-mono font-medium text-tinta">
-                  {listing.harga === null
-                    ? "Menunggu penilaian"
-                    : `${formatRupiah(listing.harga)}/kg`}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs text-tinta-pudar">Lokasi</dt>
-                <dd className="font-medium text-tinta">{listing.lokasi}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-tinta-pudar">Diunggah</dt>
-                <dd className="font-medium text-tinta">{listing.umur}</dd>
-              </div>
-            </dl>
-
-            <div className="mt-w4 flex flex-wrap items-center justify-between gap-w2 border-t border-garis pt-w4">
-              <span className="inline-flex items-center gap-w2 text-sm text-tinta">
-                <Building2 size={15} className="text-nila-3" aria-hidden="true" />
-                {listing.pabrik}
-              </span>
-              <DipChip dip={STATUS_DIP[listing.status]}>{listing.status}</DipChip>
+            <div className="-my-w2 -mr-w2 shrink-0">
+              <FavoriteButton listingId={listing.id} materialLabel={listing.material} />
             </div>
           </div>
+
+          <h1 className="judul mt-w2 text-3xl text-tinta sm:text-4xl">{listing.material}</h1>
+
+          <p className="judul mt-w3 text-5xl tabular-nums text-tinta">
+            {listing.harga === null ? (
+              <span className="text-2xl text-tinta-pudar">Harga menunggu penilaian</span>
+            ) : (
+              <>
+                {formatRupiah(listing.harga)}
+                <span className="ml-1 text-lg font-semibold tracking-normal text-tinta-pudar">/kg</span>
+              </>
+            )}
+          </p>
+
+          <dl className="mt-w5 grid grid-cols-2 gap-x-w5 gap-y-w4 border-t border-garis pt-w5">
+            <div>
+              <dt className="text-sm text-tinta-pudar">Berat tersedia</dt>
+              <dd className="judul text-2xl tabular-nums text-tinta">{formatBerat(listing.berat)}</dd>
+            </div>
+            <div>
+              <dt className="text-sm text-tinta-pudar">Lokasi</dt>
+              <dd className="judul-kecil text-lg text-tinta">{listing.lokasi}</dd>
+            </div>
+            <div>
+              <dt className="text-sm text-tinta-pudar">Diunggah</dt>
+              <dd className="font-medium text-tinta">{listing.umur}</dd>
+            </div>
+            <div>
+              <dt className="text-sm text-tinta-pudar">Status</dt>
+              <dd className="mt-0.5">
+                <DipChip dip={STATUS_DIP[listing.status]}>{listing.status}</DipChip>
+              </dd>
+            </div>
+          </dl>
+
+          <p className="mt-w5 inline-flex items-center gap-w2 text-tinta">
+            <Building2 size={18} strokeWidth={1.8} className="text-nila-3" aria-hidden="true" />
+            {listing.pabrik}
+          </p>
         </article>
 
         <section
           aria-label="Ajukan penawaran"
-          className="rounded-kartu border border-garis permukaan px-w4 py-w4 shadow-panel"
+          className="rounded-kartu permukaan p-w5 shadow-bal lg:sticky lg:top-w5"
         >
           <Eyebrow className="mb-w4">Ajukan penawaran</Eyebrow>
           <OfferForm listing={listing} />
