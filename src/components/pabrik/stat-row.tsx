@@ -4,12 +4,12 @@ import { Package, Scale, TrendingUp } from "lucide-react";
 
 import { StatCard } from "@/components/brand/stat-card";
 import { useMyListings, useTransaksiPabrik } from "@/lib/data/hooks";
-import { formatBerat, formatRupiahRingkas } from "@/lib/format";
+import { formatRupiahRingkas } from "@/lib/format";
 
 /**
- * The mockup hardcoded "640 kg" and "Rp3,3 jt" — both are just sums over the
- * factory's completed transactions, so they're derived here and stay correct if
- * the seed data changes.
+ * Totals are sums over the factory's completed transactions, derived here so they
+ * stay correct if the seed data changes. Weight leads: it is the number the whole
+ * product exists to move, so it gets the dyed tile and the other two stay quiet.
  */
 export function StatRow() {
   const transaksi = useTransaksiPabrik();
@@ -22,22 +22,24 @@ export function StatRow() {
   const memuat = transaksi.isPending;
 
   return (
-    <div className="grid grid-cols-3 gap-x-w3 sm:gap-x-w4">
+    <div className="grid gap-w4 lg:grid-cols-5">
       <StatCard
-        label="Terjual"
-        value={memuat ? "—" : formatBerat(totalBerat)}
+        utama
+        className="flex flex-col justify-end py-w6 lg:col-span-3"
+        label="Limbah terjual"
+        value={memuat ? "—" : totalBerat.toLocaleString("id-ID")}
+        satuan="kg"
+        catatan={memuat ? undefined : `Dari ${selesai.length} transaksi yang sudah selesai.`}
         icon={Scale}
       />
-      <StatCard
-        label="Omzet"
-        value={memuat ? "—" : formatRupiahRingkas(totalPendapatan)}
-        icon={TrendingUp}
-      />
-      <StatCard
-        label="Listing"
-        value={listings.isPending ? "—" : (listings.data?.length ?? 0)}
-        icon={Package}
-      />
+      <div className="grid gap-w4 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-1">
+        <StatCard label="Omzet" value={memuat ? "—" : formatRupiahRingkas(totalPendapatan)} icon={TrendingUp} />
+        <StatCard
+          label="Listing aktif"
+          value={listings.isPending ? "—" : (listings.data?.length ?? 0)}
+          icon={Package}
+        />
+      </div>
     </div>
   );
 }

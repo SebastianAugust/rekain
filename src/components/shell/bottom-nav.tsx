@@ -21,7 +21,7 @@ export function BottomNav({ role }: { role: Role }) {
   return (
     <nav
       aria-label="Navigasi utama"
-      className="fixed inset-x-0 bottom-0 z-30 flex border-t border-garis bg-white/80 pr-[env(safe-area-inset-right)] pb-(--aman-bawah) pl-[env(safe-area-inset-left)] backdrop-blur-xl md:hidden"
+      className="print:hidden fixed inset-x-0 bottom-0 z-30 flex border-t border-garis bg-white/80 pr-[env(safe-area-inset-right)] pb-(--aman-bawah) pl-[env(safe-area-inset-left)] backdrop-blur-xl md:hidden"
     >
       {items.map((item) => {
         const active = isNavItemActive(pathname, item, rootHref);

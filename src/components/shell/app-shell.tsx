@@ -9,7 +9,7 @@ import type { Role } from "@/lib/types";
  */
 export function AppShell({ role, children }: { role: Role; children: React.ReactNode }) {
   return (
-    <div className="flex min-h-dvh">
+    <div className="flex min-h-dvh print:block">
       <a
         href="#konten"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-full focus:bg-nila-6 focus:px-w3 focus:py-w2 focus:text-sm focus:text-white"

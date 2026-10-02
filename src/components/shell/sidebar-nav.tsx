@@ -21,7 +21,7 @@ export function SidebarNav({ role }: { role: Role }) {
   return (
     <nav
       aria-label="Navigasi utama"
-      className="permukaan sticky top-0 hidden h-dvh w-[calc(15.5rem+env(safe-area-inset-left))] shrink-0 flex-col self-start border-r border-garis pl-[env(safe-area-inset-left)] md:flex"
+      className="permukaan print:hidden sticky top-0 hidden h-dvh w-[calc(15.5rem+env(safe-area-inset-left))] shrink-0 flex-col self-start border-r border-garis pl-[env(safe-area-inset-left)] md:flex"
     >
       <div className="flex h-18 items-center px-w5">
         <Link href="/" aria-label="ReKain — beranda" className="rounded-input">

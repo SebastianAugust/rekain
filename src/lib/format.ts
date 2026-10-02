@@ -77,3 +77,21 @@ export function formatTon(ton: number, desimal = 1): string {
     maximumFractionDigits: desimal,
   })} ton`;
 }
+
+/** Angka dengan jumlah desimal tetap: (0.64, 2) -> "0,64". */
+export function formatDesimal(nilai: number, desimal = 1): string {
+  return nilai.toLocaleString("id-ID", {
+    minimumFractionDigits: desimal,
+    maximumFractionDigits: desimal,
+  });
+}
+
+/** Estimasi emisi dihindari, dalam kg CO2e tanpa desimal. */
+export function formatCO2e(kg: number): string {
+  return `${Math.round(kg).toLocaleString("id-ID")} kg CO2e`;
+}
+
+/** Estimasi air dihemat, dalam liter tanpa desimal. */
+export function formatLiter(liter: number): string {
+  return `${Math.round(liter).toLocaleString("id-ID")} L`;
+}

@@ -24,7 +24,7 @@ export default function PabrikListingPage() {
         }
         action={
           <Link href="/pabrik/upload" className={tombol({ ukuran: "kecil" })}>
-            <Plus size={13} aria-hidden="true" /> Upload Limbah
+            <Plus size={18} strokeWidth={1.8} aria-hidden="true" /> Upload limbah
           </Link>
         }
       />

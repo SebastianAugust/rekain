@@ -2,7 +2,6 @@ import Link from "next/link";
 
 import { DipChip } from "@/components/brand/dip-chip";
 import { Halaman } from "@/components/brand/page-header";
-import { BingkaiJahit, StitchLine } from "@/components/brand/stitch-line";
 import { tombol } from "@/components/brand/tombol";
 import type { Listing } from "@/lib/types";
 
@@ -22,13 +21,11 @@ export function UploadSuccess({
     <Halaman className="max-w-xl">
       <div
         role="status"
-        className="overflow-hidden rounded-kartu border border-garis permukaan shadow-bal"
+        className="overflow-hidden rounded-kartu permukaan shadow-bal-angkat"
       >
-        <StitchLine seed={listing.id} className="mt-w3" />
-
-        <div className="px-w4 pt-w4 pb-w5 text-center">
+        <div className="px-w4 pt-w6 pb-w6 text-center">
           <span
-            className="inline-flex size-11 items-center justify-center rounded-input bg-nila-6 shadow-tombol"
+            className="inline-flex size-14 items-center justify-center rounded-full bg-nila-6 shadow-tombol"
             aria-hidden="true"
           >
             <svg width="22" height="22" viewBox="0 0 24 24" focusable="false">
@@ -44,15 +41,14 @@ export function UploadSuccess({
             </svg>
           </span>
 
-          <h1 className="judul mt-w3 text-xl text-tinta sm:text-2xl">Limbah berhasil diunggah</h1>
+          <h1 className="judul mt-w4 text-3xl text-tinta">Limbah berhasil diunggah</h1>
           <p className="mx-auto mt-w2 max-w-sm text-sm text-pretty text-tinta-pudar">
             Tim ReKain menilai mutu material ini dalam 1–2 hari kerja, lalu menampilkannya ke
             buyer. Catat kode di bawah untuk pelacakan.
           </p>
 
-          <div className="relative mx-auto mt-w4 inline-flex -rotate-1 items-center gap-w3 rounded-kartu bg-white px-w4 py-w3 shadow-bal">
-            <BingkaiJahit rapat />
-            <span className="relative font-mono text-lg font-semibold tracking-wide text-tinta">
+          <div className="relative mx-auto mt-w4 inline-flex items-center gap-w3 rounded-kartu bg-awan px-w4 py-w3">
+            <span className="relative font-mono text-xl font-semibold tracking-wide text-tinta">
               {listing.id}
             </span>
             <DipChip dip="d0" className="relative">

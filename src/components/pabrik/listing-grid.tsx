@@ -37,7 +37,7 @@ export function ListingGrid({
         description="Unggah limbah pertama Anda. Tim kami menilai mutunya, lalu menawarkannya ke buyer yang cocok."
         action={
           <Link href="/pabrik/upload" className={tombol()}>
-            <Plus size={14} aria-hidden="true" /> Upload Limbah
+            <Plus size={18} strokeWidth={1.8} aria-hidden="true" /> Upload limbah
           </Link>
         }
       />

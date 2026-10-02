@@ -10,7 +10,7 @@ export function TopBar({ role }: { role: Role }) {
 
   return (
     /* The status bar / notch strip is added on top of the 4rem bar, not taken out of it. */
-    <header className="flex h-[calc(4rem+var(--aman-atas))] shrink-0 items-center justify-between gap-w3 pt-(--aman-atas) pr-[calc(var(--spacing-w4)+env(safe-area-inset-right))] pl-[calc(var(--spacing-w4)+env(safe-area-inset-left))] sm:pr-[calc(var(--spacing-w5)+env(safe-area-inset-right))] sm:pl-[calc(var(--spacing-w5)+env(safe-area-inset-left))] md:pl-w5">
+    <header className="print:hidden flex h-[calc(4rem+var(--aman-atas))] shrink-0 items-center justify-between gap-w3 pt-(--aman-atas) pr-[calc(var(--spacing-w4)+env(safe-area-inset-right))] pl-[calc(var(--spacing-w4)+env(safe-area-inset-left))] sm:pr-[calc(var(--spacing-w5)+env(safe-area-inset-right))] sm:pl-[calc(var(--spacing-w5)+env(safe-area-inset-left))] md:pl-w5">
       {/* The wordmark doubles as the way home on mobile, where the sidebar is hidden. */}
       <Link href="/" className="rounded-input md:hidden" aria-label="ReKain — kembali ke beranda">
         <Logo />
