@@ -1,6 +1,7 @@
 import {
   BadgeCheck,
   Clock,
+  ClipboardCheck,
   ClipboardList,
   Factory,
   Heart,
@@ -42,6 +43,7 @@ export const NAV: Record<Role, NavItem[]> = {
   /* Internal. Neither a factory nor a buyer ever sees these routes. */
   ops: [
     { href: "/ops", label: "Rencana Rute", icon: Route, tab: true },
+    { href: "/ops/grading", label: "Grading", icon: ClipboardCheck, tab: true },
     { href: "/ops/pabrik", label: "Titik Jemput", icon: Factory, tab: true },
   ],
 };

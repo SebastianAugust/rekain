@@ -40,17 +40,19 @@ const tx = (status: TransactionStatus): Transaction => ({
 });
 
 describe("kodeMaterial", () => {
-  it("menurunkan kode dari grade tanpa mengubah id", () => {
+  it("mengisi slot grade pada kode yang belum digrading", () => {
     expect(kodeMaterial("COT-X-080", "A")).toBe("COT-A-080");
-    expect(kodeMaterial("COT-X-080", null)).toBe("COT-X-080");
-    expect(kodeMaterial("DNM-A-007", "A")).toBe("DNM-A-007");
+  });
+
+  it("tidak mengubah kode yang slot gradenya sudah terisi", () => {
+    expect(kodeMaterial("DNM-A-007", "B")).toBe("DNM-A-007");
   });
 });
 
 describe("nilaiGrading", () => {
   it("mengisi grade dan harga, status jadi Tersedia", () => {
     const hasil = nilaiGrading(listing("Menunggu Grading"), { grade: "A", harga: 5000 });
-    expect(hasil).toMatchObject({ grade: "A", harga: 5000, status: "Tersedia" });
+    expect(hasil).toMatchObject({ id: "COT-A-080", grade: "A", harga: 5000, status: "Tersedia" });
   });
 
   it("menolak listing yang bukan Menunggu Grading", () => {

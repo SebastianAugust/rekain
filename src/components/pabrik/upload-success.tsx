@@ -44,7 +44,7 @@ export function UploadSuccess({
           <h1 className="judul mt-w4 text-3xl text-tinta">Limbah berhasil diunggah</h1>
           <p className="mx-auto mt-w2 max-w-sm text-sm text-pretty text-tinta-pudar">
             Tim ReKain menilai mutu material ini dalam 1–2 hari kerja, lalu menampilkannya ke
-            buyer. Catat kode di bawah untuk pelacakan.
+            buyer. Catat kode di bawah untuk pelacakan; huruf X di dalamnya diganti grade setelah dinilai.
           </p>
 
           <div className="relative mx-auto mt-w4 inline-flex items-center gap-w3 rounded-kartu bg-awan px-w4 py-w3">

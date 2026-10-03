@@ -190,8 +190,16 @@ export async function createOffer(input: NewOfferInput): Promise<Transaction> {
 /** Ops sets grade and price; the listing becomes visible to buyers. */
 export async function gradeListing(input: GradeListingInput): Promise<Listing> {
   await delay(600);
-  const graded = nilaiGrading(cariListing(input.listingId), input);
-  simpanListing(graded);
+  const asal = cariListing(input.listingId);
+  const graded = nilaiGrading(asal, input);
+  // The grade completes the listing's code, so the id changes here. Nothing can
+  // point at an ungraded listing, but carry any stray reference over regardless.
+  listings = listings.map((l) => (l.id === asal.id ? graded : l));
+  if (graded.id !== asal.id) {
+    transaksi = transaksi.map((t) => (t.listingId === asal.id ? { ...t, listingId: graded.id } : t));
+    const favorit = readFavorit();
+    if (favorit.includes(asal.id)) writeFavorit(favorit.map((f) => (f === asal.id ? graded.id : f)));
+  }
   return graded;
 }
 

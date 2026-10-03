@@ -17,19 +17,20 @@ import type { Grade, GradeListingInput, Listing, Transaction, TransactionStatus 
 const GRADE: readonly Grade[] = ["A", "B", "C"];
 
 /**
- * Listing ids are stable: favourites, transactions and URLs all point at them, so
- * grading must never rename one. An ungraded upload carries `X` in the grade slot
- * (`COT-X-080`); the code people read is derived from the grade once there is one.
+ * An ungraded upload carries `X` in the grade slot (`COT-X-080`); grading completes
+ * the code (`COT-B-080`). Nothing can reference a listing before it is graded -
+ * buyers cannot see, favourite or offer on it - so the id may change exactly once,
+ * here, and the store moves any stray reference along with it.
  */
-export function kodeMaterial(id: string, grade: Grade | null): string {
-  return grade ? id.replace(/-X-/, `-${grade}-`) : id;
+export function kodeMaterial(id: string, grade: Grade): string {
+  return id.replace(/-X-/, `-${grade}-`);
 }
 
 export function nilaiGrading(listing: Listing, { grade, harga }: Pick<GradeListingInput, "grade" | "harga">): Listing {
   if (listing.status !== "Menunggu Grading") throw new Error("Material ini sudah digrading");
   if (!GRADE.includes(grade)) throw new Error("Grade harus A, B, atau C");
   if (!Number.isInteger(harga) || harga <= 0) throw new Error("Harga per kg harus berupa rupiah bulat lebih dari nol");
-  return { ...listing, grade, harga, status: "Tersedia" };
+  return { ...listing, id: kodeMaterial(listing.id, grade), grade, harga, status: "Tersedia" };
 }
 
 /** An offer takes the listing into negotiation. */
