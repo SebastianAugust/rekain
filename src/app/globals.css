@@ -561,8 +561,8 @@ html[data-mockup="true"] {
 */
 @media (max-width: 47.99rem) {
   :root {
-    --aman-atas: max(env(safe-area-inset-top), 59px);
-    --aman-bawah: max(env(safe-area-inset-bottom), 34px);
+    --aman-atas: max(env(safe-area-inset-top), 48px);
+    --aman-bawah: max(env(safe-area-inset-bottom), 24px);
   }
 }
 html[data-mockup="true"] .status-bar-tiruan {
