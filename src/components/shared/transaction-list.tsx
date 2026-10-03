@@ -17,6 +17,7 @@ const STATUS_DIP: Record<TransactionStatus, DipTone> = {
   "Menunggu Konfirmasi": "d0",
   Dikirim: "d1",
   Selesai: "d6",
+  Ditolak: "d0",
 };
 
 const DESKRIPSI: Record<Role, string> = {

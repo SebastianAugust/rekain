@@ -41,7 +41,13 @@ export type Listing = {
   catatan?: string;
 };
 
-export type TransactionStatus = "Selesai" | "Dikirim" | "Menunggu Konfirmasi";
+/**
+ * Menunggu Konfirmasi -> Dikirim -> Selesai, with Ditolak as the one branch off the
+ * first step. `Dikirim` is the state where the factory has accepted: the buyer's
+ * funds are held in escrow (SIMULATED) while the goods travel, until the buyer
+ * confirms receipt.
+ */
+export type TransactionStatus = "Menunggu Konfirmasi" | "Dikirim" | "Selesai" | "Ditolak";
 
 /**
  * One trade, recorded once. Both sides of the marketplace read the same ledger
@@ -67,6 +73,13 @@ export type NewListingInput = {
   berat: number;
   lokasi: string;
   catatan?: string;
+};
+
+export type GradeListingInput = {
+  listingId: string;
+  grade: Grade;
+  /** Price per kilogram in rupiah. */
+  harga: number;
 };
 
 export type NewOfferInput = {
