@@ -3,6 +3,7 @@ export const listingKeys = {
   all: ["listings"] as const,
   buyer: ["listings", "buyer"] as const,
   mine: ["listings", "mine"] as const,
+  grading: ["listings", "grading"] as const,
   detail: (id: string) => ["listings", "detail", id] as const,
 };
 
@@ -10,6 +11,7 @@ export const transactionKeys = {
   all: ["transaksi"] as const,
   pabrik: ["transaksi", "pabrik"] as const,
   buyer: ["transaksi", "buyer"] as const,
+  selesai: ["transaksi", "selesai"] as const,
 };
 
 export const favoritKeys = {

@@ -15,7 +15,7 @@ import {
   transactionKeys,
 } from "@/lib/data/queries";
 import * as store from "@/lib/data/store";
-import type { NewListingInput, NewOfferInput } from "@/lib/types";
+import type { GradeListingInput, NewListingInput, NewOfferInput } from "@/lib/types";
 
 /*
   The only data surface the UI is allowed to touch. Components never import the
@@ -37,6 +37,14 @@ export function useMyListings() {
 
 export function useTransaksiPabrik() {
   return useQuery({ queryKey: transactionKeys.pabrik, queryFn: store.fetchTransaksiPabrik });
+}
+
+export function useTransaksiSelesai() {
+  return useQuery({ queryKey: transactionKeys.selesai, queryFn: store.fetchTransaksiSelesai });
+}
+
+export function useAntreanGrading() {
+  return useQuery({ queryKey: listingKeys.grading, queryFn: store.fetchAntreanGrading });
 }
 
 export function useTransaksiBuyer() {
@@ -95,6 +103,44 @@ export function useCreateOffer() {
       queryClient.invalidateQueries({ queryKey: ruteKeys.all });
     },
   });
+}
+
+/*
+  Every lifecycle step can touch a listing, the shared ledger, and the route plan
+  (grading adds pickable stock; a sale removes it), so they all invalidate the same
+  three families. Over-invalidating is cheap here and under-invalidating shows a
+  stale status, which is the worse failure.
+*/
+function useInvalidasiAlur() {
+  const queryClient = useQueryClient();
+  return () => {
+    queryClient.invalidateQueries({ queryKey: listingKeys.all });
+    queryClient.invalidateQueries({ queryKey: transactionKeys.all });
+    queryClient.invalidateQueries({ queryKey: ruteKeys.all });
+  };
+}
+
+export function useGradeListing() {
+  const invalidasi = useInvalidasiAlur();
+  return useMutation({
+    mutationFn: (input: GradeListingInput) => store.gradeListing(input),
+    onSuccess: invalidasi,
+  });
+}
+
+export function useTerimaPenawaran() {
+  const invalidasi = useInvalidasiAlur();
+  return useMutation({ mutationFn: (id: string) => store.terimaPenawaran(id), onSuccess: invalidasi });
+}
+
+export function useTolakPenawaran() {
+  const invalidasi = useInvalidasiAlur();
+  return useMutation({ mutationFn: (id: string) => store.tolakPenawaran(id), onSuccess: invalidasi });
+}
+
+export function useKonfirmasiTerima() {
+  const invalidasi = useInvalidasiAlur();
+  return useMutation({ mutationFn: (id: string) => store.konfirmasiTerima(id), onSuccess: invalidasi });
 }
 
 /*
