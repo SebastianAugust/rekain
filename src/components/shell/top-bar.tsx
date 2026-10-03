@@ -9,8 +9,8 @@ export function TopBar({ role }: { role: Role }) {
   const persona = PERSONA[role];
 
   return (
-    /* The status bar / notch strip is added on top of the 4rem bar, not taken out of it. */
-    <header className="print:hidden flex h-[calc(3.5rem+var(--aman-atas))] shrink-0 md:h-[calc(4rem+var(--aman-atas))] items-center justify-between gap-w3 pt-(--aman-atas) pr-[calc(var(--spacing-w4)+env(safe-area-inset-right))] pl-[calc(var(--spacing-w4)+env(safe-area-inset-left))] sm:pr-[calc(var(--spacing-w5)+env(safe-area-inset-right))] sm:pl-[calc(var(--spacing-w5)+env(safe-area-inset-left))] md:pl-w5">
+    /* The status bar / notch strip (+8px) is added on top of the bar, not taken out of it. Sticky and frosted on mobile so the status bar never sits on scrolling content. */
+    <header className="print:hidden sticky top-0 z-20 flex h-[calc(3.5rem+var(--aman-atas)+8px)] shrink-0 items-center justify-between gap-w3 bg-white/85 pt-[calc(var(--aman-atas)+8px)] backdrop-blur-xl md:static md:h-[calc(4rem+var(--aman-atas))] md:bg-transparent md:pt-(--aman-atas) md:backdrop-blur-none pr-[calc(var(--spacing-w4)+env(safe-area-inset-right))] pl-[calc(var(--spacing-w4)+env(safe-area-inset-left))] sm:pr-[calc(var(--spacing-w5)+env(safe-area-inset-right))] sm:pl-[calc(var(--spacing-w5)+env(safe-area-inset-left))] md:pl-w5">
       {/* The wordmark doubles as the way home on mobile, where the sidebar is hidden. */}
       <Link href="/" className="inline-flex min-h-11 items-center rounded-input md:hidden" aria-label="ReKain — kembali ke beranda">
         <Logo />

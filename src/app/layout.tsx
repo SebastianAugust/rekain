@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Plus_Jakarta_Sans } from "next/font/google";
 
 import { SplashScreen } from "@/components/brand/splash-screen";
+import { StatusBarTiruan } from "@/components/shell/status-bar-tiruan";
 import { TextileFilters } from "@/components/brand/textile-filters";
 import { Providers } from "@/app/providers";
 import "./globals.css";
@@ -51,12 +52,23 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="id"
       className={`${jakarta.variable} ${plexMono.variable} h-full antialiased`}
+      // data-mockup is set by the script below before hydration.
+      suppressHydrationWarning
     >
+      <head>
+        {/* ?mockup=1 turns the preview mode on (and keeps it for the tab); ?mockup=0 turns it off. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var q=new URLSearchParams(location.search).get("mockup");if(q)sessionStorage.setItem("mockup",q);if(sessionStorage.getItem("mockup")==="1")document.documentElement.dataset.mockup="true"}catch(e){}`,
+          }}
+        />
+      </head>
       <body className="flex min-h-full flex-col">
         {/* Filter definitions must exist in the document before anything references them. */}
         <TextileFilters />
         <Providers>{children}</Providers>
         <SplashScreen />
+        <StatusBarTiruan />
       </body>
     </html>
   );

@@ -172,11 +172,11 @@
     reads 0 (desktop browsers, emulators, mockups). Left/right stay raw: they only
     matter in landscape. --tinggi-tabbar is the mobile tab bar's own height.
   */
-  --aman-atas: max(env(safe-area-inset-top), 12px);
+  --aman-atas: max(env(safe-area-inset-top), 0px);
   --aman-bawah: max(env(safe-area-inset-bottom), 8px);
   --aman-kiri: env(safe-area-inset-left);
   --aman-kanan: env(safe-area-inset-right);
-  --tinggi-tabbar: 3.5rem;
+  --tinggi-tabbar: 56px;
 
   --radius: 0.875rem;
 
@@ -542,4 +542,17 @@
   .celup * {
     color: var(--color-tinta) !important;
   }
+}
+
+/*
+  Preview mode (?mockup=1): env() reads 0 inside a device frame, so the notch and
+  home-indicator zones are fixed at an iPhone 15's size and the fake status bar shows.
+  The mode lives in one place, <html data-mockup="true">, set by the script in layout.tsx.
+*/
+html[data-mockup="true"] {
+  --aman-atas: 59px;
+  --aman-bawah: 34px;
+}
+html[data-mockup="true"] .status-bar-tiruan {
+  display: flex;
 }

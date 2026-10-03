@@ -21,7 +21,7 @@ export function BottomNav({ role }: { role: Role }) {
   return (
     <nav
       aria-label="Navigasi utama"
-      className="print:hidden fixed inset-x-0 bottom-0 z-30 flex border-t border-garis bg-white/80 pr-[max(var(--aman-kanan),8px)] pb-(--aman-bawah) pl-[max(var(--aman-kiri),8px)] backdrop-blur-xl md:hidden"
+      className="print:hidden fixed inset-x-0 bottom-0 z-30 flex border-t border-garis bg-white/[0.96] pr-[max(var(--aman-kanan),8px)] pb-(--aman-bawah) pl-[max(var(--aman-kiri),8px)] backdrop-blur-xl md:hidden"
     >
       {items.map((item) => {
         const active = isNavItemActive(pathname, item, rootHref);
@@ -32,10 +32,13 @@ export function BottomNav({ role }: { role: Role }) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex min-h-(--tinggi-tabbar) min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-w2 pb-w1 text-[11px]",
+              "relative flex min-h-(--tinggi-tabbar) min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-w2 pb-w1 text-[11px]",
               active ? "font-semibold text-nila-6" : "text-tinta-pudar",
             )}
           >
+            {active && (
+              <span aria-hidden="true" className="absolute top-0 h-0.5 w-8 rounded-full bg-nila-6" />
+            )}
             <span
               className={cn(
                 "flex h-7 w-12 items-center justify-center rounded-full",
