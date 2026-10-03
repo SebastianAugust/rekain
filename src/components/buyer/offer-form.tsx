@@ -132,6 +132,19 @@ export function OfferForm({ listing }: { listing: Listing }) {
     );
   }
 
+  if (listing.status === "Dalam Negosiasi") {
+    return (
+      <p className="text-sm text-tinta-pudar">
+        Material ini sedang dalam negosiasi, jadi belum bisa ditawar lagi. Kalau penawaran itu
+        ditolak, material kembali tersedia.{" "}
+        <Link href="/buyer" className="font-medium text-nila-tinta underline underline-offset-2">
+          Cari material serupa
+        </Link>
+        .
+      </p>
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

@@ -3,22 +3,16 @@
 import Link from "next/link";
 import { Building2, ChevronLeft } from "lucide-react";
 
-import { DipChip, type DipTone } from "@/components/brand/dip-chip";
+import { DipChip } from "@/components/brand/dip-chip";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Halaman } from "@/components/brand/page-header";
 import { MaterialSwatch } from "@/components/brand/material-swatch";
+import { LISTING_DIP } from "@/components/brand/status-dip";
 import { FavoriteButton } from "@/components/buyer/favorite-button";
 import { OfferForm } from "@/components/buyer/offer-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatBerat, formatRupiah } from "@/lib/format";
-import type { Listing, ListingStatus } from "@/lib/types";
-
-const STATUS_DIP: Record<ListingStatus, DipTone> = {
-  "Menunggu Grading": "d0",
-  Tersedia: "d6",
-  "Dalam Negosiasi": "d1",
-  Terjual: "d0",
-};
+import type { Listing } from "@/lib/types";
 
 function BackLink() {
   return (
@@ -121,7 +115,7 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
             <div>
               <dt className="text-sm text-tinta-pudar">Status</dt>
               <dd className="mt-0.5">
-                <DipChip dip={STATUS_DIP[listing.status]}>{listing.status}</DipChip>
+                <DipChip dip={LISTING_DIP[listing.status]}>{listing.status}</DipChip>
               </dd>
             </div>
           </dl>

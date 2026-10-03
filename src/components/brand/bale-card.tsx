@@ -1,19 +1,12 @@
 import Link from "next/link";
 import { MapPin, Scale } from "lucide-react";
 
-import { DipChip, type DipTone } from "@/components/brand/dip-chip";
+import { DipChip } from "@/components/brand/dip-chip";
 import { MaterialSwatch } from "@/components/brand/material-swatch";
+import { LISTING_DIP } from "@/components/brand/status-dip";
 import { formatBerat, formatRupiah } from "@/lib/format";
-import type { Listing, ListingStatus } from "@/lib/types";
+import type { Listing } from "@/lib/types";
 import { cn } from "@/lib/utils";
-
-/** Status as depth of dip: the further along the trade, the deeper the colour. */
-const STATUS_DIP: Record<ListingStatus, DipTone> = {
-  "Menunggu Grading": "d0",
-  Tersedia: "d6",
-  "Dalam Negosiasi": "d1",
-  Terjual: "d0",
-};
 
 /**
  * A listing: swatch, code, grade, name, weight and place, price per kilo, status.
@@ -100,7 +93,7 @@ export function BaleCard({
             <span className="ml-0.5 text-sm font-semibold tracking-normal text-tinta-pudar">/kg</span>
           </span>
         )}
-        <DipChip dip={STATUS_DIP[listing.status]}>{listing.status}</DipChip>
+        <DipChip dip={LISTING_DIP[listing.status]}>{listing.status}</DipChip>
       </div>
     </article>
   );

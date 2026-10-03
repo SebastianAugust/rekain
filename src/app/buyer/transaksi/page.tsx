@@ -1,5 +1,6 @@
 "use client";
 
+import { AksiBuyer } from "@/components/shared/aksi-transaksi";
 import { TransactionList } from "@/components/shared/transaction-list";
 import { useTransaksiBuyer } from "@/lib/data/hooks";
 
@@ -12,6 +13,7 @@ export default function BuyerTransaksiPage() {
       isError={isError}
       onRetry={() => refetch()}
       role="buyer"
+      aksi={(t) => <AksiBuyer t={t} />}
     />
   );
 }
