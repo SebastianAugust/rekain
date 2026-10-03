@@ -168,14 +168,15 @@
   color-scheme: light;
 
   /*
-    The device's own safe-area insets, nothing added. A notched phone reports the
-    status bar / home indicator here; where it reads 0 (Safari in-browser, where the
-    browser chrome already sits above the page) there is nothing to clear. An earlier
-    floor of 58px / 24px belonged to a device-frame mockup and put dead space above
-    every real phone screen.
+    Safe-area insets with a small floor, so there is still clearance where env()
+    reads 0 (desktop browsers, emulators, mockups). Left/right stay raw: they only
+    matter in landscape. --tinggi-tabbar is the mobile tab bar's own height.
   */
-  --aman-atas: env(safe-area-inset-top);
-  --aman-bawah: env(safe-area-inset-bottom);
+  --aman-atas: max(env(safe-area-inset-top), 12px);
+  --aman-bawah: max(env(safe-area-inset-bottom), 8px);
+  --aman-kiri: env(safe-area-inset-left);
+  --aman-kanan: env(safe-area-inset-right);
+  --tinggi-tabbar: 3.5rem;
 
   --radius: 0.875rem;
 

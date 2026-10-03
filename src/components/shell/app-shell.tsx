@@ -28,7 +28,7 @@ export function AppShell({ role, children }: { role: Role; children: React.React
         */}
         <main
           id="konten"
-          className="flex flex-1 flex-col pr-[env(safe-area-inset-right)] pb-[calc(5rem+var(--aman-bawah))] pl-[env(safe-area-inset-left)] md:pb-0 md:pl-0"
+          className="flex flex-1 flex-col pr-[env(safe-area-inset-right)] pb-[calc(var(--tinggi-tabbar)+var(--aman-bawah)+1rem)] pl-[env(safe-area-inset-left)] md:pb-0 md:pl-0"
         >
           <div className="flex-1">{children}</div>
           {/* Quiet, permanent, and honest about what this is. */}

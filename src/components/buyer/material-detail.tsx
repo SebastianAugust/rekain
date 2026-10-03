@@ -83,7 +83,7 @@ function BarPenawaran({ listing }: { listing: Listing }) {
   if (listing.harga === null || listing.status !== "Tersedia" || formTerlihat) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-[calc(3.5rem+var(--aman-bawah))] z-20 flex items-center justify-between gap-w3 border-t border-garis bg-white/90 px-w4 py-w2 backdrop-blur-xl md:hidden">
+    <div className="fixed inset-x-0 bottom-[calc(var(--tinggi-tabbar)+var(--aman-bawah))] z-20 flex items-center justify-between gap-w3 border-t border-garis bg-white/90 px-w4 py-w2 backdrop-blur-xl md:hidden">
       <p className="judul min-w-0 text-2xl tabular-nums text-tinta">
         {formatRupiah(listing.harga)}
         <span className="ml-0.5 text-sm font-semibold tracking-normal text-tinta-pudar">/kg</span>
