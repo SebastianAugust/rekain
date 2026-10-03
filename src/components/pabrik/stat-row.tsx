@@ -3,7 +3,7 @@
 import { Package, Scale, TrendingUp } from "lucide-react";
 
 import { StatCard } from "@/components/brand/stat-card";
-import { useMyListings, useTransaksiPabrik } from "@/lib/data/hooks";
+import { useMyListings, useTransaksiSelesai } from "@/lib/data/hooks";
 import { formatRupiahRingkas } from "@/lib/format";
 
 /**
@@ -12,10 +12,10 @@ import { formatRupiahRingkas } from "@/lib/format";
  * product exists to move, so it gets the dyed tile and the other two stay quiet.
  */
 export function StatRow() {
-  const transaksi = useTransaksiPabrik();
+  const transaksi = useTransaksiSelesai();
   const listings = useMyListings();
 
-  const selesai = (transaksi.data ?? []).filter((t) => t.status === "Selesai");
+  const selesai = transaksi.data ?? [];
   const totalBerat = selesai.reduce((sum, t) => sum + t.berat, 0);
   const totalPendapatan = selesai.reduce((sum, t) => sum + t.total, 0);
 

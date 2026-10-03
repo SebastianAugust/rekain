@@ -6,7 +6,7 @@ import { BadgeCheck, ChevronLeft, Download, Share2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { DataContoh } from "@/components/brand/data-contoh";
-import { ErrorState } from "@/components/brand/empty-state";
+import { EmptyState, ErrorState } from "@/components/brand/empty-state";
 import { Eyebrow } from "@/components/brand/eyebrow";
 import { Logo } from "@/components/brand/logo";
 import { MaterialSwatch } from "@/components/brand/material-swatch";
@@ -64,8 +64,33 @@ export function SertifikatTransaksi({ id }: { id: string }) {
     );
   }
 
-  const t = transaksi.data?.find((x) => x.id === id && x.status === "Selesai");
+  const t = transaksi.data?.find((x) => x.id === id);
   if (!t) notFound();
+
+  // The record exists but the trade is not finished: no certificate yet, and that is
+  // an ordinary state, not an error.
+  if (t.status !== "Selesai") {
+    return (
+      <Halaman className="max-w-3xl">
+        <Link
+          href="/pabrik/transaksi"
+          className="mb-w4 inline-flex min-h-11 items-center gap-1 rounded-full pr-w3 text-sm text-tinta-pudar hover:text-nila-tinta"
+        >
+          <ChevronLeft size={18} strokeWidth={1.8} aria-hidden="true" /> Kembali ke transaksi
+        </Link>
+        <EmptyState
+          icon={BadgeCheck}
+          title="Sertifikat belum tersedia"
+          description={`Transaksi ${t.id} berstatus ${t.status}. Sertifikat terbit setelah buyer mengonfirmasi barang diterima.`}
+          action={
+            <Link href="/pabrik/transaksi" className={tombol()}>
+              Lihat transaksi
+            </Link>
+          }
+        />
+      </Halaman>
+    );
+  }
 
   const d = hitungDampak(t);
   const grade = listings.data?.find((l) => l.id === t.listingId)?.grade;

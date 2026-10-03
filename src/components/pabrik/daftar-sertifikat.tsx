@@ -8,13 +8,13 @@ import { EmptyState, ErrorState } from "@/components/brand/empty-state";
 import { MaterialSwatch } from "@/components/brand/material-swatch";
 import { Halaman, PageHeader } from "@/components/brand/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTransaksiPabrik } from "@/lib/data/hooks";
-import { hitungDampak, transaksiSelesai } from "@/lib/dampak";
+import { useTransaksiSelesai } from "@/lib/data/hooks";
+import { hitungDampak } from "@/lib/dampak";
 import { formatBerat, formatCO2e } from "@/lib/format";
 
 export function DaftarSertifikat() {
-  const { data, isPending, isError, refetch } = useTransaksiPabrik();
-  const selesai = transaksiSelesai(data ?? []);
+  const { data, isPending, isError, refetch } = useTransaksiSelesai();
+  const selesai = data ?? [];
 
   return (
     <Halaman>

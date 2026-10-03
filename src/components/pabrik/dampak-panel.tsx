@@ -11,14 +11,13 @@ import { Halaman, PageHeader } from "@/components/brand/page-header";
 import { StatCard } from "@/components/brand/stat-card";
 import { CaraMenghitung } from "@/components/pabrik/cara-menghitung";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useTransaksiPabrik } from "@/lib/data/hooks";
+import { useTransaksiSelesai } from "@/lib/data/hooks";
 import {
   dampakPerBulan,
   dampakPerMaterial,
   hitungDampak,
   jumlahkanDampak,
   kgKeTon,
-  transaksiSelesai,
 } from "@/lib/dampak";
 import { formatBerat, formatCO2e, formatDesimal, formatLiter } from "@/lib/format";
 import type { Transaction } from "@/lib/types";
@@ -180,7 +179,7 @@ function TabelTransaksi({ transaksi }: { transaksi: Transaction[] }) {
 }
 
 export function DampakPanel() {
-  const { data, isPending, isError, refetch } = useTransaksiPabrik();
+  const { data, isPending, isError, refetch } = useTransaksiSelesai();
 
   return (
     <Halaman>
@@ -204,7 +203,7 @@ export function DampakPanel() {
       ) : isError ? (
         <ErrorState title="Dampak gagal dimuat" onRetry={() => refetch()} />
       ) : (
-        <Isi transaksi={transaksiSelesai(data ?? [])} />
+        <Isi transaksi={data ?? []} />
       )}
     </Halaman>
   );

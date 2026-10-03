@@ -4,14 +4,14 @@ import Link from "next/link";
 import { ArrowRight, Leaf } from "lucide-react";
 
 import { DataContoh } from "@/components/brand/data-contoh";
-import { useTransaksiPabrik } from "@/lib/data/hooks";
-import { jumlahkanDampak, kgKeTon, transaksiSelesai } from "@/lib/dampak";
+import { useTransaksiSelesai } from "@/lib/data/hooks";
+import { jumlahkanDampak, kgKeTon } from "@/lib/dampak";
 import { formatCO2e, formatDesimal } from "@/lib/format";
 
 /** The Beranda doorway into the full Dampak page. */
 export function DampakRingkas() {
-  const { data, isPending } = useTransaksiPabrik();
-  const total = jumlahkanDampak(transaksiSelesai(data ?? []));
+  const { data, isPending } = useTransaksiSelesai();
+  const total = jumlahkanDampak(data ?? []);
 
   return (
     <Link
