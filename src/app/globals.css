@@ -553,6 +553,18 @@ html[data-mockup="true"] {
   --aman-atas: 59px;
   --aman-bawah: 34px;
 }
+
+/*
+  On mobile widths the zones are never smaller than an iPhone's (59px status bar /
+  Dynamic Island, 34px home indicator), so a device frame that reports env() = 0
+  still gets clear space. Real iPhones report the same or larger; desktop is untouched.
+*/
+@media (max-width: 47.99rem) {
+  :root {
+    --aman-atas: max(env(safe-area-inset-top), 59px);
+    --aman-bawah: max(env(safe-area-inset-bottom), 34px);
+  }
+}
 html[data-mockup="true"] .status-bar-tiruan {
   display: flex;
 }
