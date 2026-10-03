@@ -12,7 +12,7 @@ export function ProfileCard({ role }: { role: Role }) {
   const rincian = [
     { label: "Jenis akun", nilai: persona.deskripsi },
     { label: "Klaster", nilai: KLASTER },
-    { label: "Mode", nilai: "Prototipe — data tersimpan di browser ini" },
+    { label: "Mode", nilai: "Prototipe — data dan pembayaran simulasi, kembali ke awal saat halaman dimuat ulang" },
   ];
 
   return (
