@@ -72,7 +72,8 @@ export function SearchBar({
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
           placeholder="Cari material, kode, pabrik, atau lokasi…"
-          className="min-w-0 flex-1 bg-transparent py-w2 text-base text-tinta outline-none placeholder:text-tinta-pudar [&::-webkit-search-cancel-button]:hidden"
+          enterKeyHint="search"
+          className="h-11 min-w-0 flex-1 bg-transparent text-base text-tinta outline-none placeholder:text-tinta-pudar [&::-webkit-search-cancel-button]:hidden"
         />
         {value && (
           <button
@@ -86,7 +87,15 @@ export function SearchBar({
         )}
       </div>
 
-      <div role="group" aria-label="Saring material" className="flex flex-wrap items-center gap-w2">
+      {/*
+        One row that scrolls sideways on a phone instead of wrapping to a second and
+        third line. The right edge fades, so a chip cut off there reads as "more".
+      */}
+      <div
+        role="group"
+        aria-label="Saring material"
+        className="-mx-w4 flex items-center gap-w2 overflow-x-auto px-w4 pr-w6 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-sm:[mask-image:linear-gradient(to_right,black_calc(100%-2rem),transparent)] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
+      >
         {FILTER_MATERIAL.map((f) => {
           const nyala = aktif.includes(f.id);
           return (
@@ -96,7 +105,7 @@ export function SearchBar({
               aria-pressed={nyala}
               onClick={() => onToggle(f.id)}
               className={cn(
-                "tekan inline-flex min-h-11 items-center gap-1 rounded-full px-w4 text-sm font-semibold",
+                "tekan inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full px-w4 text-sm font-semibold",
                 nyala
                   ? "bg-nila-6 text-white shadow-tombol"
                   : "bg-awan text-tinta hover:bg-awan-tua",
@@ -111,7 +120,7 @@ export function SearchBar({
           <button
             type="button"
             onClick={onReset}
-            className="inline-flex min-h-11 items-center gap-1 rounded-full px-w3 text-sm font-semibold text-nila-tinta hover:bg-awan"
+            className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-full px-w3 text-sm font-semibold text-nila-tinta hover:bg-awan"
           >
             <X size={16} strokeWidth={1.8} aria-hidden="true" /> Hapus semua
           </button>

@@ -39,6 +39,11 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  // The software keyboard shrinks the layout viewport on Android too, as it does on
+  // iOS, so bottom-pinned bars and dvh layouts follow it instead of hiding behind it.
+  interactiveWidget: "resizes-content",
+  // The page ground (--color-kain), so the status bar and browser chrome blend into it.
+  themeColor: "#F7F9FC",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

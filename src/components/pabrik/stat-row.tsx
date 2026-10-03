@@ -22,17 +22,17 @@ export function StatRow() {
   const memuat = transaksi.isPending;
 
   return (
-    <div className="grid gap-w4 lg:grid-cols-5">
+    <div className="grid gap-w3 sm:gap-w4 lg:grid-cols-5">
       <StatCard
         utama
-        className="flex flex-col justify-end py-w6 lg:col-span-3"
+        className="flex flex-col justify-end py-w5 sm:py-w6 lg:col-span-3"
         label="Limbah terjual"
         value={memuat ? "—" : totalBerat.toLocaleString("id-ID")}
         satuan="kg"
         catatan={memuat ? undefined : `Dari ${selesai.length} transaksi yang sudah selesai.`}
         icon={Scale}
       />
-      <div className="grid gap-w4 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-1">
+      <div className="grid grid-cols-2 gap-w3 sm:gap-w4 lg:col-span-2 lg:grid-cols-1">
         <StatCard label="Omzet" value={memuat ? "—" : formatRupiahRingkas(totalPendapatan)} icon={TrendingUp} />
         <StatCard
           label="Listing aktif"

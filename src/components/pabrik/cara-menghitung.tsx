@@ -22,7 +22,22 @@ export function CaraMenghitung() {
         yang dialihkan dihitung sama dengan berat material yang terjual.
       </p>
 
-      <div className="mt-w4 overflow-x-auto rounded-input bg-white">
+      {/* On a phone each fibre is a small card: a table that scrolls sideways hides columns. */}
+      <ul className="mt-w4 space-y-w2 sm:hidden">
+        {faktor.map((f) => (
+          <li key={f.serat} className="rounded-input bg-white px-w3 py-w3 text-sm">
+            <p className="font-medium text-tinta">{f.serat}</p>
+            <p className="mt-w1 tabular-nums text-tinta">
+              {formatDesimal(f.co2ePerKg, 1)} kg CO2e per kg · {f.airLiterPerKg.toLocaleString("id-ID")} L air per kg
+            </p>
+            <p className="mt-w1 text-xs text-tinta-pudar">
+              {f.sumber}, {f.tahun}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-w4 hidden overflow-x-auto rounded-input bg-white sm:block">
         <table className="w-full min-w-[32rem] border-collapse text-sm">
           <caption className="sr-only">Faktor estimasi per jenis serat</caption>
           <thead>

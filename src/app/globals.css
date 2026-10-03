@@ -168,13 +168,14 @@
   color-scheme: light;
 
   /*
-    Breathing room above the top bars and below the bottom tab bar. On a
-    notched phone the inset already covers the status bar / home indicator;
-    everywhere it reads 0 (Safari in-browser, Android, DevTools) the bars
-    would sit flush against the edge, so phones get a floor instead.
+    The device's own safe-area insets, nothing added. A notched phone reports the
+    status bar / home indicator here; where it reads 0 (Safari in-browser, where the
+    browser chrome already sits above the page) there is nothing to clear. An earlier
+    floor of 58px / 24px belonged to a device-frame mockup and put dead space above
+    every real phone screen.
   */
-  --aman-atas: max(env(safe-area-inset-top), 3.625rem);
-  --aman-bawah: max(env(safe-area-inset-bottom), 1.5rem);
+  --aman-atas: env(safe-area-inset-top);
+  --aman-bawah: env(safe-area-inset-bottom);
 
   --radius: 0.875rem;
 
@@ -248,6 +249,28 @@
   }
   html {
     @apply font-sans;
+    /* The grey flash a phone paints on tap fights our own :active feedback. */
+    -webkit-tap-highlight-color: transparent;
+    /* No font inflation when the phone rotates to landscape. */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* An app, not a document: no pull-to-refresh or page rubber-band under it. */
+    overscroll-behavior: none;
+  }
+  /* Answer a tap at once (no double-tap-zoom wait), and never select a control's label. */
+  a,
+  button,
+  [role="button"],
+  [role="combobox"],
+  [role="tab"] {
+    touch-action: manipulation;
+  }
+  button,
+  [role="button"],
+  [role="tab"] {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
   }
   /*
     Focus is loud and uniform: a nila-3 ring offset against whatever it sits on.
@@ -360,9 +383,16 @@
       transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
       box-shadow 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .bal:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-bal-angkat);
+  /* Hover only where a pointer can hover: on touch, :hover sticks after a tap. */
+  @media (hover: hover) and (pointer: fine) {
+    .bal:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-bal-angkat);
+    }
+  }
+  /* Touch has no hover, so a card answers the press itself. */
+  .bal:active {
+    transform: scale(0.985);
   }
 
   /* ── Press ───────────────────────────────────────────────────────────────── */
@@ -441,18 +471,12 @@
   }
 }
 
-@media (width >= 48rem) {
-  :root {
-    --aman-atas: env(safe-area-inset-top);
-    --aman-bawah: env(safe-area-inset-bottom);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .bal {
     transition: none;
   }
-  .bal:hover {
+  .bal:hover,
+  .bal:active {
     transform: none;
   }
   .mengendap,

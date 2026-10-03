@@ -27,14 +27,14 @@ export function PageHeader({
   return (
     <header
       className={cn(
-        "mb-w6 flex flex-wrap items-end justify-between gap-x-w4 gap-y-w3",
+        "mb-w4 flex flex-wrap items-end justify-between gap-x-w4 gap-y-w2 sm:mb-w6 sm:gap-y-w3",
         className,
       )}
     >
       <div className="min-w-0 max-w-2xl">
-        <Eyebrow className="mb-w2">{eyebrow}</Eyebrow>
-        <h1 className="judul text-3xl text-tinta sm:text-[2.5rem] sm:leading-[1.1]">{title}</h1>
-        {description && <p className="mt-w3 text-base text-tinta-pudar">{description}</p>}
+        <Eyebrow className="mb-w1 sm:mb-w2">{eyebrow}</Eyebrow>
+        <h1 className="judul text-[1.75rem] leading-[1.15] text-tinta sm:text-[2.5rem] sm:leading-[1.1]">{title}</h1>
+        {description && <p className="mt-w2 text-sm text-tinta-pudar sm:mt-w3 sm:text-base">{description}</p>}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </header>

@@ -138,9 +138,9 @@ function SimulatorDalam() {
         description="Seluruh nilai bawaan diambil dari Tabel 5.1–5.4 proposal. Geser asumsinya, dan proyeksi tiga tahun beserta indikator kelayakannya dihitung ulang seketika."
         action={
           <Tabs value={mode} onValueChange={(v) => setMode(v as Mode)}>
-            <TabsList>
-              <TabsTrigger value="presentasi">Presentasi</TabsTrigger>
-              <TabsTrigger value="kerja">Kerja</TabsTrigger>
+            <TabsList className="h-13! sm:h-8!">
+              <TabsTrigger value="presentasi" className="px-w4 sm:px-1.5">Presentasi</TabsTrigger>
+              <TabsTrigger value="kerja" className="px-w4 sm:px-1.5">Kerja</TabsTrigger>
             </TabsList>
           </Tabs>
         }
@@ -278,7 +278,7 @@ function SimulatorDalam() {
               metrik={metrik}
               deviasi={DEVIASI_BAWAAN}
               aksi={
-                <div role="group" aria-label="Metrik sensitivitas" className="flex gap-1">
+                <div role="group" aria-label="Metrik sensitivitas" className="flex flex-wrap gap-1">
                   {(["npv", "roi", "labaBersih"] as const).map((m) => (
                     <button
                       key={m}
@@ -286,7 +286,7 @@ function SimulatorDalam() {
                       onClick={() => setMetrik(m)}
                       aria-pressed={metrik === m}
                       className={cn(
-                        "rounded-full px-w3 py-1.5 font-mono text-xs transition-colors",
+                        "min-h-11 rounded-full px-w3 font-mono text-xs transition-colors sm:min-h-0 sm:py-1.5",
                         metrik === m
                           ? "bg-nila-6 text-white"
                           : "border border-garis text-tinta-pudar hover:border-nila-3",

@@ -13,7 +13,7 @@ export function LandingNav() {
   return (
     <header className="pt-(--aman-atas)">
       <div className="mx-auto flex max-w-[1190px] items-center justify-between gap-w4 px-w4 py-w3 sm:px-w5">
-        <Link href="/" aria-label="ReKain — beranda" className="rounded-input">
+        <Link href="/" aria-label="ReKain — beranda" className="inline-flex min-h-11 items-center rounded-input">
           <Logo />
         </Link>
 
@@ -36,12 +36,15 @@ export function LandingNav() {
         <div className="flex items-center gap-w2">
           <Link
             href="/pabrik"
-            className="inline-flex min-h-11 items-center rounded-full px-w3 text-sm font-semibold text-nila-tinta hover:bg-awan"
+            aria-label="Masuk Pabrik"
+            className="inline-flex min-h-11 items-center rounded-full px-w3 text-sm font-semibold whitespace-nowrap text-nila-tinta hover:bg-awan"
           >
-            Masuk Pabrik
+            <span className="sm:hidden">Pabrik</span>
+            <span className="hidden sm:inline">Masuk Pabrik</span>
           </Link>
-          <Link href="/buyer" className={tombol({ ukuran: "kecil" })}>
-            Masuk Buyer
+          <Link href="/buyer" aria-label="Masuk Buyer" className={tombol({ ukuran: "kecil" })}>
+            <span className="sm:hidden">Buyer</span>
+            <span className="hidden sm:inline">Masuk Buyer</span>
           </Link>
         </div>
       </div>

@@ -32,7 +32,7 @@ export function BottomNav({ role }: { role: Role }) {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-w2 pb-w1 text-[0.6875rem]",
+              "flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 pt-w2 pb-w1 text-xs",
               active ? "font-semibold text-nila-6" : "text-tinta-pudar",
             )}
           >

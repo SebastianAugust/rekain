@@ -139,9 +139,10 @@ export function Kanvas({
   return (
     <figure className="rounded-kartu border border-garis permukaan px-w4 py-w3 shadow-panel">
       <figcaption className="mb-w3">
-        <div className="flex items-start justify-between gap-w3">
+        {/* Stacked on a phone: a control row wider than the card must wrap, not widen the page. */}
+        <div className="flex flex-col gap-w2 sm:flex-row sm:items-start sm:justify-between sm:gap-w3">
           <h3 className="judul-kecil text-sm text-tinta">{judul}</h3>
-          {aksi && <div className="shrink-0 cetak-sembunyi">{aksi}</div>}
+          {aksi && <div className="cetak-sembunyi sm:shrink-0">{aksi}</div>}
         </div>
         {catatan && <p className="mt-1 text-xs text-tinta-pudar">{catatan}</p>}
 

@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, ChevronLeft } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Building2, ChevronLeft, Send } from "lucide-react";
 
 import { DipChip } from "@/components/brand/dip-chip";
 import { Eyebrow } from "@/components/brand/eyebrow";
@@ -10,6 +11,7 @@ import { MaterialSwatch } from "@/components/brand/material-swatch";
 import { LISTING_DIP } from "@/components/brand/status-dip";
 import { FavoriteButton } from "@/components/buyer/favorite-button";
 import { OfferForm } from "@/components/buyer/offer-form";
+import { tombol } from "@/components/brand/tombol";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatBerat, formatRupiah } from "@/lib/format";
 import type { Listing } from "@/lib/types";
@@ -58,9 +60,45 @@ export function MaterialDetailSkeleton() {
   );
 }
 
+/**
+ * Phones only: the offer form sits below the whole lot description, a long scroll
+ * away, so the price and the one action stay pinned above the tab bar. It steps
+ * aside once the form itself is on screen, so the action is never offered twice.
+ */
+function BarPenawaran({ listing }: { listing: Listing }) {
+  const [formTerlihat, setFormTerlihat] = useState(false);
+
+  useEffect(() => {
+    const form = document.getElementById("penawaran");
+    if (!form) return;
+    // The bottom 40% of the screen does not count: a form peeking out from behind the
+    // tab bar is not "on screen" yet, and the action should still be one tap away.
+    const pengamat = new IntersectionObserver(([e]) => setFormTerlihat(e.isIntersecting), {
+      rootMargin: "0px 0px -40% 0px",
+    });
+    pengamat.observe(form);
+    return () => pengamat.disconnect();
+  }, []);
+
+  if (listing.harga === null || listing.status !== "Tersedia" || formTerlihat) return null;
+
+  return (
+    <div className="fixed inset-x-0 bottom-[calc(3.5rem+var(--aman-bawah))] z-20 flex items-center justify-between gap-w3 border-t border-garis bg-white/90 px-w4 py-w2 backdrop-blur-xl md:hidden">
+      <p className="judul min-w-0 text-2xl tabular-nums text-tinta">
+        {formatRupiah(listing.harga)}
+        <span className="ml-0.5 text-sm font-semibold tracking-normal text-tinta-pudar">/kg</span>
+      </p>
+      <a href="#penawaran" className={tombol()}>
+        <Send size={18} strokeWidth={1.8} aria-hidden="true" /> Ajukan penawaran
+      </a>
+    </div>
+  );
+}
+
 export function MaterialDetail({ listing }: { listing: Listing }) {
   return (
-    <Halaman>
+    <Halaman className="max-md:pb-w7">
+      <BarPenawaran listing={listing} />
       <BackLink />
 
       <div className={KOLOM}>
@@ -69,7 +107,7 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
           <MaterialSwatch
             material={listing.material}
             seed={listing.id}
-            className="h-44 w-full rounded-kartu sm:h-52"
+            className="h-32 w-full rounded-kartu sm:h-52"
           />
 
           <div className="mt-w5 flex items-start justify-between gap-w2">
@@ -86,9 +124,9 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
             </div>
           </div>
 
-          <h1 className="judul mt-w2 text-3xl text-tinta sm:text-4xl">{listing.material}</h1>
+          <h1 className="judul mt-w2 text-[1.75rem] leading-[1.15] text-tinta sm:text-4xl">{listing.material}</h1>
 
-          <p className="judul mt-w3 text-5xl tabular-nums text-tinta">
+          <p className="judul mt-w2 text-4xl tabular-nums text-tinta sm:mt-w3 sm:text-5xl">
             {listing.harga === null ? (
               <span className="text-2xl text-tinta-pudar">Harga menunggu penilaian</span>
             ) : (
@@ -99,14 +137,14 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
             )}
           </p>
 
-          <dl className="mt-w5 grid grid-cols-2 gap-x-w5 gap-y-w4 border-t border-garis pt-w5">
+          <dl className="mt-w5 grid grid-cols-2 gap-x-w4 gap-y-w3 border-t border-garis pt-w4 sm:gap-x-w5 sm:gap-y-w4 sm:pt-w5">
             <div>
               <dt className="text-sm text-tinta-pudar">Berat tersedia</dt>
               <dd className="judul text-2xl tabular-nums text-tinta">{formatBerat(listing.berat)}</dd>
             </div>
             <div>
               <dt className="text-sm text-tinta-pudar">Lokasi</dt>
-              <dd className="judul-kecil text-lg text-tinta">{listing.lokasi}</dd>
+              <dd className="judul-kecil text-base text-tinta sm:text-lg">{listing.lokasi}</dd>
             </div>
             <div>
               <dt className="text-sm text-tinta-pudar">Diunggah</dt>
@@ -127,8 +165,9 @@ export function MaterialDetail({ listing }: { listing: Listing }) {
         </article>
 
         <section
+          id="penawaran"
           aria-label="Ajukan penawaran"
-          className="rounded-kartu permukaan p-w5 shadow-bal lg:sticky lg:top-w5"
+          className="scroll-mt-w4 rounded-kartu permukaan p-w5 shadow-bal lg:sticky lg:top-w5"
         >
           <Eyebrow className="mb-w4">Ajukan penawaran</Eyebrow>
           <OfferForm listing={listing} />

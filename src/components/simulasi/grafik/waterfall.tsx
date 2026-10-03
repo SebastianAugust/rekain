@@ -148,7 +148,7 @@ function PilihTahun({
           onClick={() => pilih(i)}
           aria-pressed={indeks === i}
           className={cn(
-            "rounded-input px-w2 py-1 font-mono text-xs transition-colors",
+            "min-h-11 min-w-11 rounded-input px-w2 font-mono text-xs transition-colors sm:min-h-0 sm:min-w-0 sm:py-1",
             indeks === i
               ? "bg-nila-6 text-white"
               : "border border-garis text-tinta-pudar hover:border-nila-3",

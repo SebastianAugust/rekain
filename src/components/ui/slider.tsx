@@ -15,10 +15,10 @@ import { cn } from "@/lib/utils"
 function Slider({ className, ...props }: SliderPrimitive.Root.Props) {
   return (
     <SliderPrimitive.Root data-slot="slider" className={cn("w-full", className)} {...props}>
-      <SliderPrimitive.Control className="flex h-5 w-full touch-none items-center select-none">
+      <SliderPrimitive.Control className="flex h-8 w-full touch-none items-center select-none">
         <SliderPrimitive.Track className="h-1 w-full rounded-full bg-garis">
           <SliderPrimitive.Indicator className="h-full rounded-full bg-nila-3" />
-          <SliderPrimitive.Thumb className="size-4 rounded-full border border-nila-9 bg-white shadow-panel outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nila-3 data-[disabled]:opacity-45" />
+          <SliderPrimitive.Thumb className="size-4 rounded-full pointer-coarse:size-6 border border-nila-9 bg-white shadow-panel outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-nila-3 data-[disabled]:opacity-45" />
         </SliderPrimitive.Track>
       </SliderPrimitive.Control>
     </SliderPrimitive.Root>
