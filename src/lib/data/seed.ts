@@ -109,7 +109,7 @@ export const seedListings: Listing[] = [
     harga: 7200,
     lokasi: "Rancaekek, Bandung",
     pabrik: "Karya Tenun Jaya",
-    status: "Tersedia",
+    status: "Dalam Negosiasi",
     swatch: SWATCH["Denim Deadstock"],
     umur: "5 jam lalu",
   },
@@ -259,47 +259,92 @@ export const seedListings: Listing[] = [
     swatch: SWATCH["Cotton Cutting Scraps"],
     umur: "3 jam lalu",
   },
+  {
+    /* A sale here is already Selesai (TX-2270) and a second offer is open (TX-2299),
+       so the active factory has a pending offer to accept or reject on first load. */
+    id: "KTN-B-084",
+    material: "Katun Campuran",
+    grade: "B",
+    berat: 700,
+    harga: 3800,
+    lokasi: "Cimahi, Bandung",
+    pabrik: "PT Mitra Garmindo",
+    status: "Dalam Negosiasi",
+    swatch: SWATCH["Katun Campuran"],
+    umur: "2 hari lalu",
+  },
+  {
+    id: "DNM-B-082",
+    material: "Denim Deadstock",
+    grade: "B",
+    berat: 380,
+    harga: 5800,
+    lokasi: "Cimahi, Bandung",
+    pabrik: "PT Mitra Garmindo",
+    status: "Tersedia",
+    swatch: SWATCH["Denim Deadstock"],
+    umur: "4 hari lalu",
+  },
+  {
+    /* Ungraded, from the active factory: shows in Listing saya as "Belum dinilai"
+       and in the ops grading queue. */
+    id: "DNM-X-085",
+    material: "Denim Deadstock",
+    grade: null,
+    berat: 260,
+    harga: null,
+    lokasi: "Cimahi, Bandung",
+    pabrik: "PT Mitra Garmindo",
+    status: "Menunggu Grading",
+    swatch: SWATCH["Denim Deadstock"],
+    umur: "1 jam lalu",
+    catatan: "Sisa potongan celana, warna indigo seragam.",
+  },
 ];
 
 /*
   One ledger for both sides. Each record names its factory and its buyer, and the
-  store slices it per persona — so a trade can never show one status to the
-  factory and another to the buyer. Totals are berat × the listing's price/kg.
+  store slices it per persona - so a trade can never show one status to the
+  factory and another to the buyer.
+
+  Totals are never typed by hand: `catat` computes berat x the listing's price/kg,
+  the same rule `createOffer` applies, so the ledger and the catalogue cannot drift.
+  Every listing that is Dalam Negosiasi has exactly one open record here
+  (Menunggu Konfirmasi or Dikirim), as the lifecycle requires.
 */
+function catat(
+  id: string,
+  listingId: string,
+  buyer: string,
+  berat: number,
+  tanggal: string,
+  status: Transaction["status"],
+): Transaction {
+  const listing = seedListings.find((l) => l.id === listingId);
+  if (!listing || listing.harga === null) throw new Error(`Seed: ${listingId} harus sudah digrading`);
+  return {
+    id,
+    listingId,
+    material: listing.material,
+    pabrik: listing.pabrik,
+    buyer,
+    berat,
+    total: Math.round(berat * listing.harga),
+    tanggal,
+    status,
+  };
+}
+
 export const seedTransaksi: Transaction[] = [
-  {
-    id: "TX-2291",
-    listingId: "DNM-A-007",
-    material: "Denim Deadstock",
-    pabrik: "Karya Tenun Jaya",
-    buyer: "Ulang Studio",
-    berat: 210,
-    total: 1_512_000,
-    tanggal: "24 Agu 2026",
-    status: "Dikirim",
-  },
-  {
-    id: "TX-2284",
-    listingId: "RJC-B-031",
-    material: "Reject Roll Ends",
-    pabrik: "PT Mitra Garmindo",
-    buyer: "Ulang Studio",
-    berat: 240,
-    total: 864_000,
-    tanggal: "21 Agu 2026",
-    status: "Selesai",
-  },
-  {
-    id: "TX-2278",
-    listingId: "COT-B-014",
-    material: "Cotton Cutting Scraps",
-    pabrik: "PT Mitra Garmindo",
-    buyer: "Daur Tekstil ID",
-    berat: 400,
-    total: 1_800_000,
-    tanggal: "18 Agu 2026",
-    status: "Selesai",
-  },
+  catat("TX-2299", "KTN-B-084", "Ulang Studio", 300, "2 Okt 2026", "Menunggu Konfirmasi"),
+  catat("TX-2298", "KTN-C-022", "Ulang Studio", 300, "1 Okt 2026", "Menunggu Konfirmasi"),
+  catat("TX-2297", "RJC-C-052", "Daur Tekstil ID", 200, "30 Sep 2026", "Menunggu Konfirmasi"),
+  catat("TX-2291", "DNM-A-007", "Ulang Studio", 210, "24 Agu 2026", "Dikirim"),
+  catat("TX-2284", "RJC-B-031", "Ulang Studio", 240, "21 Agu 2026", "Selesai"),
+  catat("TX-2278", "COT-B-014", "Daur Tekstil ID", 400, "18 Agu 2026", "Selesai"),
+  catat("TX-2270", "KTN-B-084", "Daur Tekstil ID", 350, "14 Jul 2026", "Selesai"),
+  catat("TX-2262", "COT-B-014", "Ulang Studio", 300, "3 Jun 2026", "Selesai"),
+  catat("TX-2255", "DNM-B-082", "Daur Tekstil ID", 220, "9 Mei 2026", "Selesai"),
 ];
 
 /** Buyer starts with the first two listings saved. */

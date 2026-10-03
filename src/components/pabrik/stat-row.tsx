@@ -36,7 +36,7 @@ export function StatRow() {
         <StatCard label="Omzet" value={memuat ? "—" : formatRupiahRingkas(totalPendapatan)} icon={TrendingUp} />
         <StatCard
           label="Listing aktif"
-          value={listings.isPending ? "—" : (listings.data?.length ?? 0)}
+          value={listings.isPending ? "—" : (listings.data ?? []).filter((l) => l.status !== "Terjual").length}
           icon={Package}
         />
       </div>
