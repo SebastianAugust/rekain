@@ -4,6 +4,9 @@ import { useMemo, useState } from "react";
 import { BadgeCheck } from "lucide-react";
 
 import { Halaman, PageHeader } from "@/components/brand/page-header";
+import { GrafikArusKas } from "@/components/simulasi/grafik/arus-kas";
+import { GrafikLabaHarga } from "@/components/simulasi/grafik/laba-harga";
+import { GrafikPertumbuhan } from "@/components/simulasi/grafik/pertumbuhan";
 import { AcuanProposal } from "@/components/simulasi/acuan-proposal";
 import { BadgeDeviasi, KartuMetrik } from "@/components/simulasi/kartu-metrik";
 import { PanelAsumsi } from "@/components/simulasi/panel-asumsi";
@@ -148,6 +151,14 @@ export function Simulator() {
                   />
                 }
               />
+            </div>
+          </section>
+
+          <section aria-label="Grafik proyeksi" className="space-y-w4">
+            <GrafikPertumbuhan proyeksi={proyeksi} />
+            <div className="grid gap-w4 2xl:grid-cols-2">
+              <GrafikArusKas proyeksi={proyeksi} paybackBulan={kelayakan.paybackBulan} />
+              <GrafikLabaHarga masukan={masukan} />
             </div>
           </section>
 
