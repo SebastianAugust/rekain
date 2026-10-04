@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Link2, Printer, RotateCcw } from "lucide-react";
+import { AlertTriangle, Printer, RotateCcw } from "lucide-react";
 
 import { tombol } from "@/components/brand/tombol";
 import { type NamaSkenario, SKENARIO, URUTAN_SKENARIO } from "@/lib/finance/skenario";
@@ -10,15 +10,11 @@ export function PilihSkenario({
   aktif,
   pilih,
   reset,
-  salinTautan,
-  tautanTersalin,
 }: {
   /** `null` berarti user sudah menggeser sendiri — tidak ada preset yang cocok. */
   aktif: NamaSkenario | null;
   pilih: (nama: NamaSkenario) => void;
   reset: () => void;
-  salinTautan: () => void;
-  tautanTersalin: boolean;
 }) {
   const keterangan = aktif ? SKENARIO[aktif] : null;
 
@@ -44,7 +40,7 @@ export function PilihSkenario({
                   "gap-1.5",
                 )}
               >
-                {skenario.turunan && (
+                {skenario.asumsiTim && (
                   <AlertTriangle
                     size={11}
                     aria-hidden="true"
@@ -52,6 +48,7 @@ export function PilihSkenario({
                   />
                 )}
                 {skenario.label}
+                {skenario.asumsiTim && <span className="font-normal">· asumsi tim</span>}
               </button>
             );
           })}
@@ -64,15 +61,7 @@ export function PilihSkenario({
             className={tombol({ nada: "garis", ukuran: "kecil" })}
           >
             <RotateCcw size={12} aria-hidden="true" />
-            Reset ke baseline
-          </button>
-          <button
-            type="button"
-            onClick={salinTautan}
-            className={tombol({ nada: "garis", ukuran: "kecil" })}
-          >
-            <Link2 size={12} aria-hidden="true" />
-            {tautanTersalin ? "Tautan tersalin" : "Salin tautan"}
+            Reset ke Moderat
           </button>
           <button
             type="button"
@@ -89,16 +78,16 @@ export function PilihSkenario({
         {keterangan ? (
           <>
             <span className="font-medium text-tinta">{keterangan.ringkas}.</span>{" "}
-            {keterangan.turunan && (
-              <span className="text-benang">Bukan angka proposal. </span>
+            {keterangan.asumsiTim && (
+              <span className="text-benang">Asumsi tim, bukan angka proposal. </span>
             )}
             {keterangan.sumber}
           </>
         ) : (
           <>
             <span className="font-medium text-tinta">Skenario kustom.</span> Asumsi
-            sudah digeser dari baseline proposal — tekan “Reset ke baseline” untuk
-            kembali ke angka Tabel 5.1–5.4.
+            sudah digeser dari preset — tekan “Reset ke Moderat” untuk kembali ke
+            angka Tabel 4.1–4.5.
           </>
         )}
       </p>

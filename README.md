@@ -35,15 +35,12 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-## Halaman internal `/analisis-sensitivitas`
+## Kalkulator `/analisis-sensitivitas`
 
-Kalkulator skenario proyeksi keuangan ReKain. Seluruh nilai bawaannya diambil dari
-Tabel 5.1–5.4 proposal, dan `src/lib/finance/*.test.ts` mengunci baseline itu ke
-angka proposal (ROI 378,99%, IRR 71,32%, payback bulan ke-22, BEP Rp96.867.470,
-NPV Rp166.785.081).
+Kalkulator skenario proyeksi keuangan ReKain (Lampiran 7 proposal v3). Nilai bawaannya
+(Moderat) diambil dari Tabel 4.1–4.5, dan `src/lib/finance/*.test.ts` mengunci
+baseline itu ke angka proposal (ROI 378,99%, IRR 71,32%, payback bulan ke-22,
+BEP Rp96.867.470). Angka Tabel 4.6 dan Bagian 4.1.4 dikunci di `sensitivitas.test.ts`.
 
-Halaman ini sengaja tidak tertaut dari navigasi mana pun dan memasang
-`noindex, nofollow`. Tidak ada sandi; hanya bisa dibuka lewat URL langsung.
-
-Skenario bisa dibagikan lewat query param `?s=` — hanya selisih terhadap baseline
-yang disandikan, jadi tautannya tetap pendek.
+Terbuka tanpa login, tidak terhubung ke backend, dan memasang `noindex`. `/simulasi`
+dialihkan permanen ke sini.

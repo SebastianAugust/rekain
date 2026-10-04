@@ -1,7 +1,7 @@
 /**
  * Mesin proyeksi laba rugi — murni, tanpa efek samping.
  *
- * Rantai perhitungannya mengikuti Tabel 5.2 → 5.3 → 5.4 persis:
+ * Rantai perhitungannya mengikuti Tabel 4.2 → 4.3 → 4.4 persis:
  *   GMV → pendapatan per aliran → biaya variabel → laba kotor → biaya tetap →
  *   laba sebelum pajak → PPh → laba bersih.
  */
@@ -63,6 +63,15 @@ export function marginKontribusiGmv(asumsi: AsumsiSimulasi): number {
     asumsi.biayaPayment -
     asumsi.insentifPengepul
   );
+}
+
+/**
+ * Margin kontribusi per kg, dibulatkan ke rupiah terdekat (295,5 -> 296) seperti
+ * Tabel 4.6. Biaya logistik dihitung dari rasio GMV, jadi nilainya sudah Rp/kg
+ * pada harga yang berlaku.
+ */
+export function marginKontribusiPerKg(asumsi: AsumsiSimulasi): number {
+  return Math.round(Number((marginKontribusiGmv(asumsi) * asumsi.hargaPerKg).toFixed(6)));
 }
 
 export function hitungTahun(asumsi: AsumsiSimulasi, indeks: number): BarisTahun {

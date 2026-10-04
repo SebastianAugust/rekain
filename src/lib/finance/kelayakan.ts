@@ -1,5 +1,5 @@
 /**
- * Indikator kelayakan usaha — Tabel 5.5.
+ * Indikator kelayakan usaha — Tabel 4.5.
  *
  * Semua fungsi mengembalikan `null` alih-alih `NaN`/`Infinity` ketika hasilnya
  * tidak terdefinisi, supaya UI bisa menampilkan "tidak terdefinisi" dengan jujur
@@ -91,9 +91,8 @@ export function paybackBulan(
  *
  * Rumus ini mengasumsikan seluruh pendapatan punya rasio kontribusi yang sama.
  * Itu tidak sepenuhnya benar di sini — grading premium dan SaaS bernominal tetap
- * dan tidak menanggung biaya variabel — tapi rumus inilah yang dipakai Tabel 5.5,
- * jadi rumus ini yang dipertahankan agar angkanya bisa direproduksi. Ukuran yang
- * lebih presisi ada di `bepVolumeTon`.
+ * dan tidak menanggung biaya variabel — tapi rumus inilah yang dipakai Tabel 4.5,
+ * jadi rumus ini yang dipertahankan agar angkanya bisa direproduksi. Padanannya dalam ton ada di `bepVolumeTon`.
  */
 export function bepPendapatan(
   totalBiayaTetap: number,
@@ -104,25 +103,22 @@ export function bepPendapatan(
 }
 
 /**
- * BEP dalam ton material — turunan, tidak tercantum di proposal.
- *
- * Di sini aliran pendapatan bernominal tetap diperlakukan sebagaimana adanya:
- * berapa ton yang harus diperantarai supaya kontribusi dari GMV menutup sisa
- * biaya tetap setelah grading & SaaS.
+ * BEP dalam ton material pada Tahun 1: biaya tetap ÷ (margin kontribusi per kg +
+ * grading premium per kg). Premium per kg = premium Tahun 1 ÷ volume Tahun 1,
+ * yaitu premium dianggap bertambah proporsional terhadap volume, seperti BEP
+ * pada Tabel 4.5. Margin kontribusi tidak dibulatkan di sini.
  */
 export function bepVolumeTon(
   asumsi: AsumsiSimulasi,
   proyeksi: Proyeksi,
-  indeks: number,
 ): number | null {
-  const baris = proyeksi.tahun[indeks];
-  const kontribusi = proyeksi.marginKontribusiGmv;
-  if (kontribusi <= 0 || asumsi.hargaPerKg <= 0) return null;
+  const baris = proyeksi.tahun[0];
+  if (baris.volumeKg <= 0) return null;
 
-  const sisaBiayaTetap = baris.totalBiayaTetap - baris.gradingPremium - baris.saas;
-  if (sisaBiayaTetap <= 0) return 0;
+  const perKg = proyeksi.marginKontribusiGmv * asumsi.hargaPerKg + baris.gradingPremium / baris.volumeKg;
+  if (perKg <= 0) return null;
 
-  return sisaBiayaTetap / kontribusi / asumsi.hargaPerKg / 1_000;
+  return baris.totalBiayaTetap / perKg / 1_000;
 }
 
 export type Kelayakan = {
@@ -134,7 +130,8 @@ export type Kelayakan = {
   irr: number | null;
   paybackBulan: number | null;
   bepPendapatan: PerTahun<number | null>;
-  bepVolumeTon: PerTahun<number | null>;
+  /** Tahun 1 saja, sesuai Tabel 4.6. */
+  bepVolumeTon: number | null;
 };
 
 export function hitungKelayakan(
@@ -155,10 +152,6 @@ export function hitungKelayakan(
       bepPendapatan(tahun[1].totalBiayaTetap, tahun[1].marginKotor),
       bepPendapatan(tahun[2].totalBiayaTetap, tahun[2].marginKotor),
     ],
-    bepVolumeTon: [
-      bepVolumeTon(asumsi, proyeksi, 0),
-      bepVolumeTon(asumsi, proyeksi, 1),
-      bepVolumeTon(asumsi, proyeksi, 2),
-    ],
+    bepVolumeTon: bepVolumeTon(asumsi, proyeksi),
   };
 }

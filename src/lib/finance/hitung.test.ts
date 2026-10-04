@@ -9,7 +9,7 @@ const [y1, y2, y3] = proyeksi.tahun;
 /** Satu rupiah dibulatkan ke sen — lebih ketat dari yang dibutuhkan, cukup longgar untuk float. */
 const RUPIAH = 2;
 
-describe("Tabel 5.3 — proyeksi GMV dan pendapatan", () => {
+describe("Tabel 4.3 — proyeksi GMV dan pendapatan", () => {
   it("menurunkan GMV dari volume dikali harga tertimbang", () => {
     expect(y1.gmv).toBeCloseTo(1_200_000_000, RUPIAH);
     expect(y2.gmv).toBeCloseTo(1_800_000_000, RUPIAH);
@@ -46,7 +46,7 @@ describe("Tabel 5.3 — proyeksi GMV dan pendapatan", () => {
   });
 });
 
-describe("Tabel 5.2 — struktur biaya", () => {
+describe("Tabel 4.2 — struktur biaya", () => {
   it("menghitung ketiga komponen biaya variabel sebagai persentase GMV", () => {
     expect(y1.biayaLogistik).toBeCloseTo(26_400_000, RUPIAH);
     expect(y1.biayaPayment).toBeCloseTo(6_000_000, RUPIAH);
@@ -91,7 +91,7 @@ describe("Tabel 5.2 — struktur biaya", () => {
   });
 });
 
-describe("Tabel 5.4 — proyeksi laba rugi", () => {
+describe("Tabel 4.4 — proyeksi laba rugi", () => {
   it("mereproduksi laba kotor", () => {
     expect(y1.labaKotor).toBeCloseTo(99_600_000, RUPIAH);
     expect(y2.labaKotor).toBeCloseTo(241_400_000, RUPIAH);
@@ -127,7 +127,7 @@ describe("Tabel 5.4 — proyeksi laba rugi", () => {
   });
 });
 
-describe("Tabel 5.1 — modal awal", () => {
+describe("Tabel 4.1 — modal awal", () => {
   it("menjumlahkan tujuh komponen ke Rp85.000.000", () => {
     expect(totalModalAwal(BASELINE)).toBeCloseTo(85_000_000, RUPIAH);
     expect(proyeksi.modalAwal).toBeCloseTo(85_000_000, RUPIAH);

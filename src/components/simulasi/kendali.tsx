@@ -2,14 +2,13 @@
 
 import { useId } from "react";
 
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { type Batas, bersihkanAngka } from "@/lib/simulasi/validasi";
-import { cn } from "@/lib/utils";
+
+export type Batas = { min: number; max: number; step: number };
 
 /**
- * Penggerak utama: slider dengan pembacaan angka di sebelah labelnya.
+ * Slider dengan pembacaan angka di sebelah labelnya.
  *
  * Nilainya dibaca sebagai angka tunggal, bukan rentang — Base UI mengembalikan
  * `number` ketika `value`-nya `number`.
@@ -69,58 +68,6 @@ export function KendaliSlider({
       </div>
 
       {catatan && <p className="text-xs text-tinta-pudar">{catatan}</p>}
-    </div>
-  );
-}
-
-/** Kolom angka polos untuk ekor panjang asumsi di mode kerja. */
-export function KendaliAngka({
-  label,
-  nilai,
-  ubah,
-  batas,
-  satuan,
-  className,
-  ringkas,
-}: {
-  label: string;
-  nilai: number;
-  ubah: (nilai: number) => void;
-  batas: Batas;
-  satuan?: string;
-  className?: string;
-  /** Label disembunyikan secara visual — dipakai di dalam baris tabel. */
-  ringkas?: boolean;
-}) {
-  const id = useId();
-
-  return (
-    <div className={cn(ringkas ? "" : "space-y-1.5", className)}>
-      <Label
-        htmlFor={id}
-        className={cn(
-          "text-xs font-medium text-tinta-pudar",
-          ringkas && "sr-only",
-        )}
-      >
-        {label}
-        {satuan && !ringkas && <span className="text-tinta-pudar"> ({satuan})</span>}
-      </Label>
-      <Input
-        id={id}
-        type="number"
-        inputMode="decimal"
-        value={Number.isInteger(nilai) ? nilai : Number(nilai.toFixed(4))}
-        min={batas.min}
-        max={batas.max}
-        step={batas.step}
-        onChange={(e) => {
-          const bersih = bersihkanAngka(e.target.value, batas);
-          // Kolom kosong atau setengah diketik: tahan nilai lama, jangan tulis NaN.
-          if (bersih !== null) ubah(bersih);
-        }}
-        className="text-right font-mono tabular-nums"
-      />
     </div>
   );
 }

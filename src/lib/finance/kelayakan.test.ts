@@ -14,7 +14,7 @@ import {
 const proyeksi = hitungProyeksi(BASELINE);
 const kelayakan = hitungKelayakan(BASELINE, proyeksi);
 
-describe("Tabel 5.5 — indikator kelayakan usaha", () => {
+describe("Tabel 4.5 — indikator kelayakan usaha", () => {
   it("mereproduksi ROI kumulatif 378,99%", () => {
     expect(kelayakan.roi! * 100).toBeCloseTo(378.99, 2);
   });
@@ -56,13 +56,13 @@ describe("Tabel 5.5 — indikator kelayakan usaha", () => {
   });
 });
 
-describe("BEP volume — metrik turunan di luar proposal", () => {
-  it("menghitung BEP Tahun 1 sekitar 125,6 ton", () => {
-    expect(kelayakan.bepVolumeTon[0]!).toBeCloseTo(125.57, 2);
+describe("BEP volume Tahun 1", () => {
+  it("menghitung BEP Tahun 1 sekitar 134,5 ton (±135 ton di Tabel 4.5)", () => {
+    expect(kelayakan.bepVolumeTon!).toBeCloseTo(134.54, 2);
   });
 
   it("berada di bawah volume rencana Tahun 1, jadi Tahun 1 memang untung", () => {
-    expect(kelayakan.bepVolumeTon[0]!).toBeLessThan(BASELINE.volumeTon[0]);
+    expect(kelayakan.bepVolumeTon!).toBeLessThan(BASELINE.volumeTon[0]);
   });
 });
 
@@ -140,14 +140,7 @@ describe("ROI dan BEP — kasus tepi", () => {
     const rugi = salinAsumsi(BASELINE);
     rugi.biayaLogistik = 0.2; // margin kontribusi jadi negatif
     const k = hitungKelayakan(rugi, hitungProyeksi(rugi));
-    expect(k.bepVolumeTon[0]).toBeNull();
-  });
-
-  it("BEP volume nol saat pendapatan tetap sudah menutup seluruh biaya tetap", () => {
-    const kuat = salinAsumsi(BASELINE);
-    kuat.gradingPremium = [500_000_000, 500_000_000, 500_000_000];
-    const k = hitungKelayakan(kuat, hitungProyeksi(kuat));
-    expect(k.bepVolumeTon[0]).toBe(0);
+    expect(k.bepVolumeTon).toBeNull();
   });
 
   it("seluruh indikator tetap terdefinisi atau null, tidak pernah NaN", () => {

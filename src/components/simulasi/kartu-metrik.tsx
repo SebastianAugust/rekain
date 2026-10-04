@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const AMBANG = 0.0005;
 
 /**
- * Seberapa jauh skenario saat ini menyimpang dari baseline proposal.
+ * Seberapa jauh skenario saat ini menyimpang dari Moderat.
  *
  * `lebihKecilLebihBaik` untuk metrik seperti payback: bulan ke-15 itu kabar baik
  * meski angkanya turun, jadi warnanya tidak boleh ikut aturan naik=hijau.
@@ -39,7 +39,7 @@ export function BadgeDeviasi({
         )}
       >
         <Minus size={11} aria-hidden="true" />
-        sama dengan baseline
+        sesuai Moderat
       </span>
     );
   }
@@ -63,7 +63,7 @@ export function BadgeDeviasi({
         minimumFractionDigits: persen < 10 ? 1 : 0,
         maximumFractionDigits: persen < 10 ? 1 : 0,
       })}
-      % dari baseline
+      % dari Moderat
     </span>
   );
 }
@@ -80,7 +80,7 @@ export function KartuMetrik({
   nilai: string;
   catatan?: string;
   badge?: React.ReactNode;
-  /** Kartu utama di mode presentasi: ditinggikan dan dicelup. */
+  /** Kartu utama: ditinggikan dan dicelup. */
   sorot?: boolean;
   className?: string;
 }) {
