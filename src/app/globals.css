@@ -492,7 +492,7 @@
 }
 
 /*
-  Cetak — dipakai halaman /simulasi untuk menghasilkan PDF skenario.
+  Cetak — dipakai halaman /analisis-sensitivitas untuk menghasilkan PDF skenario.
 
   Tekstur tenun di `body` dan permukaan kartu berasal dari data-URI turbulence.
   Di layar itu yang membuat halaman terasa seperti kain; di atas kertas ia jadi
